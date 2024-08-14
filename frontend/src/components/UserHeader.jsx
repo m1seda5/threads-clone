@@ -3,7 +3,8 @@ import { Box, Flex, Link, Text, VStack } from "@chakra-ui/layout";
 import { Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/menu";
 import { Portal } from "@chakra-ui/portal";
 import { Button, useToast } from "@chakra-ui/react";
-import { BsInstagram } from "react-icons/bs";
+import { MdMail } from 'react-icons/md';
+
 import { CgMoreO } from "react-icons/cg";
 import { useRecoilValue } from "recoil";
 import userAtom from "../atoms/userAtom";
@@ -85,8 +86,10 @@ const UserHeader = ({ user }) => {
 					<Link color={"gray.light"}>instagram.com</Link>
 				</Flex>
 				<Flex>
+					{/* okay this is for the icon and making it more functional  
+					want to add an email icon that can link us to the users mail */}
 					<Box className='icon-container'>
-						<BsInstagram size={24} cursor={"pointer"} />
+						<MdMail size={24} cursor={"pointer"} />
 					</Box>
 					<Box className='icon-container'>
 						<Menu>
@@ -107,7 +110,7 @@ const UserHeader = ({ user }) => {
 
 			<Flex w={"full"}>
 				<Flex flex={1} borderBottom={"1.5px solid white"} justifyContent={"center"} pb='3' cursor={"pointer"}>
-					<Text fontWeight={"bold"}> Threads</Text>
+					<Text fontWeight={"bold"}> posts</Text>
 				</Flex>
 				<Flex
 					flex={1}
