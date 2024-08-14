@@ -17,7 +17,7 @@ const Header = () => {
 	const setAuthScreen = useSetRecoilState(authScreenAtom);
 
 	return (
-		<Flex justifyContent={"center"} mt={6} mb='12' gap={15}>
+		<Flex justifyContent={"center"} mt={6} mb='12' gap={21}>
 			{user && (
 				<Link as={RouterLink} to='/'>
 					<AiFillHome size={24} />
@@ -38,7 +38,7 @@ const Header = () => {
 			/>
 
 			{user && (
-				<Flex alignItems={"center"} gap={4}>
+				<Flex alignItems={"center"} gap={21}>
 					<Link as={RouterLink} to={`/${user.username}`}>
 						<RxAvatar size={24} />
 					</Link>
