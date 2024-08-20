@@ -169,16 +169,16 @@ const Message = ({ ownMessage, message, onDelete }) => {
               {/* Start of delete button */}
               <IconButton
                 icon={<CloseIcon />}
-                size="xs" // Extra small button
-                fontSize="10px" // Adjust the icon size to make it smaller
+                size="2xs" // Smaller than extra small
+                fontSize="6px" // Even smaller icon size
                 variant="ghost" // No background or border
                 colorScheme="whiteAlpha" // Transparent background
                 position="absolute"
-                top="-4px" // Adjust position to fit better
-                right="-4px" // Adjust position to fit better
+                top="-2px" // Keeps the current position
+                right="-2px" // Keeps the current position
                 onClick={() => onDelete(message._id)} // Call onDelete with message ID
                 borderRadius="full"
-                aria-label="Delete image message"
+                aria-label="Delete message"
               />
               {/* End of delete button */}
               <Box
@@ -207,13 +207,13 @@ const Message = ({ ownMessage, message, onDelete }) => {
               {/* Start of delete button */}
               <IconButton
                 icon={<CloseIcon />}
-                size="xs" // Extra small button
-                fontSize="10px" // Adjust the icon size to make it smaller
+                size="2xs" // Smaller than extra small
+                fontSize="6px" // Even smaller icon size
                 variant="ghost" // No background or border
                 colorScheme="whiteAlpha" // Transparent background
                 position="absolute"
-                top="-3px" // Adjust position to fit better
-                right="-3px" // Adjust position to fit better
+                top="-2px" // Keeps the current position
+                right="-2px" // Keeps the current position
                 onClick={() => onDelete(message._id)} // Call onDelete with message ID
                 borderRadius="full"
                 aria-label="Delete message"
@@ -240,13 +240,13 @@ const Message = ({ ownMessage, message, onDelete }) => {
               {/* Start of delete button */}
               <IconButton
                 icon={<CloseIcon />}
-                size="xs" // Extra small button
-                fontSize="10px" // Adjust the icon size to make it smaller
+                size="2xs" // Smaller than extra small
+                fontSize="6px" // Even smaller icon size
                 variant="ghost" // No background or border
                 colorScheme="whiteAlpha" // Transparent background
                 position="absolute"
-                top="-3px" // Adjust position to fit better
-                right="-3px" // Adjust position to fit better
+                top="-2px" // Keeps the current position
+                right="-2px" // Keeps the current position
                 onClick={() => onDelete(message._id)} // Call onDelete with message ID
                 borderRadius="full"
                 aria-label="Delete message"

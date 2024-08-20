@@ -165,5 +165,3 @@ async function deleteMessage(req, res) {
 
 
 export { sendMessage, getMessages, getConversations, deleteMessage };
-
-
