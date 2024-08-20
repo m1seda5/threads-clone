@@ -45,7 +45,7 @@ const UserHeader = ({ user }) => {
               p={1}
               borderRadius={"full"}
             >
-              brook.net
+              brookhouse
             </Text>
           </Flex>
         </Box>
@@ -77,7 +77,7 @@ const UserHeader = ({ user }) => {
 
       {currentUser?._id === user._id && (
         <Link as={RouterLink} to="/update">
-          <Button size={"sm"}>Update Profile</Button>
+          <Button size={"sm"}>Edit Profile</Button>
         </Link>
       )}
       {currentUser?._id !== user._id && (
@@ -87,7 +87,8 @@ const UserHeader = ({ user }) => {
       )}
       <Flex w={"full"} justifyContent={"space-between"}>
         <Flex gap={2} alignItems={"center"}>
-          <Text color={"gray.light"}>{user.followers.length} followers</Text>
+          {/* <Text color={"gray.light"}>{user.followers.length} followers</Text> */}
+          <Link color={"gray.light"}>Pear</Link>
           <Box w="1" h="1" bg={"gray.light"} borderRadius={"full"}></Box>
           <Link color={"gray.light"}>gmail.com</Link>
         </Flex>

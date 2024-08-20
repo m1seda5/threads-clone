@@ -118,7 +118,7 @@ export default function LoginCard() {
 							<Text align={"center"}>
 								Don&apos;t have an account?{" "}
 								<Link color={"blue.400"} onClick={() => setAuthScreen("signup")}>
-									Sign up
+								Create a Brookhouse Account
 								</Link>
 							</Text>
 						</Stack>

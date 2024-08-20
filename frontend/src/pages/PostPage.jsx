@@ -105,13 +105,14 @@ const PostPage = () => {
 			</Flex>
 
 			<Divider my={4} />
+			{/* temporarily disbled the get button  */}
 
 			<Flex justifyContent={"space-between"}>
 				<Flex gap={2} alignItems={"center"}>
-					<Text fontSize={"2xl"}>👋</Text>
-					<Text color={"gray.light"}>Get the app to like, reply and post.</Text>
+					<Text fontSize={"2xl"}>🍐</Text>
+					<Text color={"gray.light"}>The application is coming to your phone soon.</Text>
 				</Flex>
-				<Button>Get</Button>
+				{/* <Button>Get</Button> */}
 			</Flex>
 
 			<Divider my={4} />
