@@ -6,6 +6,7 @@ import {
   Image,
   Skeleton,
   Text,
+<<<<<<< HEAD
  } from "@chakra-ui/react";
  import { selectedConversationAtom } from "../atoms/messagesAtom";
  import { useRecoilValue } from "recoil";
@@ -15,6 +16,21 @@ import {
  import { useState } from "react";
  // List of restricted words
  const restrictedWords = [
+=======
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+} from "@chakra-ui/react";
+import { selectedConversationAtom } from "../atoms/messagesAtom";
+import { useRecoilValue } from "recoil";
+import userAtom from "../atoms/userAtom";
+import { BsCheck2All } from "react-icons/bs";
+import { ChevronDownIcon } from "@chakra-ui/icons"; // Replace CloseIcon with ChevronDownIcon
+import { useState } from "react";
+
+const restrictedWords = [
+>>>>>>> parent of 1729e5b (fixing bugs)
   // Offensive language
   "fuck",
   "shit",
@@ -133,6 +149,7 @@ import {
               borderRadius={"md"}
               position="relative"
             >
+<<<<<<< HEAD
               {/* Start of delete button */}
               <IconButton
                 icon={<CloseIcon />}
@@ -148,6 +165,8 @@ import {
                 aria-label="Delete message"
               />
               {/* End of delete button */}
+=======
+>>>>>>> parent of 1729e5b (fixing bugs)
               <Text color={"white"}>{message.text}</Text>
               <Box
                 alignSelf={"flex-end"}
@@ -157,6 +176,29 @@ import {
               >
                 <BsCheck2All size={16} />
               </Box>
+<<<<<<< HEAD
+=======
+
+              {/* Popout Menu */}
+              <Menu>
+                <MenuButton
+                  as={IconButton}
+                  icon={<ChevronDownIcon />}
+                  size="xs"
+                  variant="ghost"
+                  colorScheme="whiteAlpha"
+                  position="absolute"
+                  top="-4px"
+                  right="-4px"
+                  aria-label="Options"
+                />
+                <MenuList backdropFilter="blur(8px)">
+                  <MenuItem onClick={() => onDelete(message._id)}>
+                    Delete message
+                  </MenuItem>
+                </MenuList>
+              </Menu>
+>>>>>>> parent of 1729e5b (fixing bugs)
             </Flex>
           )}
           {message.img && !imgLoaded && (
@@ -174,6 +216,7 @@ import {
           {message.img && imgLoaded && (
             <Flex mt={5} w={"200px"} position="relative">
               <Image src={message.img} alt="Message image" borderRadius={4} />
+<<<<<<< HEAD
               {/* Start of delete button */}
               <IconButton
                 icon={<CloseIcon />}
@@ -189,6 +232,8 @@ import {
                 aria-label="Delete message"
               />
               {/* End of delete button */}
+=======
+>>>>>>> parent of 1729e5b (fixing bugs)
               <Box
                 alignSelf={"flex-end"}
                 ml={1}
@@ -197,6 +242,29 @@ import {
               >
                 <BsCheck2All size={16} />
               </Box>
+<<<<<<< HEAD
+=======
+
+              {/* Popout Menu */}
+              <Menu>
+                <MenuButton
+                  as={IconButton}
+                  icon={<ChevronDownIcon />}
+                  size="xs"
+                  variant="ghost"
+                  colorScheme="whiteAlpha"
+                  position="absolute"
+                  top="-2px"
+                  right="-2px"
+                  aria-label="Options"
+                />
+                <MenuList backdropFilter="blur(8px)">
+                  <MenuItem onClick={() => onDelete(message._id)}>
+                    Delete message
+                  </MenuItem>
+                </MenuList>
+              </Menu>
+>>>>>>> parent of 1729e5b (fixing bugs)
             </Flex>
           )}
           <Avatar src={user.profilePic} w="7" h={7} />
@@ -212,6 +280,7 @@ import {
               p={1}
               borderRadius={"md"}
             >
+<<<<<<< HEAD
               {/* Start of delete button */}
               <IconButton
                 icon={<CloseIcon />}
@@ -228,6 +297,29 @@ import {
               />
               {/* End of delete button */}
               <Text color={"black"}>{message.text}</Text>
+=======
+              <Text color={"black"}>{message.text}</Text>
+
+              {/* Popout Menu */}
+              <Menu>
+                <MenuButton
+                  as={IconButton}
+                  icon={<ChevronDownIcon />}
+                  size="xs"
+                  variant="ghost"
+                  colorScheme="whiteAlpha"
+                  position="absolute"
+                  top="-2px"
+                  right="-2px"
+                  aria-label="Options"
+                />
+                <MenuList backdropFilter="blur(8px)">
+                  <MenuItem onClick={() => onDelete(message._id)}>
+                    Delete message
+                  </MenuItem>
+                </MenuList>
+              </Menu>
+>>>>>>> parent of 1729e5b (fixing bugs)
             </Flex>
           )}
           {message.img && !imgLoaded && (
@@ -245,6 +337,7 @@ import {
           {message.img && imgLoaded && (
             <Flex mt={5} w={"200px"} position="relative">
               <Image src={message.img} alt="Message image" borderRadius={4} />
+<<<<<<< HEAD
               {/* Start of delete button */}
               <IconButton
                 icon={<CloseIcon />}
@@ -260,6 +353,28 @@ import {
                 aria-label="Delete message"
               />
               {/* End of delete button */}
+=======
+
+              {/* Popout Menu */}
+              <Menu>
+                <MenuButton
+                  as={IconButton}
+                  icon={<ChevronDownIcon />}
+                  size="xs"
+                  variant="ghost"
+                  colorScheme="whiteAlpha"
+                  position="absolute"
+                  top="-2px"
+                  right="-2px"
+                  aria-label="Options"
+                />
+                <MenuList backdropFilter="blur(8px)">
+                  <MenuItem onClick={() => onDelete(message._id)}>
+                    Delete message
+                  </MenuItem>
+                </MenuList>
+              </Menu>
+>>>>>>> parent of 1729e5b (fixing bugs)
             </Flex>
           )}
         </Flex>
