@@ -7,6 +7,7 @@ import {
   Skeleton,
   Text,
 <<<<<<< HEAD
+<<<<<<< HEAD
  } from "@chakra-ui/react";
  import { selectedConversationAtom } from "../atoms/messagesAtom";
  import { useRecoilValue } from "recoil";
@@ -21,14 +22,16 @@ import {
   MenuButton,
   MenuList,
   MenuItem,
+=======
+>>>>>>> parent of 32f2fda (this is for the drop down menu pop  in the messagee)
 } from "@chakra-ui/react";
 import { selectedConversationAtom } from "../atoms/messagesAtom";
 import { useRecoilValue } from "recoil";
 import userAtom from "../atoms/userAtom";
 import { BsCheck2All } from "react-icons/bs";
-import { ChevronDownIcon } from "@chakra-ui/icons"; // Replace CloseIcon with ChevronDownIcon
+import { CloseIcon } from "@chakra-ui/icons"; // Import the close icon
 import { useState } from "react";
-
+// List of restricted words
 const restrictedWords = [
 >>>>>>> parent of 1729e5b (fixing bugs)
   // Offensive language
@@ -116,6 +119,7 @@ const restrictedWords = [
   "fist fuck",
   "cock sucking",
   "dickhead",
+<<<<<<< HEAD
  ];
  
  
@@ -124,6 +128,15 @@ const restrictedWords = [
   return restrictedWords.some((word) => text.toLowerCase().includes(word));
  };
  const Message = ({ ownMessage, message, onDelete }) => {
+=======
+];
+
+// Function to check if a message contains any restricted words
+const isMessageRestricted = (text) => {
+  return restrictedWords.some((word) => text.toLowerCase().includes(word));
+};
+const Message = ({ ownMessage, message, onDelete }) => {
+>>>>>>> parent of 32f2fda (this is for the drop down menu pop  in the messagee)
   const selectedConversation = useRecoilValue(selectedConversationAtom);
   const user = useRecoilValue(userAtom);
   const [imgLoaded, setImgLoaded] = useState(false);
@@ -150,6 +163,9 @@ const restrictedWords = [
               position="relative"
             >
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> parent of 32f2fda (this is for the drop down menu pop  in the messagee)
               {/* Start of delete button */}
               <IconButton
                 icon={<CloseIcon />}
@@ -165,8 +181,11 @@ const restrictedWords = [
                 aria-label="Delete message"
               />
               {/* End of delete button */}
+<<<<<<< HEAD
 =======
 >>>>>>> parent of 1729e5b (fixing bugs)
+=======
+>>>>>>> parent of 32f2fda (this is for the drop down menu pop  in the messagee)
               <Text color={"white"}>{message.text}</Text>
               <Box
                 alignSelf={"flex-end"}
@@ -176,6 +195,7 @@ const restrictedWords = [
               >
                 <BsCheck2All size={16} />
               </Box>
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 
@@ -199,6 +219,8 @@ const restrictedWords = [
                 </MenuList>
               </Menu>
 >>>>>>> parent of 1729e5b (fixing bugs)
+=======
+>>>>>>> parent of 32f2fda (this is for the drop down menu pop  in the messagee)
             </Flex>
           )}
           {message.img && !imgLoaded && (
@@ -217,6 +239,9 @@ const restrictedWords = [
             <Flex mt={5} w={"200px"} position="relative">
               <Image src={message.img} alt="Message image" borderRadius={4} />
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> parent of 32f2fda (this is for the drop down menu pop  in the messagee)
               {/* Start of delete button */}
               <IconButton
                 icon={<CloseIcon />}
@@ -232,8 +257,11 @@ const restrictedWords = [
                 aria-label="Delete message"
               />
               {/* End of delete button */}
+<<<<<<< HEAD
 =======
 >>>>>>> parent of 1729e5b (fixing bugs)
+=======
+>>>>>>> parent of 32f2fda (this is for the drop down menu pop  in the messagee)
               <Box
                 alignSelf={"flex-end"}
                 ml={1}
@@ -242,6 +270,7 @@ const restrictedWords = [
               >
                 <BsCheck2All size={16} />
               </Box>
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 
@@ -265,6 +294,8 @@ const restrictedWords = [
                 </MenuList>
               </Menu>
 >>>>>>> parent of 1729e5b (fixing bugs)
+=======
+>>>>>>> parent of 32f2fda (this is for the drop down menu pop  in the messagee)
             </Flex>
           )}
           <Avatar src={user.profilePic} w="7" h={7} />
@@ -281,6 +312,9 @@ const restrictedWords = [
               borderRadius={"md"}
             >
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> parent of 32f2fda (this is for the drop down menu pop  in the messagee)
               {/* Start of delete button */}
               <IconButton
                 icon={<CloseIcon />}
@@ -296,6 +330,7 @@ const restrictedWords = [
                 aria-label="Delete message"
               />
               {/* End of delete button */}
+<<<<<<< HEAD
               <Text color={"black"}>{message.text}</Text>
 =======
               <Text color={"black"}>{message.text}</Text>
@@ -320,6 +355,9 @@ const restrictedWords = [
                 </MenuList>
               </Menu>
 >>>>>>> parent of 1729e5b (fixing bugs)
+=======
+              <Text color={"black"}>{message.text}</Text>
+>>>>>>> parent of 32f2fda (this is for the drop down menu pop  in the messagee)
             </Flex>
           )}
           {message.img && !imgLoaded && (
@@ -338,6 +376,9 @@ const restrictedWords = [
             <Flex mt={5} w={"200px"} position="relative">
               <Image src={message.img} alt="Message image" borderRadius={4} />
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> parent of 32f2fda (this is for the drop down menu pop  in the messagee)
               {/* Start of delete button */}
               <IconButton
                 icon={<CloseIcon />}
@@ -353,6 +394,7 @@ const restrictedWords = [
                 aria-label="Delete message"
               />
               {/* End of delete button */}
+<<<<<<< HEAD
 =======
 
               {/* Popout Menu */}
@@ -375,14 +417,21 @@ const restrictedWords = [
                 </MenuList>
               </Menu>
 >>>>>>> parent of 1729e5b (fixing bugs)
+=======
+>>>>>>> parent of 32f2fda (this is for the drop down menu pop  in the messagee)
             </Flex>
           )}
         </Flex>
       )}
     </>
   );
+<<<<<<< HEAD
  };
  export default Message;
  
  
  
+=======
+};
+export default Message;
+>>>>>>> parent of 32f2fda (this is for the drop down menu pop  in the messagee)
