@@ -6,22 +6,16 @@ import {
   Image,
   Skeleton,
   Text,
-  Menu,
-  MenuButton,
-  MenuItems,
-  MenuItem,
-  useDisclosure,
-} from "@chakra-ui/react";
-import { selectedConversationAtom } from "../atoms/messagesAtom";
-import { useRecoilValue } from "recoil";
-import userAtom from "../atoms/userAtom";
-import { BsCheck2All, BsChevronDown } from "react-icons/bs"; // Import the down icon
-import { CloseIcon } from "@chakra-ui/icons";
-import { useState } from "react";
-
-// List of restricted words
-const restrictedWords = [
-  // Offensive language and other restricted words
+ } from "@chakra-ui/react";
+ import { selectedConversationAtom } from "../atoms/messagesAtom";
+ import { useRecoilValue } from "recoil";
+ import userAtom from "../atoms/userAtom";
+ import { BsCheck2All } from "react-icons/bs";
+ import { CloseIcon } from "@chakra-ui/icons"; // Import the close icon
+ import { useState } from "react";
+ // List of restricted words
+ const restrictedWords = [
+  // Offensive language
   "fuck",
   "shit",
   "bitch",
@@ -40,7 +34,8 @@ const restrictedWords = [
   "spic",
   "raghead",
   "wetback",
-
+ 
+ 
   // Derogatory terms
   "retard",
   "cripple",
@@ -49,7 +44,8 @@ const restrictedWords = [
   "dumbass",
   "lame",
   "loser",
-
+ 
+ 
   // Hate speech
   "terrorist",
   "racist",
@@ -57,7 +53,8 @@ const restrictedWords = [
   "sexist",
   "homophobe",
   "xenophobe",
-
+ 
+ 
   // Insults and slurs
   "bastard",
   "scum",
@@ -67,7 +64,8 @@ const restrictedWords = [
   "hoe",
   "slut",
   "bimbo",
-
+ 
+ 
   // Drugs and alcohol
   "crack",
   "heroin",
@@ -76,7 +74,8 @@ const restrictedWords = [
   "weed",
   "marijuana",
   "pot",
-
+ 
+ 
   // Sexual content
   "porn",
   "sex",
@@ -85,35 +84,33 @@ const restrictedWords = [
   "rape",
   "molest",
   "incest",
-
+ 
+ 
   // Offensive phrases
   "go to hell",
   "kill yourself",
   "die",
   "you're a loser",
   "eat shit",
-
+ 
+ 
   // Additional common bad phrases
   "suck my dick",
   "blow job",
   "fist fuck",
   "cock sucking",
   "dickhead",
-];
-
-// Function to check if a message contains any restricted words
-const isMessageRestricted = (text) => {
+ ];
+ 
+ 
+ // Function to check if a message contains any restricted words
+ const isMessageRestricted = (text) => {
   return restrictedWords.some((word) => text.toLowerCase().includes(word));
-};
-
-const Message = ({ ownMessage, message, onDelete }) => {
+ };
+ const Message = ({ ownMessage, message, onDelete }) => {
   const selectedConversation = useRecoilValue(selectedConversationAtom);
   const user = useRecoilValue(userAtom);
   const [imgLoaded, setImgLoaded] = useState(false);
-  
-  // Chakra UI state for the popout menu
-  const { isOpen, onOpen, onClose } = useDisclosure();
-
   // Check if the message contains restricted words
   if (message.text && isMessageRestricted(message.text)) {
     return (
@@ -124,7 +121,6 @@ const Message = ({ ownMessage, message, onDelete }) => {
       </Flex>
     );
   }
-  
   return (
     <>
       {ownMessage ? (
@@ -137,34 +133,21 @@ const Message = ({ ownMessage, message, onDelete }) => {
               borderRadius={"md"}
               position="relative"
             >
-              {/* Start of menu button */}
-              <Menu isOpen={isOpen} onClose={onClose}>
-                <MenuButton
-                  as={IconButton}
-                  icon={<BsChevronDown />}
-                  size="xs"
-                  fontSize="10px"
-                  variant="ghost"
-                  colorScheme="whiteAlpha"
-                  position="absolute"
-                  top="-4px"
-                  right="-4px"
-                  onClick={onOpen}
-                  borderRadius="full"
-                  aria-label="More options"
-                />
-                <MenuItems
-                  bg="rgba(255, 255, 255, 0.8)" // Subtle blur effect
-                  borderRadius="md"
-                  boxShadow="md"
-                  p={2}
-                >
-                  <MenuItem onClick={() => onDelete(message._id)}>
-                    Delete message
-                  </MenuItem>
-                </MenuItems>
-              </Menu>
-              {/* End of menu button */}
+              {/* Start of delete button */}
+              <IconButton
+                icon={<CloseIcon />}
+                size="xs" // Extra small button
+                fontSize="10px" // Adjust the icon size to make it smaller
+                variant="ghost" // No background or border
+                colorScheme="whiteAlpha" // Transparent background
+                position="absolute"
+                top="-4px" // Adjust position to fit better
+                right="-4px" // Adjust position to fit better
+                onClick={() => onDelete(message._id)} // Call onDelete with message ID
+                borderRadius="full"
+                aria-label="Delete message"
+              />
+              {/* End of delete button */}
               <Text color={"white"}>{message.text}</Text>
               <Box
                 alignSelf={"flex-end"}
@@ -191,34 +174,21 @@ const Message = ({ ownMessage, message, onDelete }) => {
           {message.img && imgLoaded && (
             <Flex mt={5} w={"200px"} position="relative">
               <Image src={message.img} alt="Message image" borderRadius={4} />
-              {/* Start of menu button */}
-              <Menu isOpen={isOpen} onClose={onClose}>
-                <MenuButton
-                  as={IconButton}
-                  icon={<BsChevronDown />}
-                  size="2xs"
-                  fontSize="6px"
-                  variant="ghost"
-                  colorScheme="whiteAlpha"
-                  position="absolute"
-                  top="-2px"
-                  right="-2px"
-                  onClick={onOpen}
-                  borderRadius="full"
-                  aria-label="More options"
-                />
-                <MenuItems
-                  bg="rgba(255, 255, 255, 0.8)" // Subtle blur effect
-                  borderRadius="md"
-                  boxShadow="md"
-                  p={2}
-                >
-                  <MenuItem onClick={() => onDelete(message._id)}>
-                    Delete message
-                  </MenuItem>
-                </MenuItems>
-              </Menu>
-              {/* End of menu button */}
+              {/* Start of delete button */}
+              <IconButton
+                icon={<CloseIcon />}
+                size="2xs" // Smaller than extra small
+                fontSize="6px" // Even smaller icon size
+                variant="ghost" // No background or border
+                colorScheme="whiteAlpha" // Transparent background
+                position="absolute"
+                top="-2px" // Keeps the current position
+                right="-2px" // Keeps the current position
+                onClick={() => onDelete(message._id)} // Call onDelete with message ID
+                borderRadius="full"
+                aria-label="Delete message"
+              />
+              {/* End of delete button */}
               <Box
                 alignSelf={"flex-end"}
                 ml={1}
@@ -242,34 +212,21 @@ const Message = ({ ownMessage, message, onDelete }) => {
               p={1}
               borderRadius={"md"}
             >
-              {/* Start of menu button */}
-              <Menu isOpen={isOpen} onClose={onClose}>
-                <MenuButton
-                  as={IconButton}
-                  icon={<BsChevronDown />}
-                  size="2xs"
-                  fontSize="6px"
-                  variant="ghost"
-                  colorScheme="whiteAlpha"
-                  position="absolute"
-                  top="-2px"
-                  right="-2px"
-                  onClick={onOpen}
-                  borderRadius="full"
-                  aria-label="More options"
-                />
-                <MenuItems
-                  bg="rgba(255, 255, 255, 0.8)" // Subtle blur effect
-                  borderRadius="md"
-                  boxShadow="md"
-                  p={2}
-                >
-                  <MenuItem onClick={() => onDelete(message._id)}>
-                    Delete message
-                  </MenuItem>
-                </MenuItems>
-              </Menu>
-              {/* End of menu button */}
+              {/* Start of delete button */}
+              <IconButton
+                icon={<CloseIcon />}
+                size="2xs" // Smaller than extra small
+                fontSize="6px" // Even smaller icon size
+                variant="ghost" // No background or border
+                colorScheme="whiteAlpha" // Transparent background
+                position="absolute"
+                top="-2px" // Keeps the current position
+                right="-2px" // Keeps the current position
+                onClick={() => onDelete(message._id)} // Call onDelete with message ID
+                borderRadius="full"
+                aria-label="Delete message"
+              />
+              {/* End of delete button */}
               <Text color={"black"}>{message.text}</Text>
             </Flex>
           )}
@@ -288,40 +245,29 @@ const Message = ({ ownMessage, message, onDelete }) => {
           {message.img && imgLoaded && (
             <Flex mt={5} w={"200px"} position="relative">
               <Image src={message.img} alt="Message image" borderRadius={4} />
-              {/* Start of menu button */}
-              <Menu isOpen={isOpen} onClose={onClose}>
-                <MenuButton
-                  as={IconButton}
-                  icon={<BsChevronDown />}
-                  size="2xs"
-                  fontSize="6px"
-                  variant="ghost"
-                  colorScheme="whiteAlpha"
-                  position="absolute"
-                  top="-2px"
-                  right="-2px"
-                  onClick={onOpen}
-                  borderRadius="full"
-                  aria-label="More options"
-                />
-                <MenuItems
-                  bg="rgba(255, 255, 255, 0.8)" // Subtle blur effect
-                  borderRadius="md"
-                  boxShadow="md"
-                  p={2}
-                >
-                  <MenuItem onClick={() => onDelete(message._id)}>
-                    Delete message
-                  </MenuItem>
-                </MenuItems>
-              </Menu>
-              {/* End of menu button */}
+              {/* Start of delete button */}
+              <IconButton
+                icon={<CloseIcon />}
+                size="2xs" // Smaller than extra small
+                fontSize="6px" // Even smaller icon size
+                variant="ghost" // No background or border
+                colorScheme="whiteAlpha" // Transparent background
+                position="absolute"
+                top="-2px" // Keeps the current position
+                right="-2px" // Keeps the current position
+                onClick={() => onDelete(message._id)} // Call onDelete with message ID
+                borderRadius="full"
+                aria-label="Delete message"
+              />
+              {/* End of delete button */}
             </Flex>
           )}
         </Flex>
       )}
     </>
   );
-};
-
-export default Message;
+ };
+ export default Message;
+ 
+ 
+ 
