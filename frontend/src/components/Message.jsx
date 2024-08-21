@@ -6,19 +6,24 @@ import {
   Image,
   Skeleton,
   Text,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
 } from "@chakra-ui/react";
 import { selectedConversationAtom } from "../atoms/messagesAtom";
 import { useRecoilValue } from "recoil";
 import userAtom from "../atoms/userAtom";
 import { BsCheck2All } from "react-icons/bs";
-import { CloseIcon } from "@chakra-ui/icons"; // Import the close icon
+import { ChevronDownIcon } from "@chakra-ui/icons"; // Replace CloseIcon with ChevronDownIcon
 import { useState } from "react";
-// List of restricted words
+
 const restrictedWords = [
   // Offensive language
   "fuck",
   "shit",
   "bitch",
+  //...rest of the words
   "cunt",
   "motherfucker",
   "asshole",
@@ -95,15 +100,15 @@ const restrictedWords = [
   "dickhead",
 ];
 
-// Function to check if a message contains any restricted words
 const isMessageRestricted = (text) => {
   return restrictedWords.some((word) => text.toLowerCase().includes(word));
 };
+
 const Message = ({ ownMessage, message, onDelete }) => {
   const selectedConversation = useRecoilValue(selectedConversationAtom);
   const user = useRecoilValue(userAtom);
   const [imgLoaded, setImgLoaded] = useState(false);
-  // Check if the message contains restricted words
+
   if (message.text && isMessageRestricted(message.text)) {
     return (
       <Flex justifyContent={"center"} p={2}>
@@ -113,6 +118,7 @@ const Message = ({ ownMessage, message, onDelete }) => {
       </Flex>
     );
   }
+
   return (
     <>
       {ownMessage ? (
@@ -125,21 +131,6 @@ const Message = ({ ownMessage, message, onDelete }) => {
               borderRadius={"md"}
               position="relative"
             >
-              {/* Start of delete button */}
-              <IconButton
-                icon={<CloseIcon />}
-                size="xs" // Extra small button
-                fontSize="10px" // Adjust the icon size to make it smaller
-                variant="ghost" // No background or border
-                colorScheme="whiteAlpha" // Transparent background
-                position="absolute"
-                top="-4px" // Adjust position to fit better
-                right="-4px" // Adjust position to fit better
-                onClick={() => onDelete(message._id)} // Call onDelete with message ID
-                borderRadius="full"
-                aria-label="Delete message"
-              />
-              {/* End of delete button */}
               <Text color={"white"}>{message.text}</Text>
               <Box
                 alignSelf={"flex-end"}
@@ -149,6 +140,26 @@ const Message = ({ ownMessage, message, onDelete }) => {
               >
                 <BsCheck2All size={16} />
               </Box>
+
+              {/* Popout Menu */}
+              <Menu>
+                <MenuButton
+                  as={IconButton}
+                  icon={<ChevronDownIcon />}
+                  size="xs"
+                  variant="ghost"
+                  colorScheme="whiteAlpha"
+                  position="absolute"
+                  top="-4px"
+                  right="-4px"
+                  aria-label="Options"
+                />
+                <MenuList backdropFilter="blur(8px)">
+                  <MenuItem onClick={() => onDelete(message._id)}>
+                    Delete message
+                  </MenuItem>
+                </MenuList>
+              </Menu>
             </Flex>
           )}
           {message.img && !imgLoaded && (
@@ -166,21 +177,6 @@ const Message = ({ ownMessage, message, onDelete }) => {
           {message.img && imgLoaded && (
             <Flex mt={5} w={"200px"} position="relative">
               <Image src={message.img} alt="Message image" borderRadius={4} />
-              {/* Start of delete button */}
-              <IconButton
-                icon={<CloseIcon />}
-                size="2xs" // Smaller than extra small
-                fontSize="6px" // Even smaller icon size
-                variant="ghost" // No background or border
-                colorScheme="whiteAlpha" // Transparent background
-                position="absolute"
-                top="-2px" // Keeps the current position
-                right="-2px" // Keeps the current position
-                onClick={() => onDelete(message._id)} // Call onDelete with message ID
-                borderRadius="full"
-                aria-label="Delete message"
-              />
-              {/* End of delete button */}
               <Box
                 alignSelf={"flex-end"}
                 ml={1}
@@ -189,6 +185,26 @@ const Message = ({ ownMessage, message, onDelete }) => {
               >
                 <BsCheck2All size={16} />
               </Box>
+
+              {/* Popout Menu */}
+              <Menu>
+                <MenuButton
+                  as={IconButton}
+                  icon={<ChevronDownIcon />}
+                  size="xs"
+                  variant="ghost"
+                  colorScheme="whiteAlpha"
+                  position="absolute"
+                  top="-2px"
+                  right="-2px"
+                  aria-label="Options"
+                />
+                <MenuList backdropFilter="blur(8px)">
+                  <MenuItem onClick={() => onDelete(message._id)}>
+                    Delete message
+                  </MenuItem>
+                </MenuList>
+              </Menu>
             </Flex>
           )}
           <Avatar src={user.profilePic} w="7" h={7} />
@@ -204,22 +220,27 @@ const Message = ({ ownMessage, message, onDelete }) => {
               p={1}
               borderRadius={"md"}
             >
-              {/* Start of delete button */}
-              <IconButton
-                icon={<CloseIcon />}
-                size="2xs" // Smaller than extra small
-                fontSize="6px" // Even smaller icon size
-                variant="ghost" // No background or border
-                colorScheme="whiteAlpha" // Transparent background
-                position="absolute"
-                top="-2px" // Keeps the current position
-                right="-2px" // Keeps the current position
-                onClick={() => onDelete(message._id)} // Call onDelete with message ID
-                borderRadius="full"
-                aria-label="Delete message"
-              />
-              {/* End of delete button */}
               <Text color={"black"}>{message.text}</Text>
+
+              {/* Popout Menu */}
+              <Menu>
+                <MenuButton
+                  as={IconButton}
+                  icon={<ChevronDownIcon />}
+                  size="xs"
+                  variant="ghost"
+                  colorScheme="whiteAlpha"
+                  position="absolute"
+                  top="-2px"
+                  right="-2px"
+                  aria-label="Options"
+                />
+                <MenuList backdropFilter="blur(8px)">
+                  <MenuItem onClick={() => onDelete(message._id)}>
+                    Delete message
+                  </MenuItem>
+                </MenuList>
+              </Menu>
             </Flex>
           )}
           {message.img && !imgLoaded && (
@@ -237,21 +258,26 @@ const Message = ({ ownMessage, message, onDelete }) => {
           {message.img && imgLoaded && (
             <Flex mt={5} w={"200px"} position="relative">
               <Image src={message.img} alt="Message image" borderRadius={4} />
-              {/* Start of delete button */}
-              <IconButton
-                icon={<CloseIcon />}
-                size="2xs" // Smaller than extra small
-                fontSize="6px" // Even smaller icon size
-                variant="ghost" // No background or border
-                colorScheme="whiteAlpha" // Transparent background
-                position="absolute"
-                top="-2px" // Keeps the current position
-                right="-2px" // Keeps the current position
-                onClick={() => onDelete(message._id)} // Call onDelete with message ID
-                borderRadius="full"
-                aria-label="Delete message"
-              />
-              {/* End of delete button */}
+
+              {/* Popout Menu */}
+              <Menu>
+                <MenuButton
+                  as={IconButton}
+                  icon={<ChevronDownIcon />}
+                  size="xs"
+                  variant="ghost"
+                  colorScheme="whiteAlpha"
+                  position="absolute"
+                  top="-2px"
+                  right="-2px"
+                  aria-label="Options"
+                />
+                <MenuList backdropFilter="blur(8px)">
+                  <MenuItem onClick={() => onDelete(message._id)}>
+                    Delete message
+                  </MenuItem>
+                </MenuList>
+              </Menu>
             </Flex>
           )}
         </Flex>
@@ -259,4 +285,5 @@ const Message = ({ ownMessage, message, onDelete }) => {
     </>
   );
 };
+
 export default Message;
