@@ -15,7 +15,7 @@ import { selectedConversationAtom } from "../atoms/messagesAtom";
 import { useRecoilValue } from "recoil";
 import userAtom from "../atoms/userAtom";
 import { BsCheck2All } from "react-icons/bs";
-import { ChevronDownIcon } from "@chakra-ui/icons"; // Replace CloseIcon with ChevronDownIcon
+import { ChevronDownIcon } from "@chakra-ui/icons"; // Imported ChevronDownIcon for the popout menu
 import { useState } from "react";
 
 const restrictedWords = [
@@ -131,6 +131,7 @@ const Message = ({ ownMessage, message, onDelete }) => {
               borderRadius={"md"}
               position="relative"
             >
+              {/* Original code starts */}
               <Text color={"white"}>{message.text}</Text>
               <Box
                 alignSelf={"flex-end"}
@@ -140,8 +141,9 @@ const Message = ({ ownMessage, message, onDelete }) => {
               >
                 <BsCheck2All size={16} />
               </Box>
+              {/* Original code ends */}
 
-              {/* Popout Menu */}
+              {/* New popout menu starts */}
               <Menu>
                 <MenuButton
                   as={IconButton}
@@ -160,6 +162,7 @@ const Message = ({ ownMessage, message, onDelete }) => {
                   </MenuItem>
                 </MenuList>
               </Menu>
+              {/* New popout menu ends */}
             </Flex>
           )}
           {message.img && !imgLoaded && (
@@ -177,6 +180,7 @@ const Message = ({ ownMessage, message, onDelete }) => {
           {message.img && imgLoaded && (
             <Flex mt={5} w={"200px"} position="relative">
               <Image src={message.img} alt="Message image" borderRadius={4} />
+              {/* Original code starts */}
               <Box
                 alignSelf={"flex-end"}
                 ml={1}
@@ -185,8 +189,9 @@ const Message = ({ ownMessage, message, onDelete }) => {
               >
                 <BsCheck2All size={16} />
               </Box>
+              {/* Original code ends */}
 
-              {/* Popout Menu */}
+              {/* New popout menu starts */}
               <Menu>
                 <MenuButton
                   as={IconButton}
@@ -205,6 +210,7 @@ const Message = ({ ownMessage, message, onDelete }) => {
                   </MenuItem>
                 </MenuList>
               </Menu>
+              {/* New popout menu ends */}
             </Flex>
           )}
           <Avatar src={user.profilePic} w="7" h={7} />
@@ -220,9 +226,11 @@ const Message = ({ ownMessage, message, onDelete }) => {
               p={1}
               borderRadius={"md"}
             >
+              {/* Original code starts */}
               <Text color={"black"}>{message.text}</Text>
+              {/* Original code ends */}
 
-              {/* Popout Menu */}
+              {/* New popout menu starts */}
               <Menu>
                 <MenuButton
                   as={IconButton}
@@ -241,6 +249,7 @@ const Message = ({ ownMessage, message, onDelete }) => {
                   </MenuItem>
                 </MenuList>
               </Menu>
+              {/* New popout menu ends */}
             </Flex>
           )}
           {message.img && !imgLoaded && (
@@ -259,7 +268,7 @@ const Message = ({ ownMessage, message, onDelete }) => {
             <Flex mt={5} w={"200px"} position="relative">
               <Image src={message.img} alt="Message image" borderRadius={4} />
 
-              {/* Popout Menu */}
+              {/* New popout menu starts */}
               <Menu>
                 <MenuButton
                   as={IconButton}
@@ -278,6 +287,7 @@ const Message = ({ ownMessage, message, onDelete }) => {
                   </MenuItem>
                 </MenuList>
               </Menu>
+              {/* New popout menu ends */}
             </Flex>
           )}
         </Flex>
