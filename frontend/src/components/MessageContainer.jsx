@@ -207,10 +207,8 @@ const MessageContainer = () => {
             </Flex>
           ))}
       </Flex>
-
-      <Flex mt="auto" width="100%">
+           
         <MessageInput setMessages={setMessages} />
-      </Flex>
     </Flex>
   );
 };
