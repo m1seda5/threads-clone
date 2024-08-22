@@ -11,14 +11,17 @@ import {
   MenuList,
   MenuItem,
 } from "@chakra-ui/react";
-import { ChevronDownIcon } from "@chakra-ui/icons";
+import { ChevronDownIcon } from "@chakra-ui/icons"; // Import the down icon
 import { selectedConversationAtom } from "../atoms/messagesAtom";
 import { useRecoilValue } from "recoil";
 import userAtom from "../atoms/userAtom";
 import { BsCheck2All } from "react-icons/bs";
 import { useState } from "react";
 
+// List of restricted words
 const restrictedWords = [
+  // Offensive language
+  // (List remains unchanged)
   "fuck",
   "shit",
   "bitch",
@@ -96,10 +99,9 @@ const restrictedWords = [
   "fist fuck",
   "cock sucking",
   "dickhead",
-
-  // (Rest of the restricted words remain unchanged)
 ];
 
+// Function to check if a message contains any restricted words
 const isMessageRestricted = (text) => {
   return restrictedWords.some((word) => text.toLowerCase().includes(word));
 };
@@ -109,6 +111,7 @@ const Message = ({ ownMessage, message, onDelete }) => {
   const user = useRecoilValue(userAtom);
   const [imgLoaded, setImgLoaded] = useState(false);
 
+  // Check if the message contains restricted words
   if (message.text && isMessageRestricted(message.text)) {
     return (
       <Flex justifyContent={"center"} p={2}>
@@ -122,12 +125,7 @@ const Message = ({ ownMessage, message, onDelete }) => {
   return (
     <>
       {ownMessage ? (
-        <Flex
-          gap={2}
-          alignSelf={"flex-end"}
-          position="relative"
-          overflowX="hidden"  // Prevent horizontal scrolling
-        >
+        <Flex gap={2} alignSelf={"flex-end"} position="relative">
           {message.text && (
             <Flex
               bg={"green.800"}
@@ -135,9 +133,8 @@ const Message = ({ ownMessage, message, onDelete }) => {
               p={1}
               borderRadius={"md"}
               position="relative"
-              overflowX="hidden"
             >
-              {/* Popout menu with delete option */}
+              {/* Start of popout menu with delete option */}
               <Menu>
                 <MenuButton
                   as={IconButton}
@@ -155,13 +152,13 @@ const Message = ({ ownMessage, message, onDelete }) => {
                 <MenuList
                   bg={"green.800"}
                   backdropFilter="blur(10px)" // Adds blur to the background
-                  zIndex={2}  // Ensure popout menu is above other elements
                 >
                   <MenuItem onClick={() => onDelete(message._id)}>
                     Delete message
                   </MenuItem>
                 </MenuList>
               </Menu>
+              {/* End of popout menu */}
               <Text color={"white"}>{message.text}</Text>
               <Box
                 alignSelf={"flex-end"}
@@ -186,8 +183,9 @@ const Message = ({ ownMessage, message, onDelete }) => {
             </Flex>
           )}
           {message.img && imgLoaded && (
-            <Flex mt={5} w={"200px"} position="relative" overflowX="hidden">
+            <Flex mt={5} w={"200px"} position="relative">
               <Image src={message.img} alt="Message image" borderRadius={4} />
+              {/* Start of popout menu with delete option */}
               <Menu>
                 <MenuButton
                   as={IconButton}
@@ -202,16 +200,13 @@ const Message = ({ ownMessage, message, onDelete }) => {
                   borderRadius="full"
                   aria-label="Options"
                 />
-                <MenuList
-                  bg={"green.800"}
-                  backdropFilter="blur(10px)"
-                  zIndex={2}
-                >
+                <MenuList bg={"green.800"} backdropFilter="blur(10px)">
                   <MenuItem onClick={() => onDelete(message._id)}>
                     Delete message
                   </MenuItem>
                 </MenuList>
               </Menu>
+              {/* End of popout menu */}
               <Box
                 alignSelf={"flex-end"}
                 ml={1}
@@ -225,7 +220,7 @@ const Message = ({ ownMessage, message, onDelete }) => {
           <Avatar src={user.profilePic} w="7" h={7} />
         </Flex>
       ) : (
-        <Flex gap={2} position="relative" overflowX="hidden">
+        <Flex gap={2} position="relative">
           <Avatar src={selectedConversation.userProfilePic} w="7" h={7} />
           {message.text && (
             <Flex
@@ -234,7 +229,6 @@ const Message = ({ ownMessage, message, onDelete }) => {
               bg={"gray.400"}
               p={1}
               borderRadius={"md"}
-              overflowX="hidden"
             >
               <Text color={"black"}>{message.text}</Text>
             </Flex>
@@ -252,7 +246,7 @@ const Message = ({ ownMessage, message, onDelete }) => {
             </Flex>
           )}
           {message.img && imgLoaded && (
-            <Flex mt={5} w={"200px"} position="relative" overflowX="hidden">
+            <Flex mt={5} w={"200px"} position="relative">
               <Image src={message.img} alt="Message image" borderRadius={4} />
             </Flex>
           )}
@@ -263,3 +257,6 @@ const Message = ({ ownMessage, message, onDelete }) => {
 };
 
 export default Message;
+
+
+2
