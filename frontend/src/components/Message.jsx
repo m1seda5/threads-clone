@@ -20,7 +20,7 @@ import { useState } from "react";
 
 // List of restricted words
 const restrictedWords = [
-  // Offensive language
+  // Offensive language, derogatory terms, hate speech, etc.
   // (List remains unchanged)
   "fuck",
   "shit",
@@ -125,11 +125,16 @@ const Message = ({ ownMessage, message, onDelete }) => {
   return (
     <>
       {ownMessage ? (
-        <Flex gap={2} alignSelf={"flex-end"} position="relative">
+        <Flex
+          gap={2}
+          alignSelf={"flex-end"}
+          position="relative"
+          maxW="100%" // Adjust to avoid horizontal scroll
+          flexWrap="wrap" // Ensure content wraps within the container
+        >
           {message.text && (
             <Flex
-              bg={"green.800"}
-              maxW={"350px"}
+              bg={"gray.100"} // Default background color
               p={1}
               borderRadius={"md"}
               position="relative"
@@ -142,30 +147,21 @@ const Message = ({ ownMessage, message, onDelete }) => {
                   size="xs"
                   fontSize="10px"
                   variant="ghost"
-                  colorScheme="whiteAlpha"
                   position="absolute"
                   top="-4px"
                   right="-4px"
                   borderRadius="full"
                   aria-label="Options"
                 />
-                <MenuList
-                  bg={"green.800"}
-                  backdropFilter="blur(10px)" // Adds blur to the background
-                >
+                <MenuList backdropFilter="blur(10px)">
                   <MenuItem onClick={() => onDelete(message._id)}>
                     Delete message
                   </MenuItem>
                 </MenuList>
               </Menu>
               {/* End of popout menu */}
-              <Text color={"white"}>{message.text}</Text>
-              <Box
-                alignSelf={"flex-end"}
-                ml={1}
-                color={message.seen ? "blue.400" : ""}
-                fontWeight={"bold"}
-              >
+              <Text>{message.text}</Text>
+              <Box alignSelf={"flex-end"} ml={1} fontWeight={"bold"}>
                 <BsCheck2All size={16} />
               </Box>
             </Flex>
@@ -193,26 +189,20 @@ const Message = ({ ownMessage, message, onDelete }) => {
                   size="2xs"
                   fontSize="6px"
                   variant="ghost"
-                  colorScheme="whiteAlpha"
                   position="absolute"
                   top="-2px"
                   right="-2px"
                   borderRadius="full"
                   aria-label="Options"
                 />
-                <MenuList bg={"green.800"} backdropFilter="blur(10px)">
+                <MenuList backdropFilter="blur(10px)">
                   <MenuItem onClick={() => onDelete(message._id)}>
                     Delete message
                   </MenuItem>
                 </MenuList>
               </Menu>
               {/* End of popout menu */}
-              <Box
-                alignSelf={"flex-end"}
-                ml={1}
-                color={message.seen ? "blue.400" : ""}
-                fontWeight={"bold"}
-              >
+              <Box alignSelf={"flex-end"} ml={1} fontWeight={"bold"}>
                 <BsCheck2All size={16} />
               </Box>
             </Flex>
@@ -220,17 +210,21 @@ const Message = ({ ownMessage, message, onDelete }) => {
           <Avatar src={user.profilePic} w="7" h={7} />
         </Flex>
       ) : (
-        <Flex gap={2} position="relative">
+        <Flex
+          gap={2}
+          position="relative"
+          maxW="100%" // Adjust to avoid horizontal scroll
+          flexWrap="wrap" // Ensure content wraps within the container
+        >
           <Avatar src={selectedConversation.userProfilePic} w="7" h={7} />
           {message.text && (
             <Flex
               position="relative"
-              maxW={"350px"}
-              bg={"gray.400"}
+              bg={"gray.100"} // Default background color
               p={1}
               borderRadius={"md"}
             >
-              <Text color={"black"}>{message.text}</Text>
+              <Text>{message.text}</Text>
             </Flex>
           )}
           {message.img && !imgLoaded && (
