@@ -96,6 +96,7 @@ const restrictedWords = [
   "fist fuck",
   "cock sucking",
   "dickhead",
+
   // (Rest of the restricted words remain unchanged)
 ];
 
@@ -125,7 +126,7 @@ const Message = ({ ownMessage, message, onDelete }) => {
           gap={2}
           alignSelf={"flex-end"}
           position="relative"
-          overflowX="hidden" // Prevent horizontal scrolling
+          overflowX="hidden"  // Prevent horizontal scrolling
         >
           {message.text && (
             <Flex
@@ -136,6 +137,7 @@ const Message = ({ ownMessage, message, onDelete }) => {
               position="relative"
               overflowX="hidden"
             >
+              {/* Popout menu with delete option */}
               <Menu>
                 <MenuButton
                   as={IconButton}
@@ -150,7 +152,11 @@ const Message = ({ ownMessage, message, onDelete }) => {
                   borderRadius="full"
                   aria-label="Options"
                 />
-                <MenuList bg={"green.800"} backdropFilter="blur(10px)">
+                <MenuList
+                  bg={"green.800"}
+                  backdropFilter="blur(10px)" // Adds blur to the background
+                  zIndex={2}  // Ensure popout menu is above other elements
+                >
                   <MenuItem onClick={() => onDelete(message._id)}>
                     Delete message
                   </MenuItem>
@@ -196,7 +202,11 @@ const Message = ({ ownMessage, message, onDelete }) => {
                   borderRadius="full"
                   aria-label="Options"
                 />
-                <MenuList bg={"green.800"} backdropFilter="blur(10px)">
+                <MenuList
+                  bg={"green.800"}
+                  backdropFilter="blur(10px)"
+                  zIndex={2}
+                >
                   <MenuItem onClick={() => onDelete(message._id)}>
                     Delete message
                   </MenuItem>
