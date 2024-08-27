@@ -233,13 +233,13 @@ const UserHeader = ({ user }) => {
         <Flex gap={2} alignItems={"center"}>
           <Link color={"gray.light"}>Pear</Link>
           <Box w="1" h="1" bg={"gray.light"} borderRadius={"full"}></Box>
-          <Link href="https://pearmeet-ofadt8wim-eliammisedas-projects.vercel.app" isExternal color={"gray.light"}>
+          <Link href="https://pearmeet.onrender.com" isExternal color={"gray.light"}>
             meet.com
           </Link>
         </Flex>
         <Flex>
           <Box className="icon-container">
-            <Link href="https://pearmeet-ofadt8wim-eliammisedas-projects.vercel.app" isExternal>
+            <Link href="https://pearmeet.onrender.com" isExternal>
               <MdVideoCall size={24} cursor={"pointer"} />
             </Link>
           </Box>
