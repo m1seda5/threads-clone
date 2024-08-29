@@ -40,3 +40,6 @@ router.delete("/:messageId", protectRoute, checkChatAccess, deleteMessage);
 
 
 export default router;
+
+
+
