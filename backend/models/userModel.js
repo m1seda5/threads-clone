@@ -1,50 +1,110 @@
+// original version without roles (first change made here)
+// import mongoose from "mongoose";
+
+// const userSchema = mongoose.Schema(
+// 	{
+// 		name: {
+// 			type: String,
+// 			required: true,
+// 		},
+// 		username: {
+// 			type: String,
+// 			required: true,
+// 			unique: true,
+// 		},
+// 		email: {
+// 			type: String,
+// 			required: true,
+// 			unique: true,
+// 		},
+// 		password: {
+// 			type: String,
+// 			minLength: 6,
+// 			required: true,
+// 		},
+// 		profilePic: {
+// 			type: String,
+// 			default: "",
+// 		},
+// 		followers: {
+// 			type: [String],
+// 			default: [],
+// 		},
+// 		following: {
+// 			type: [String],
+// 			default: [],
+// 		},
+// 		bio: {
+// 			type: String,
+// 			default: "",
+// 		},
+// 		isFrozen: {
+// 			type: Boolean,
+// 			default: false,
+// 		},
+// 	},
+// 	{
+// 		timestamps: true,
+// 	}
+// );
+
+// const User = mongoose.model("User", userSchema);
+
+// export default User;
+
+// version2 with updated roles
 import mongoose from "mongoose";
 
 const userSchema = mongoose.Schema(
-	{
-		name: {
-			type: String,
-			required: true,
-		},
-		username: {
-			type: String,
-			required: true,
-			unique: true,
-		},
-		email: {
-			type: String,
-			required: true,
-			unique: true,
-		},
-		password: {
-			type: String,
-			minLength: 6,
-			required: true,
-		},
-		profilePic: {
-			type: String,
-			default: "",
-		},
-		followers: {
-			type: [String],
-			default: [],
-		},
-		following: {
-			type: [String],
-			default: [],
-		},
-		bio: {
-			type: String,
-			default: "",
-		},
-		isFrozen: {
-			type: Boolean,
-			default: false,
-		},
-	},
-	{
-		timestamps: true,
-	}
+  {
+    name: {
+      type: String,
+      required: true,
+    },
+    username: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    password: {
+      type: String,
+      minLength: 6,
+      required: true,
+    },
+    profilePic: {
+      type: String,
+      default: "",
+    },
+    followers: {
+      type: [String],
+      default: [],
+    },
+    following: {
+      type: [String],
+      default: [],
+    },
+    bio: {
+      type: String,
+      default: "",
+    },
+    isFrozen: {
+      type: Boolean,
+      default: false,
+    },
+    role: {
+      type: String,
+      enum: ['student', 'teacher'],  // Only 'student' or 'teacher'
+      required: true,
+    },
+  },
+  {
+    timestamps: true,
+  }
 );
 
 const User = mongoose.model("User", userSchema);
