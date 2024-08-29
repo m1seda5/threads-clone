@@ -289,9 +289,14 @@ const getUserProfile = async (req, res) => {
   }
 };
 
+// SIGNUP USER FUNCTION WITH ROLE ASSIGNMENT
 const signupUser = async (req, res) => {
   try {
     const { name, email, username, password } = req.body;
+
+    // Determine role based on email
+    const role = email.includes("students") ? "student" : "teacher";
+
     const user = await User.findOne({ $or: [{ email }, { username }] });
 
     if (user) {
@@ -305,6 +310,7 @@ const signupUser = async (req, res) => {
       email,
       username,
       password: hashedPassword,
+      role, // Assign role to new user
     });
     await newUser.save();
 
@@ -318,6 +324,7 @@ const signupUser = async (req, res) => {
         username: newUser.username,
         bio: newUser.bio,
         profilePic: newUser.profilePic,
+        role: newUser.role, // Include role in response
       });
     } else {
       res.status(400).json({ error: "Invalid user data" });
@@ -327,6 +334,7 @@ const signupUser = async (req, res) => {
     console.log("Error in signupUser: ", err.message);
   }
 };
+// END OF SIGNUP USER FUNCTION
 
 const loginUser = async (req, res) => {
   try {
@@ -354,6 +362,7 @@ const loginUser = async (req, res) => {
       username: user.username,
       bio: user.bio,
       profilePic: user.profilePic,
+      role: user.role, // Include role in response
     });
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -517,32 +526,20 @@ const sendMessage = async (req, res) => {
     const { message, recipientId } = req.body;
     const senderId = req.user._id;
 
-    // Fetch sender and recipient from the database
+    // Fetch sender and recipient details
     const sender = await User.findById(senderId);
     const recipient = await User.findById(recipientId);
 
-    // Determine roles
-    const senderRole = sender.email.includes("students")
-      ? "student"
-      : "teacher";
-    const recipientRole = recipient.email.includes("students")
-      ? "student"
-      : "teacher";
+    if (!sender || !recipient) return res.status(400).json({ error: "User not found" });
 
-    // Restrict communication based on roles
-    if (senderRole === "student" && recipientRole === "teacher") {
-      return res
-        .status(403)
-        .json({ error: "Students cannot message teachers." });
+    // Check for role-based messaging restrictions
+    if (
+      (sender.role === "teacher" && recipient.role === "student") ||
+      (sender.role === "student" && recipient.role === "teacher")
+    ) {
+      return res.status(403).json({ error: "Messaging restriction: teachers cannot message students and vice versa." });
     }
 
-    if (senderRole === "teacher" && recipientRole === "student") {
-      return res
-        .status(403)
-        .json({ error: "Teachers cannot message students." });
-    }
-
-    // Allow communication within the same group
     const newMessage = new Message({
       sender: senderId,
       recipient: recipientId,
@@ -550,10 +547,10 @@ const sendMessage = async (req, res) => {
     });
 
     await newMessage.save();
+
     res.status(201).json(newMessage);
   } catch (error) {
     res.status(500).json({ error: error.message });
-    console.log("Error in sendMessage: ", error.message);
   }
 };
 
