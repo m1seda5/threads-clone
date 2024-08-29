@@ -213,121 +213,131 @@ import authScreenAtom from "../atoms/authAtom";
 import { BsFillChatQuoteFill } from "react-icons/bs";
 import { MdOutlineSettings } from "react-icons/md";
 
+
 const Header = () => {
-	const { colorMode, toggleColorMode } = useColorMode();
-	const user = useRecoilValue(userAtom);
-	const logout = useLogout();
-	const setAuthScreen = useSetRecoilState(authScreenAtom);
+   const { colorMode, toggleColorMode } = useColorMode();
+   const user = useRecoilValue(userAtom);
+   const logout = useLogout();
+   const setAuthScreen = useSetRecoilState(authScreenAtom);
 
-	return (
-		<Flex justifyContent="center" mt={6} mb="12" gap={10}>
-			{user && (
-				<Link
-					as={RouterLink}
-					to="/"
-					_hover={{
-						color: "teal.500",
-						transform: "scale(1.2)", // Increased scale for exaggerated effect
-					}}
-					transition="all 0.3s ease-in-out" // Smooth transition
-				>
-					<AiFillHome size={24} />
-				</Link>
-			)}
-			{!user && (
-				<Link
-					as={RouterLink}
-					to="/auth"
-					onClick={() => setAuthScreen("login")}
-					_hover={{
-						color: "teal.500",
-						transform: "scale(1.2)", // Increased scale for exaggerated effect
-					}}
-					transition="all 0.3s ease-in-out" // Smooth transition
-				>
-					Login
-				</Link>
-			)}
 
-			<Image
-				cursor="pointer"
-				alt="logo"
-				w={6}
-				src={colorMode === "dark" ? "/light-logo.svg" : "/dark-logo.svg"}
-				onClick={toggleColorMode}
-				_hover={{
-					transform: "rotate(20deg) scale(1.2)", // Increased scale for exaggerated effect
-				}}
-				transition="all 0.3s ease-in-out" // Smooth transition
-			/>
+   return (
+       <Flex justifyContent="center" mt={6} mb="12" gap={10}>
+           {user && (
+               <Link
+                   as={RouterLink}
+                   to="/"
+                   _hover={{
+                       color: "teal.500",
+                       transform: "scale(1.2)", // Increased scale for exaggerated effect
+                   }}
+                   transition="all 0.3s ease-in-out" // Smooth transition
+               >
+                   <AiFillHome size={24} />
+               </Link>
+           )}
+           {!user && (
+               <Link
+                   as={RouterLink}
+                   to="/auth"
+                   onClick={() => setAuthScreen("login")}
+                   _hover={{
+                       color: "teal.500",
+                       transform: "scale(1.2)", // Increased scale for exaggerated effect
+                   }}
+                   transition="all 0.3s ease-in-out" // Smooth transition
+               >
+                   Login
+               </Link>
+           )}
 
-			{user && (
-				<Flex alignItems="center" gap={10}>
-					<Link
-						as={RouterLink}
-						to={`/${user.username}`}
-						_hover={{
-							color: "teal.500",
-							transform: "scale(1.2)", // Increased scale for exaggerated effect
-						}}
-						transition="all 0.3s ease-in-out" // Smooth transition
-					>
-						<RxAvatar size={24} />
-					</Link>
-					<Link
-						as={RouterLink}
-						to="/chat"
-						_hover={{
-							color: "teal.500",
-							transform: "scale(1.2)", // Increased scale for exaggerated effect
-						}}
-						transition="all 0.3s ease-in-out" // Smooth transition
-					>
-						<BsFillChatQuoteFill size={20} />
-					</Link>
-					<Link
-						as={RouterLink}
-						to="/settings"
-						_hover={{
-							color: "teal.500",
-							transform: "scale(1.2)", // Increased scale for exaggerated effect
-						}}
-						transition="all 0.3s ease-in-out" // Smooth transition
-					>
-						<MdOutlineSettings size={20} />
-					</Link>
-					<Button
-						size="xs"
-						onClick={logout}
-						_hover={{
-							bg: "teal.500",
-							color: "white",
-							transform: "scale(1.1)", // Slightly increased scale for logout button
-						}}
-						transition="all 0.3s ease-in-out" // Smooth transition
-					>
-						<FiLogOut size={20} />
-					</Button>
-				</Flex>
-			)}
 
-			{!user && (
-				<Link
-					as={RouterLink}
-					to="/auth"
-					onClick={() => setAuthScreen("signup")}
-					_hover={{
-						color: "teal.500",
-						transform: "scale(1.2)", // Increased scale for exaggerated effect
-					}}
-					transition="all 0.3s ease-in-out" // Smooth transition
-				>
-					Sign up
-				</Link>
-			)}
-		</Flex>
-	);
+           <Image
+               cursor="pointer"
+               alt="logo"
+               w={6}
+               src={colorMode === "dark" ? "/light-logo.svg" : "/dark-logo.svg"}
+               onClick={toggleColorMode}
+               _hover={{
+                   transform: "rotate(20deg) scale(1.2)", // Increased scale for exaggerated effect
+               }}
+               transition="all 0.3s ease-in-out" // Smooth transition
+           />
+
+
+           {user && (
+               <Flex alignItems="center" gap={10}>
+                   <Link
+                       as={RouterLink}
+                       to={`/${user.username}`}
+                       _hover={{
+                           color: "teal.500",
+                           transform: "scale(1.2)", // Increased scale for exaggerated effect
+                       }}
+                       transition="all 0.3s ease-in-out" // Smooth transition
+                   >
+                       <RxAvatar size={24} />
+                   </Link>
+                   <Link
+                       as={RouterLink}
+                       to="/chat"
+                       _hover={{
+                           color: "teal.500",
+                           transform: "scale(1.2)", // Increased scale for exaggerated effect
+                       }}
+                       transition="all 0.3s ease-in-out" // Smooth transition
+                   >
+                       <BsFillChatQuoteFill size={20} />
+                   </Link>
+                   <Link
+                       as={RouterLink}
+                       to="/settings"
+                       _hover={{
+                           color: "teal.500",
+                           transform: "scale(1.2)", // Increased scale for exaggerated effect
+                       }}
+                       transition="all 0.3s ease-in-out" // Smooth transition
+                   >
+                       <MdOutlineSettings size={20} />
+                   </Link>
+                   <Button
+                       size="xs"
+                       onClick={logout}
+                       _hover={{
+                           bg: "teal.500",
+                           color: "white",
+                           transform: "scale(1.1)", // Slightly increased scale for logout button
+                       }}
+                       transition="all 0.3s ease-in-out" // Smooth transition
+                   >
+                       <FiLogOut size={20} />
+                   </Button>
+               </Flex>
+           )}
+
+
+           {!user && (
+               <Link
+                   as={RouterLink}
+                   to="/auth"
+                   onClick={() => setAuthScreen("signup")}
+                   _hover={{
+                       color: "teal.500",
+                       transform: "scale(1.2)", // Increased scale for exaggerated effect
+                   }}
+                   transition="all 0.3s ease-in-out" // Smooth transition
+               >
+                   Sign up
+               </Link>
+           )}
+       </Flex>
+   );
 };
 
+
 export default Header;
+
+
+
+
 
