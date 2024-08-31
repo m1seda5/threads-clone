@@ -59,8 +59,8 @@ import userRoutes from "./routes/userRoutes.js";
 import postRoutes from "./routes/postRoutes.js";
 import messageRoutes from "./routes/messageRoutes.js";
 import { v2 as cloudinary } from "cloudinary";
-import { Server } from "ws"; // Ensure this import is correct
 import http from "http"; // Import HTTP module for WebSocket server
+import WebSocket from "ws"; // Correct import for WebSocket
 import job from "./cron/cron.js";
 
 dotenv.config();
@@ -80,7 +80,7 @@ cloudinary.config({
 const app = express();
 const server = http.createServer(app); // Create an HTTP server for WebSocket
 
-const wss = new Server({ server }); // Initialize WebSocket server
+const wss = new WebSocket.Server({ server }); // Initialize WebSocket server
 
 // WebSocket connection setup
 wss.on("connection", (ws) => {
