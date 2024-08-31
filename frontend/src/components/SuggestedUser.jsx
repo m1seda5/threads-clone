@@ -1,3 +1,4 @@
+// feature disabled due to automatic folow, export function has been commented 
 import { Avatar, Box, Button, Flex, Text } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import useFollowUnfollow from "../hooks/useFollowUnfollow";
@@ -37,7 +38,7 @@ const SuggestedUser = ({ user }) => {
 	);
 };
 
-export default SuggestedUser;
+// export default SuggestedUser;
 
 //  SuggestedUser component, if u want to copy and paste as shown in the tutorial
 

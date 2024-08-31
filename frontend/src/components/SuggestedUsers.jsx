@@ -1,3 +1,4 @@
+// suggested users disabled due to automatic follow, export function has been commented
 import { Box, Flex, Skeleton, SkeletonCircle, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import SuggestedUser from "./SuggestedUser";
@@ -59,7 +60,7 @@ const SuggestedUsers = () => {
 	);
 };
 
-export default SuggestedUsers;
+// export default SuggestedUsers;
 
 // Loading skeletons for suggested users, if u want to copy and paste as shown in the tutorial
 
