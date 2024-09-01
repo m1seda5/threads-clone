@@ -189,11 +189,11 @@ const HomePage = () => {
 		<Flex gap="10" alignItems={"flex-start"}>
 			<Box flex={70}>
 				{!loading && posts.length === 0 && (
-					<h1>welcome  to pear a Brookhouse appliaction .</h1>
+					<h1>welcome  to pear you have succesfully created an account login in to see the latest brookhouse news.</h1>
 				)}
 
 				{loading && (
-					<Flex justify="center">
+					<Flex justifyContent="center">
 						<Spinner size="xl" />
 					</Flex>
 				)}
