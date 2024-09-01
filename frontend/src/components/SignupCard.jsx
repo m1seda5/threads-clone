@@ -163,6 +163,7 @@ import {
 	useColorModeValue,
 	Link,
 } from "@chakra-ui/react";
+import useFetchPosts from "../hooks/useFetchPosts";
 import { useState } from "react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { useSetRecoilState } from "recoil";
