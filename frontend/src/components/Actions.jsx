@@ -282,6 +282,16 @@ const Actions = ({ post }) => {
             if (!user) return showToast("Error", "You must be logged in to like a post", "error");
             if (isLiking) return;
 
+            const originalLiked = liked;
+            const originalPosts = [...posts];
+
+            // Optimistically update the UI
+            setLiked(!liked);
+            setPosts(posts.map(p => p._id === post._id ? {
+                ...p,
+                likes: !liked ? [...p.likes, user._id] : p.likes.filter(id => id !== user._id),
+            } : p));
+
             setIsLiking(true);
             try {
                 const res = await fetch(`/api/posts/like/${post._id}`, {
@@ -291,16 +301,12 @@ const Actions = ({ post }) => {
                 const data = await res.json();
 
                 if (data.error) {
-                    showToast("Error", data.error, "error");
-                    return;
+                    throw new Error(data.error);
                 }
-
-                setPosts(posts.map(p => p._id === post._id ? {
-                    ...p,
-                    likes: liked ? p.likes.filter(id => id !== user._id) : [...p.likes, user._id],
-                } : p));
-                setLiked(!liked);
             } catch (error) {
+                // Revert the state if API call fails
+                setLiked(originalLiked);
+                setPosts(originalPosts);
                 showToast("Error", error.message, "error");
             } finally {
                 setIsLiking(false);
