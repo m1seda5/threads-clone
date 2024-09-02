@@ -290,94 +290,25 @@ import { BsCheck2All } from "react-icons/bs";
 import { CloseIcon } from "@chakra-ui/icons";
 import { useState } from "react";
 
-// List of restricted words
+// List of restricted words (same as provided)
 const restrictedWords = [
   // Offensive language
-  "fuck",
-  "shit",
-  "bitch",
-  "cunt",
-  "motherfucker",
-  "asshole",
-  "dick",
-  "pussy",
-  "cock",
-  "slut",
-  "whore",
-  "faggot",
-  "nigger",
-  "chink",
-  "gook",
-  "spic",
-  "raghead",
-  "wetback",
- 
- 
+  "fuck", "shit", "bitch", "cunt", "motherfucker", "asshole", "dick", "pussy", "cock", 
+  "slut", "whore", "faggot", "nigger", "chink", "gook", "spic", "raghead", "wetback",
   // Derogatory terms
-  "retard",
-  "cripple",
-  "idiot",
-  "moron",
-  "dumbass",
-  "lame",
-  "loser",
- 
- 
+  "retard", "cripple", "idiot", "moron", "dumbass", "lame", "loser",
   // Hate speech
-  "terrorist",
-  "racist",
-  "bigot",
-  "sexist",
-  "homophobe",
-  "xenophobe",
- 
- 
+  "terrorist", "racist", "bigot", "sexist", "homophobe", "xenophobe",
   // Insults and slurs
-  "bastard",
-  "scum",
-  "pig",
-  "skank",
-  "tramp",
-  "hoe",
-  "slut",
-  "bimbo",
- 
- 
+  "bastard", "scum", "pig", "skank", "tramp", "hoe", "slut", "bimbo",
   // Drugs and alcohol
-  "crack",
-  "heroin",
-  "meth",
-  "cocaine",
-  "weed",
-  "marijuana",
-  "pot",
- 
- 
+  "crack", "heroin", "meth", "cocaine", "weed", "marijuana", "pot",
   // Sexual content
-  "porn",
-  "sex",
-  "nude",
-  "orgy",
-  "rape",
-  "molest",
-  "incest",
- 
- 
+  "porn", "sex", "nude", "orgy", "rape", "molest", "incest",
   // Offensive phrases
-  "go to hell",
-  "kill yourself",
-  "die",
-  "you're a loser",
-  "eat shit",
- 
- 
+  "go to hell", "kill yourself", "die", "you're a loser", "eat shit",
   // Additional common bad phrases
-  "suck my dick",
-  "blow job",
-  "fist fuck",
-  "cock sucking",
-  "dickhead",
-  // Other restricted words...
+  "suck my dick", "blow job", "fist fuck", "cock sucking", "dickhead",
 ];
 
 // Function to check if a message contains any restricted words
@@ -413,23 +344,7 @@ const Message = ({ ownMessage, message, onDelete }) => {
               borderRadius={"lg"}
               position="relative"
               boxShadow="lg"
-              _hover={{ transform: "scale(1.02)" }} // Figma-inspired hover effect
-              transition="all 0.2s ease"
             >
-              <IconButton
-                icon={<CloseIcon />}
-                size="xs"
-                fontSize="10px"
-                variant="ghost"
-                colorScheme="whiteAlpha"
-                position="absolute"
-                top="-4px"
-                right="-4px"
-                onClick={() => onDelete(message._id)}
-                borderRadius="full"
-                aria-label="Delete message"
-                _hover={{ bg: "red.400", color: "white" }} // Delete button hover effect
-              />
               <Text color={"white"}>{message.text}</Text>
               <Box
                 alignSelf={"flex-end"}
@@ -439,6 +354,22 @@ const Message = ({ ownMessage, message, onDelete }) => {
               >
                 <BsCheck2All size={16} />
               </Box>
+              <IconButton
+                icon={<CloseIcon />}
+                size="xs"
+                fontSize="10px"
+                variant="solid"
+                colorScheme="red"
+                position="absolute"
+                top="50%"
+                right="-20px"
+                transform="translateY(-50%)"
+                onClick={() => onDelete(message._id)}
+                borderRadius="md"
+                aria-label="Delete message"
+                _hover={{ bg: "red.600", transform: "scale(1.1)" }} // Modern hover effect
+                _active={{ bg: "red.700" }} // Active state for button press
+              />
             </Flex>
           )}
           {message.img && !imgLoaded && (
@@ -448,7 +379,7 @@ const Message = ({ ownMessage, message, onDelete }) => {
                 hidden
                 onLoad={() => setImgLoaded(true)}
                 alt="Message image"
-                borderRadius={8} // Smooth border radius
+                borderRadius={8}
               />
               <Skeleton w={"200px"} h={"200px"} />
             </Flex>
@@ -458,16 +389,19 @@ const Message = ({ ownMessage, message, onDelete }) => {
               <Image src={message.img} alt="Message image" borderRadius={8} />
               <IconButton
                 icon={<CloseIcon />}
-                size="2xs"
-                fontSize="6px"
-                variant="ghost"
-                colorScheme="whiteAlpha"
+                size="xs"
+                fontSize="8px"
+                variant="solid"
+                colorScheme="red"
                 position="absolute"
-                top="-2px"
-                right="-2px"
+                top="50%"
+                right="-20px"
+                transform="translateY(-50%)"
                 onClick={() => onDelete(message._id)}
-                borderRadius="full"
+                borderRadius="md"
                 aria-label="Delete message"
+                _hover={{ bg: "red.600", transform: "scale(1.1)" }}
+                _active={{ bg: "red.700" }}
               />
               <Box
                 alignSelf={"flex-end"}
@@ -492,8 +426,6 @@ const Message = ({ ownMessage, message, onDelete }) => {
               borderRadius={"lg"}
               position="relative"
               boxShadow="md"
-              _hover={{ transform: "scale(1.02)" }} // Figma-inspired hover effect
-              transition="all 0.2s ease"
             >
               <Text>{message.text}</Text>
             </Flex>
@@ -505,7 +437,7 @@ const Message = ({ ownMessage, message, onDelete }) => {
                 hidden
                 onLoad={() => setImgLoaded(true)}
                 alt="Message image"
-                borderRadius={8} // Smooth border radius
+                borderRadius={8}
               />
               <Skeleton w={"200px"} h={"200px"} />
             </Flex>
