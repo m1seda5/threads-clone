@@ -287,28 +287,89 @@ import { selectedConversationAtom } from "../atoms/messagesAtom";
 import { useRecoilValue } from "recoil";
 import userAtom from "../atoms/userAtom";
 import { BsCheck2All } from "react-icons/bs";
-import { CloseIcon } from "@chakra-ui/icons";
+import { CloseIcon } from "@chakra-ui/icons"; // Import the close icon
 import { useState } from "react";
 
-// List of restricted words (same as provided)
+// List of restricted words
 const restrictedWords = [
   // Offensive language
-  "fuck", "shit", "bitch", "cunt", "motherfucker", "asshole", "dick", "pussy", "cock", 
-  "slut", "whore", "faggot", "nigger", "chink", "gook", "spic", "raghead", "wetback",
+  "fuck",
+  "shit",
+  "bitch",
+  "cunt",
+  "motherfucker",
+  "asshole",
+  "dick",
+  "pussy",
+  "cock",
+  "slut",
+  "whore",
+  "faggot",
+  "nigger",
+  "chink",
+  "gook",
+  "spic",
+  "raghead",
+  "wetback",
+
   // Derogatory terms
-  "retard", "cripple", "idiot", "moron", "dumbass", "lame", "loser",
+  "retard",
+  "cripple",
+  "idiot",
+  "moron",
+  "dumbass",
+  "lame",
+  "loser",
+
   // Hate speech
-  "terrorist", "racist", "bigot", "sexist", "homophobe", "xenophobe",
+  "terrorist",
+  "racist",
+  "bigot",
+  "sexist",
+  "homophobe",
+  "xenophobe",
+
   // Insults and slurs
-  "bastard", "scum", "pig", "skank", "tramp", "hoe", "slut", "bimbo",
+  "bastard",
+  "scum",
+  "pig",
+  "skank",
+  "tramp",
+  "hoe",
+  "slut",
+  "bimbo",
+
   // Drugs and alcohol
-  "crack", "heroin", "meth", "cocaine", "weed", "marijuana", "pot",
+  "crack",
+  "heroin",
+  "meth",
+  "cocaine",
+  "weed",
+  "marijuana",
+  "pot",
+
   // Sexual content
-  "porn", "sex", "nude", "orgy", "rape", "molest", "incest",
+  "porn",
+  "sex",
+  "nude",
+  "orgy",
+  "rape",
+  "molest",
+  "incest",
+
   // Offensive phrases
-  "go to hell", "kill yourself", "die", "you're a loser", "eat shit",
+  "go to hell",
+  "kill yourself",
+  "die",
+  "you're a loser",
+  "eat shit",
+
   // Additional common bad phrases
-  "suck my dick", "blow job", "fist fuck", "cock sucking", "dickhead",
+  "suck my dick",
+  "blow job",
+  "fist fuck",
+  "cock sucking",
+  "dickhead",
 ];
 
 // Function to check if a message contains any restricted words
@@ -321,7 +382,7 @@ const Message = ({ ownMessage, message, onDelete }) => {
   const user = useRecoilValue(userAtom);
   const [imgLoaded, setImgLoaded] = useState(false);
 
-  // If the message contains restricted words, don't display it
+  // Check if the message contains restricted words
   if (message.text && isMessageRestricted(message.text)) {
     return (
       <Flex justifyContent={"center"} p={2}>
@@ -338,13 +399,27 @@ const Message = ({ ownMessage, message, onDelete }) => {
         <Flex gap={2} alignSelf={"flex-end"} position="relative">
           {message.text && (
             <Flex
-              bg={"teal.500"}
+              bg={"green.800"}
               maxW={"350px"}
-              p={2}
-              borderRadius={"lg"}
+              p={1}
+              borderRadius={"md"}
               position="relative"
-              boxShadow="lg"
             >
+              {/* Start of delete button */}
+              <IconButton
+                icon={<CloseIcon />}
+                size="xs" // Extra small button
+                fontSize="10px" // Adjust the icon size to make it smaller
+                variant="ghost" // No background or border
+                colorScheme="whiteAlpha" // Transparent background
+                position="absolute"
+                top="-4px" // Adjust position to fit better
+                right="-4px" // Adjust position to fit better
+                onClick={() => onDelete(message._id)} // Call onDelete with message ID
+                borderRadius="full"
+                aria-label="Delete message"
+              />
+              {/* End of delete button */}
               <Text color={"white"}>{message.text}</Text>
               <Box
                 alignSelf={"flex-end"}
@@ -354,22 +429,6 @@ const Message = ({ ownMessage, message, onDelete }) => {
               >
                 <BsCheck2All size={16} />
               </Box>
-              <IconButton
-                icon={<CloseIcon />}
-                size="xs"
-                fontSize="10px"
-                variant="solid"
-                colorScheme="red"
-                position="absolute"
-                top="50%"
-                right="-20px"
-                transform="translateY(-50%)"
-                onClick={() => onDelete(message._id)}
-                borderRadius="md"
-                aria-label="Delete message"
-                _hover={{ bg: "red.600", transform: "scale(1.1)" }} // Modern hover effect
-                _active={{ bg: "red.700" }} // Active state for button press
-              />
             </Flex>
           )}
           {message.img && !imgLoaded && (
@@ -379,30 +438,29 @@ const Message = ({ ownMessage, message, onDelete }) => {
                 hidden
                 onLoad={() => setImgLoaded(true)}
                 alt="Message image"
-                borderRadius={8}
+                borderRadius={4}
               />
               <Skeleton w={"200px"} h={"200px"} />
             </Flex>
           )}
           {message.img && imgLoaded && (
             <Flex mt={5} w={"200px"} position="relative">
-              <Image src={message.img} alt="Message image" borderRadius={8} />
+              <Image src={message.img} alt="Message image" borderRadius={4} />
+              {/* Start of delete button */}
               <IconButton
                 icon={<CloseIcon />}
-                size="xs"
-                fontSize="8px"
-                variant="solid"
-                colorScheme="red"
+                size="2xs" // Smaller than extra small
+                fontSize="6px" // Even smaller icon size
+                variant="ghost" // No background or border
+                colorScheme="whiteAlpha" // Transparent background
                 position="absolute"
-                top="50%"
-                right="-20px"
-                transform="translateY(-50%)"
-                onClick={() => onDelete(message._id)}
-                borderRadius="md"
+                top="-2px" // Keeps the current position
+                right="-2px" // Keeps the current position
+                onClick={() => onDelete(message._id)} // Call onDelete with message ID
+                borderRadius="full"
                 aria-label="Delete message"
-                _hover={{ bg: "red.600", transform: "scale(1.1)" }}
-                _active={{ bg: "red.700" }}
               />
+              {/* End of delete button */}
               <Box
                 alignSelf={"flex-end"}
                 ml={1}
@@ -420,14 +478,29 @@ const Message = ({ ownMessage, message, onDelete }) => {
           <Avatar src={selectedConversation.userProfilePic} w="7" h={7} />
           {message.text && (
             <Flex
-              bg={"gray.100"}
-              maxW={"350px"}
-              p={2}
-              borderRadius={"lg"}
               position="relative"
-              boxShadow="md"
+              maxW={"350px"}
+              bg={"gray.400"}
+              p={1}
+              borderRadius={"md"}
             >
-              <Text>{message.text}</Text>
+              {/* Only show delete button for own messages */}
+              {ownMessage && (
+                <IconButton
+                  icon={<CloseIcon />}
+                  size="2xs" // Smaller than extra small
+                  fontSize="6px" // Even smaller icon size
+                  variant="ghost" // No background or border
+                  colorScheme="whiteAlpha" // Transparent background
+                  position="absolute"
+                  top="-2px" // Keeps the current position
+                  right="-2px" // Keeps the current position
+                  onClick={() => onDelete(message._id)} // Call onDelete with message ID
+                  borderRadius="full"
+                  aria-label="Delete message"
+                />
+              )}
+              <Text color={"black"}>{message.text}</Text>
             </Flex>
           )}
           {message.img && !imgLoaded && (
@@ -437,14 +510,30 @@ const Message = ({ ownMessage, message, onDelete }) => {
                 hidden
                 onLoad={() => setImgLoaded(true)}
                 alt="Message image"
-                borderRadius={8}
+                borderRadius={4}
               />
               <Skeleton w={"200px"} h={"200px"} />
             </Flex>
           )}
           {message.img && imgLoaded && (
-            <Flex mt={5} w={"200px"}>
-              <Image src={message.img} alt="Message image" borderRadius={8} />
+            <Flex mt={5} w={"200px"} position="relative">
+              <Image src={message.img} alt="Message image" borderRadius={4} />
+              {/* Only show delete button for own messages */}
+              {ownMessage && (
+                <IconButton
+                  icon={<CloseIcon />}
+                  size="2xs" // Smaller than extra small
+                  fontSize="6px" // Even smaller icon size
+                  variant="ghost" // No background or border
+                  colorScheme="whiteAlpha" // Transparent background
+                  position="absolute"
+                  top="-2px" // Keeps the current position
+                  right="-2px" // Keeps the current position
+                  onClick={() => onDelete(message._id)} // Call onDelete with message ID
+                  borderRadius="full"
+                  aria-label="Delete message"
+                />
+              )}
             </Flex>
           )}
         </Flex>
