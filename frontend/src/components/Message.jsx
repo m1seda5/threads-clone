@@ -273,7 +273,7 @@
  
  
 
-//  version 2 with the redesign
+//  version 2 with where the dlete button is only for the sender not the rciver 
 import {
   Avatar,
   Box,
