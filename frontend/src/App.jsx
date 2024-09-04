@@ -52,20 +52,19 @@
 
 
 // version 2 
-// src/App.jsx
-
-import React from 'react';
-import { Box, Container } from '@chakra-ui/react';
-import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
-import UserPage from './pages/UserPage';
-import PostPage from './pages/PostPage';
-import Header from './components/Header';
-import HomePage from './pages/HomePage';
-import AuthPage from './pages/AuthPage';
-import UpdateProfilePage from './pages/UpdateProfilePage';
-import CreatePost from './components/CreatePost';
-import ChatPage from './pages/ChatPage';
-import { SettingsPage } from './pages/SettingsPage';
+ import { Box, Container } from "@chakra-ui/react";
+ import { Navigate, Route, Routes, useLocation } from "react-router-dom";
+ import UserPage from "./pages/UserPage";
+ import PostPage from "./pages/PostPage";
+ import Header from "./components/Header";
+ import HomePage from "./pages/HomePage";
+ import AuthPage from "./pages/AuthPage";
+ import { useRecoilValue } from "recoil";
+ import userAtom from "./atoms/userAtom";
+ import UpdateProfilePage from "./pages/UpdateProfilePage";
+ import CreatePost from "./components/CreatePost";
+ import ChatPage from "./pages/ChatPage";
+ import { SettingsPage } from "./pages/SettingsPage";
 import { I18nextProvider } from 'react-i18next';
 import i18n from './i18n';  // Correct path to your i18n.js file
 
