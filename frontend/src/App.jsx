@@ -64,7 +64,7 @@ import CreatePost from "./components/CreatePost";
 import ChatPage from "./pages/ChatPage";
 import { SettingsPage } from "./pages/SettingsPage";
 import { I18nextProvider } from "react-i18next"; // Import I18nextProvider
-import i18n from "../config/i18n"; // Update to the correct path
+import "./config/i18n";  // Update to the correct path
 function App() {
 	const user = useRecoilValue(userAtom);
 	const { pathname } = useLocation();
