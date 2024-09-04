@@ -50,6 +50,7 @@
 
 
 // version 2
+import React, { useEffect } from 'react';
 import { Box, Container } from "@chakra-ui/react";
 import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import UserPage from "./pages/UserPage";
@@ -63,46 +64,46 @@ import UpdateProfilePage from "./pages/UpdateProfilePage";
 import CreatePost from "./components/CreatePost";
 import ChatPage from "./pages/ChatPage";
 import { SettingsPage } from "./pages/SettingsPage";
-import { I18nextProvider } from "react-i18next"; // Import I18nextProvider
-import "./config/i18n";  // Update to the correct path
+import i18n from "../config/i18n"; // Ensure correct import path
+
 function App() {
-	const user = useRecoilValue(userAtom);
-	const { pathname } = useLocation();
-  
-	// Retrieve language from localStorage or default to English
-	const savedLanguage = localStorage.getItem("language") || "en";
-	i18n.changeLanguage(savedLanguage);
-	return (
-	  <I18nextProvider i18n={i18n}>
-		<Box position={"relative"} w="full">
-		  <Container maxW={pathname === "/" ? { base: "620px", md: "900px" } : "620px"}>
-			<Header />
-			<Routes>
-			  <Route path="/" element={user ? <HomePage /> : <Navigate to="/auth" />} />
-			  <Route path="/auth" element={!user ? <AuthPage /> : <Navigate to="/" />} />
-			  <Route path="/update" element={user ? <UpdateProfilePage /> : <Navigate to="/auth" />} />
-			  <Route
-				path="/:username"
-				element={
-				  user ? (
-					<>
-					  <UserPage />
-					  <CreatePost />
-					</>
-				  ) : (
-					<UserPage />
-				  )
-				}
-			  />
-			  <Route path="/:username/post/:pid" element={<PostPage />} />
-			  <Route path="/chat" element={user ? <ChatPage /> : <Navigate to={"/auth"} />} />
-			  <Route path="/settings" element={user ? <SettingsPage /> : <Navigate to={"/auth"} />} />
-			</Routes>
-		  </Container>
-		</Box>
-	  </I18nextProvider>
-	);
-  }
-  
-  export default App;
-  
+  const user = useRecoilValue(userAtom);
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    // Retrieve language from localStorage or default to English
+    const savedLanguage = localStorage.getItem("language") || "en";
+    i18n.changeLanguage(savedLanguage);
+  }, []);
+
+  return (
+    <Box position={"relative"} w="full">
+      <Container maxW={pathname === "/" ? { base: "620px", md: "900px" } : "620px"}>
+        <Header />
+        <Routes>
+          <Route path="/" element={user ? <HomePage /> : <Navigate to="/auth" />} />
+          <Route path="/auth" element={!user ? <AuthPage /> : <Navigate to="/" />} />
+          <Route path="/update" element={user ? <UpdateProfilePage /> : <Navigate to="/auth" />} />
+          <Route
+            path="/:username"
+            element={
+              user ? (
+                <>
+                  <UserPage />
+                  <CreatePost />
+                </>
+              ) : (
+                <UserPage />
+              )
+            }
+          />
+          <Route path="/:username/post/:pid" element={<PostPage />} />
+          <Route path="/chat" element={user ? <ChatPage /> : <Navigate to={"/auth"} />} />
+          <Route path="/settings" element={user ? <SettingsPage /> : <Navigate to={"/auth"} />} />
+        </Routes>
+      </Container>
+    </Box>
+  );
+}
+
+export default App;
