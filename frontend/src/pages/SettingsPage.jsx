@@ -44,64 +44,58 @@
 
 
 // version 2
-import { Button, Text, HStack } from "@chakra-ui/react";
-import { useTranslation } from "react-i18next"; // Import useTranslation hook
-import useShowToast from "../hooks/useShowToast";
-import useLogout from "../hooks/useLogout";
+// src/pages/SettingsPage.jsx
+
+import React from 'react';
+import { Button, Text } from '@chakra-ui/react';
+import useShowToast from '../hooks/useShowToast';
+import useLogout from '../hooks/useLogout';
+import i18n from '../i18n'; // Import i18n
 
 export const SettingsPage = () => {
-	const { t, i18n } = useTranslation(); // Initialize useTranslation hook
-	const showToast = useShowToast();
-	const logout = useLogout();
+  const showToast = useShowToast();
+  const logout = useLogout();
 
-	const freezeAccount = async () => {
-		if (!window.confirm(t("Are you sure you want to freeze your account?"))) return;
+  const freezeAccount = async () => {
+    if (!window.confirm(i18n.t("Are you sure you want to freeze your account?"))) return;
 
-		try {
-			const res = await fetch("/api/users/freeze", {
-				method: "PUT",
-				headers: { "Content-Type": "application/json" },
-			});
-			const data = await res.json();
+    try {
+      const res = await fetch('/api/users/freeze', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+      });
+      const data = await res.json();
 
-			if (data.error) {
-				return showToast(t("Error"), data.error, "error");
-			}
-			if (data.success) {
-				await logout();
-				showToast(t("Success"), t("Your account has been frozen"), "success");
-			}
-		} catch (error) {
-			showToast(t("Error"), error.message, "error");
-		}
-	};
+      if (data.error) {
+        return showToast('Error', data.error, 'error');
+      }
+      if (data.success) {
+        await logout();
+        showToast('Success', i18n.t('Your account has been frozen'), 'success');
+      }
+    } catch (error) {
+      showToast('Error', error.message, 'error');
+    }
+  };
 
-	const changeLanguage = (language) => {
-		i18n.changeLanguage(language); // Change the language of the app
-	};
+  const handleLanguageChange = (lng) => {
+    i18n.changeLanguage(lng);
+    localStorage.setItem('language', lng);
+  };
 
-	return (
-		<>
-			<Text my={1} fontWeight={"bold"}>
-				{t("Freeze Your Account")}
-			</Text>
-			<Text my={1}>{t("You can unfreeze your account anytime by logging in.")}</Text>
-			<Button size={"sm"} colorScheme='red' onClick={freezeAccount}>
-				{t("Freeze")}
-			</Button>
-
-			{/* Language Change Buttons */}
-			<Text mt={4} fontWeight={"bold"}>
-				{t("Change Language")}
-			</Text>
-			<HStack spacing={4} mt={2}>
-				<Button colorScheme='blue' onClick={() => changeLanguage('en')}>
-					English
-				</Button>
-				<Button colorScheme='green' onClick={() => changeLanguage('zh')}>
-					中文 (Mandarin)
-				</Button>
-			</HStack>
-		</>
-	);
+  return (
+    <>
+      <Text my={1} fontWeight={'bold'}>
+        {i18n.t('Freeze Your Account')}
+      </Text>
+      <Text my={1}>
+        {i18n.t('You can unfreeze your account anytime by logging in.')}
+      </Text>
+      <Button size={'sm'} colorScheme='red' onClick={freezeAccount}>
+        {i18n.t('Freeze')}
+      </Button>
+      <Button onClick={() => handleLanguageChange('en')}>English</Button>
+      <Button onClick={() => handleLanguageChange('zh')}>中文</Button>
+    </>
+  );
 };
