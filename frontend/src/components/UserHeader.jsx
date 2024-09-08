@@ -143,6 +143,145 @@
 
 // export default UserHeader;
 
+
+
+// so thi sis a working version without translations added 
+// import { Avatar } from "@chakra-ui/avatar";
+// import { Box, Flex, Link, Text, VStack } from "@chakra-ui/layout";
+// import { Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/menu";
+// import { Portal } from "@chakra-ui/portal";
+// import { Button, useToast } from "@chakra-ui/react";
+// import { MdVideoCall } from "react-icons/md"; // Import the video icon
+// import { CgMoreO } from "react-icons/cg";
+// import { useRecoilValue } from "recoil";
+// import userAtom from "../atoms/userAtom";
+// import { Link as RouterLink } from "react-router-dom";
+// import useFollowUnfollow from "../hooks/useFollowUnfollow";
+
+// const UserHeader = ({ user }) => {
+//   const toast = useToast();
+//   const currentUser = useRecoilValue(userAtom); // logged in user
+//   const { handleFollowUnfollow, following, updating } = useFollowUnfollow(user);
+
+//   const copyURL = () => {
+//     const currentURL = window.location.href;
+//     navigator.clipboard.writeText(currentURL).then(() => {
+//       toast({
+//         title: "Success.",
+//         status: "success",
+//         description: "Profile link copied.",
+//         duration: 3000,
+//         isClosable: true,
+//       });
+//     });
+//   };
+
+//   return (
+//     <VStack gap={4} alignItems={"start"}>
+//       <Flex justifyContent={"space-between"} w={"full"}>
+//         <Box>
+//           <Text fontSize={"2xl"} fontWeight={"bold"}>
+//             {user.name}
+//           </Text>
+//           <Flex gap={2} alignItems={"center"}>
+//             <Text fontSize={"sm"}>{user.username}</Text>
+//             <Text
+//               fontSize={"xs"}
+//               bg={"gray.dark"}
+//               color={"gray.light"}
+//               p={1}
+//               borderRadius={"full"}
+//             >
+//               brookhouse
+//             </Text>
+//           </Flex>
+//         </Box>
+//         <Box>
+//           {user.profilePic && (
+//             <Avatar
+//               name={user.name}
+//               src={user.profilePic}
+//               size={{
+//                 base: "md",
+//                 md: "xl",
+//               }}
+//             />
+//           )}
+//           {!user.profilePic && (
+//             <Avatar
+//               name={user.name}
+//               src="https://bit.ly/broken-link"
+//               size={{
+//                 base: "md",
+//                 md: "xl",
+//               }}
+//             />
+//           )}
+//         </Box>
+//       </Flex>
+
+//       <Text>{user.bio}</Text>
+
+//       {currentUser?._id === user._id && (
+//         <Link as={RouterLink} to="/update">
+//           <Button size={"sm"}>Edit Profile</Button>
+//         </Link>
+//       )}
+//       {currentUser?._id !== user._id && (
+//         <Button size={"sm"} onClick={handleFollowUnfollow} isLoading={updating}>
+//           {following ? "Unfollow" : "Follow"}
+//         </Button>
+//       )}
+//       <Flex w={"full"} justifyContent={"space-between"}>
+//         <Flex gap={2} alignItems={"center"}>
+//           <Link color={"gray.light"}>Pear</Link>
+//           <Box w="1" h="1" bg={"gray.light"} borderRadius={"full"}></Box>
+//           <Link href="https://pearmeet.onrender.com" isExternal color={"gray.light"}>
+//             meet.com
+//           </Link>
+//         </Flex>
+//         <Flex>
+//           <Box className="icon-container">
+//             <Link href="https://pearmeet.onrender.com" isExternal>
+//               <MdVideoCall size={24} cursor={"pointer"} />
+//             </Link>
+//           </Box>
+//           <Box className="icon-container">
+//             <Menu>
+//               <MenuButton>
+//                 <CgMoreO size={24} cursor={"pointer"} />
+//               </MenuButton>
+//               <Portal>
+//                 <MenuList bg={"gray.dark"}>
+//                   <MenuItem bg={"gray.dark"} onClick={copyURL}>
+//                     Copy link
+//                   </MenuItem>
+//                 </MenuList>
+//               </Portal>
+//             </Menu>
+//           </Box>
+//         </Flex>
+//       </Flex>
+
+//       <Flex w={"full"}>
+//         <Flex
+//           flex={1}
+//           borderBottom={"1.2px solid gray"}
+//           justifyContent={"center"}
+//           pb="3"
+//           cursor={"pointer"}
+//         >
+//           <Text fontWeight={"bold"}>Feed</Text>
+//         </Flex>
+//       </Flex>
+//     </VStack>
+//   );
+// };
+
+// export default UserHeader;
+
+
+// this is an updated version with translations 
 import { Avatar } from "@chakra-ui/avatar";
 import { Box, Flex, Link, Text, VStack } from "@chakra-ui/layout";
 import { Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/menu";
@@ -154,6 +293,7 @@ import { useRecoilValue } from "recoil";
 import userAtom from "../atoms/userAtom";
 import { Link as RouterLink } from "react-router-dom";
 import useFollowUnfollow from "../hooks/useFollowUnfollow";
+import i18n from '../i18n';  // <-- Import i18n for translations
 
 const UserHeader = ({ user }) => {
   const toast = useToast();
@@ -164,9 +304,9 @@ const UserHeader = ({ user }) => {
     const currentURL = window.location.href;
     navigator.clipboard.writeText(currentURL).then(() => {
       toast({
-        title: "Success.",
+        title: i18n.t("Success."),  // <-- Translation key
         status: "success",
-        description: "Profile link copied.",
+        description: i18n.t("Profile link copied."),  // <-- Translation key
         duration: 3000,
         isClosable: true,
       });
@@ -221,12 +361,12 @@ const UserHeader = ({ user }) => {
 
       {currentUser?._id === user._id && (
         <Link as={RouterLink} to="/update">
-          <Button size={"sm"}>Edit Profile</Button>
+          <Button size={"sm"}>{i18n.t("Edit Profile")}</Button> {/* <-- Translation key */}
         </Link>
       )}
       {currentUser?._id !== user._id && (
         <Button size={"sm"} onClick={handleFollowUnfollow} isLoading={updating}>
-          {following ? "Unfollow" : "Follow"}
+          {following ? i18n.t("Unfollow") : i18n.t("Follow")} {/* <-- Translation key */}
         </Button>
       )}
       <Flex w={"full"} justifyContent={"space-between"}>
@@ -251,7 +391,7 @@ const UserHeader = ({ user }) => {
               <Portal>
                 <MenuList bg={"gray.dark"}>
                   <MenuItem bg={"gray.dark"} onClick={copyURL}>
-                    Copy link
+                    {i18n.t("Copy link")} {/* <-- Translation key */}
                   </MenuItem>
                 </MenuList>
               </Portal>
@@ -268,7 +408,7 @@ const UserHeader = ({ user }) => {
           pb="3"
           cursor={"pointer"}
         >
-          <Text fontWeight={"bold"}>Feed</Text>
+          <Text fontWeight={"bold"}>{i18n.t("Feed")}</Text> {/* <-- Translation key */}
         </Flex>
       </Flex>
     </VStack>
