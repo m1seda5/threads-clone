@@ -293,21 +293,36 @@ import { useRecoilValue } from "recoil";
 import userAtom from "../atoms/userAtom";
 import { Link as RouterLink } from "react-router-dom";
 import useFollowUnfollow from "../hooks/useFollowUnfollow";
-import { useTranslation } from 'react-i18next';  // <-- Import useTranslation
+import { useTranslation } from 'react-i18next';  // Import useTranslation
+import React, { useEffect, useState } from 'react'; // Import useState and useEffect
 
 const UserHeader = ({ user }) => {
   const toast = useToast();
   const currentUser = useRecoilValue(userAtom); // logged in user
   const { handleFollowUnfollow, following, updating } = useFollowUnfollow(user);
-  const { t } = useTranslation();  // <-- Initialize the translation hook
+  const { t, i18n } = useTranslation();  // Initialize the translation hook
+  const [language, setLanguage] = useState(i18n.language);  // Add a state for language
+
+  useEffect(() => {
+    // Update the language state whenever the i18n language changes
+    const handleLanguageChange = (lng) => {
+      setLanguage(lng);
+    };
+
+    i18n.on('languageChanged', handleLanguageChange);
+
+    return () => {
+      i18n.off('languageChanged', handleLanguageChange);
+    };
+  }, [i18n]);
 
   const copyURL = () => {
     const currentURL = window.location.href;
     navigator.clipboard.writeText(currentURL).then(() => {
       toast({
-        title: t("Success."),  // <-- Use t() for translations
+        title: t("Success."),  // Use t() for translations
         status: "success",
-        description: t("Profile link copied."),  // <-- Use t() for translations
+        description: t("Profile link copied."),  // Use t() for translations
         duration: 3000,
         isClosable: true,
       });
@@ -362,12 +377,12 @@ const UserHeader = ({ user }) => {
 
       {currentUser?._id === user._id && (
         <Link as={RouterLink} to="/update">
-          <Button size={"sm"}>{t("Edit Profile")}</Button> {/* <-- Use t() */}
+          <Button size={"sm"}>{t("Edit Profile")}</Button> {/* Use t() */}
         </Link>
       )}
       {currentUser?._id !== user._id && (
         <Button size={"sm"} onClick={handleFollowUnfollow} isLoading={updating}>
-          {following ? t("Unfollow") : t("Follow")} {/* <-- Use t() */}
+          {following ? t("Unfollow") : t("Follow")} {/* Use t() */}
         </Button>
       )}
       <Flex w={"full"} justifyContent={"space-between"}>
@@ -392,7 +407,7 @@ const UserHeader = ({ user }) => {
               <Portal>
                 <MenuList bg={"gray.dark"}>
                   <MenuItem bg={"gray.dark"} onClick={copyURL}>
-                    {t("Copy link")} {/* <-- Use t() */}
+                    {t("Copy link")} {/* Use t() */}
                   </MenuItem>
                 </MenuList>
               </Portal>
@@ -409,7 +424,7 @@ const UserHeader = ({ user }) => {
           pb="3"
           cursor={"pointer"}
         >
-          <Text fontWeight={"bold"}>{t("Feed")}</Text> {/* <-- Use t() */}
+          <Text fontWeight={"bold"}>{t("Feed")}</Text> {/* Use t() */}
         </Flex>
       </Flex>
     </VStack>
