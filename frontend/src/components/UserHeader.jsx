@@ -287,26 +287,27 @@ import { Box, Flex, Link, Text, VStack } from "@chakra-ui/layout";
 import { Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/menu";
 import { Portal } from "@chakra-ui/portal";
 import { Button, useToast } from "@chakra-ui/react";
-import { MdVideoCall } from "react-icons/md"; // Import the video icon
+import { MdVideoCall } from "react-icons/md";
 import { CgMoreO } from "react-icons/cg";
 import { useRecoilValue } from "recoil";
 import userAtom from "../atoms/userAtom";
 import { Link as RouterLink } from "react-router-dom";
 import useFollowUnfollow from "../hooks/useFollowUnfollow";
-import i18n from '../i18n';  // <-- Import i18n for translations
+import { useTranslation } from 'react-i18next';  // <-- Import useTranslation
 
 const UserHeader = ({ user }) => {
   const toast = useToast();
   const currentUser = useRecoilValue(userAtom); // logged in user
   const { handleFollowUnfollow, following, updating } = useFollowUnfollow(user);
+  const { t } = useTranslation();  // <-- Initialize the translation hook
 
   const copyURL = () => {
     const currentURL = window.location.href;
     navigator.clipboard.writeText(currentURL).then(() => {
       toast({
-        title: i18n.t("Success."),  // <-- Translation key
+        title: t("Success."),  // <-- Use t() for translations
         status: "success",
-        description: i18n.t("Profile link copied."),  // <-- Translation key
+        description: t("Profile link copied."),  // <-- Use t() for translations
         duration: 3000,
         isClosable: true,
       });
@@ -361,12 +362,12 @@ const UserHeader = ({ user }) => {
 
       {currentUser?._id === user._id && (
         <Link as={RouterLink} to="/update">
-          <Button size={"sm"}>{i18n.t("Edit Profile")}</Button> {/* <-- Translation key */}
+          <Button size={"sm"}>{t("Edit Profile")}</Button> {/* <-- Use t() */}
         </Link>
       )}
       {currentUser?._id !== user._id && (
         <Button size={"sm"} onClick={handleFollowUnfollow} isLoading={updating}>
-          {following ? i18n.t("Unfollow") : i18n.t("Follow")} {/* <-- Translation key */}
+          {following ? t("Unfollow") : t("Follow")} {/* <-- Use t() */}
         </Button>
       )}
       <Flex w={"full"} justifyContent={"space-between"}>
@@ -391,7 +392,7 @@ const UserHeader = ({ user }) => {
               <Portal>
                 <MenuList bg={"gray.dark"}>
                   <MenuItem bg={"gray.dark"} onClick={copyURL}>
-                    {i18n.t("Copy link")} {/* <-- Translation key */}
+                    {t("Copy link")} {/* <-- Use t() */}
                   </MenuItem>
                 </MenuList>
               </Portal>
@@ -408,7 +409,7 @@ const UserHeader = ({ user }) => {
           pb="3"
           cursor={"pointer"}
         >
-          <Text fontWeight={"bold"}>{i18n.t("Feed")}</Text> {/* <-- Translation key */}
+          <Text fontWeight={"bold"}>{t("Feed")}</Text> {/* <-- Use t() */}
         </Flex>
       </Flex>
     </VStack>
