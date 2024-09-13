@@ -97,18 +97,18 @@ import { Box, Flex, Text } from "@chakra-ui/layout";
 import { BsThreeDots } from "react-icons/bs";
 import { Link } from "react-router-dom";
 import Actions from "./Actions";
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import { useTranslation } from 'react-i18next'; // Import the useTranslation hook
 
 const UserPost = ({ postImg, postTitle, likes, replies }) => {
   const [liked, setLiked] = useState(false);
   const { t, i18n } = useTranslation();  // Initialize the translation hook
-  const [language, setLanguage] = useState(i18n.language);
 
   useEffect(() => {
     // Update the language state whenever the i18n language changes
     const handleLanguageChange = (lng) => {
-      setLanguage(lng);
+      // This will force the component to re-render when the language changes
+      setLiked(liked => !liked);  // A simple state update to trigger re-render
     };
 
     i18n.on('languageChanged', handleLanguageChange);  // Listen for language change
@@ -198,4 +198,3 @@ const UserPost = ({ postImg, postTitle, likes, replies }) => {
 };
 
 export default UserPost;
-
