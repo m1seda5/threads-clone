@@ -311,12 +311,12 @@ const HomePage = () => {
 					return (
 						<Box
 							key={post._id}
+							className="postContainer"
 							borderWidth="1px"
 							borderRadius="lg"
 							p={4}
 							mb={6}
 							boxShadow="sm"
-							transition="all 0.3s ease-in-out"
 						>
 							<Post post={post} postedBy={post.postedBy} />
 

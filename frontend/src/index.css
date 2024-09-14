@@ -1,3 +1,4 @@
+/* Icon container hover effect */
 .icon-container {
 	border-radius: 50%;
 	padding: 8px;
@@ -10,6 +11,7 @@
 	background-color: #1e1e1e;
 }
 
+/* Scrollbar styling */
 ::-webkit-scrollbar {
 	width: 7px;
 }
@@ -24,9 +26,55 @@
 ::-webkit-scrollbar-thumb {
 	background-color: #555;
 }
-  
-  
 
+/* Popout hover effect for posts */
+@keyframes popout {
+	0% {
+	  transform: scale(1);
+	  opacity: 1;
+	}
+	50% {
+	  transform: scale(1.05);
+	  opacity: 1;
+	}
+	100% {
+	  transform: scale(1);
+	  opacity: 1;
+	}
+}
+
+@keyframes rainbowGlow {
+	0% {
+	  box-shadow: 0 0 5px red, 0 0 10px red, 0 0 15px red;
+	}
+	14% {
+	  box-shadow: 0 0 5px orange, 0 0 10px orange, 0 0 15px orange;
+	}
+	28% {
+	  box-shadow: 0 0 5px yellow, 0 0 10px yellow, 0 0 15px yellow;
+	}
+	42% {
+	  box-shadow: 0 0 5px green, 0 0 10px green, 0 0 15px green;
+	}
+	57% {
+	  box-shadow: 0 0 5px blue, 0 0 10px blue, 0 0 15px blue;
+	}
+	71% {
+	  box-shadow: 0 0 5px indigo, 0 0 10px indigo, 0 0 15px indigo;
+	}
+	85% {
+	  box-shadow: 0 0 5px violet, 0 0 10px violet, 0 0 15px violet;
+	}
+	100% {
+	  box-shadow: 0 0 5px red, 0 0 10px red, 0 0 15px red;
+	}
+}
+
+.popoutAnimation {
+	animation: popout 1s ease-out, rainbowGlow 1.5s infinite;
+}
+
+/* New to You text color change effect */
 @keyframes pulseEffect {
 	0% {
 		color: #FF6F61; /* Orangish-red for the N */
@@ -52,4 +100,15 @@
 	display: inline-block;
 	animation: pulseEffect 2s ease-in-out infinite;
 	text-shadow: 0 0 5px rgba(255, 112, 67, 0.2), 0 0 10px rgba(255, 112, 67, 0.1); /* Subtle glow */
+}
+
+/* Hover effect for the entire post container */
+.postContainer {
+	transition: all 0.3s ease-in-out;
+}
+
+.postContainer:hover {
+	transform: scale(1.05) rotate(1deg);
+	box-shadow: 0 0 15px rgba(255, 165, 0, 0.5); /* Slight glow */
+	background-color: teal.50;
 }
