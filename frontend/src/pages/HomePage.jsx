@@ -311,7 +311,7 @@ const HomePage = () => {
 					return (
 						<Box
 							key={post._id}
-							className="postContainer"
+							className="postContainer" // This is where the popout hover effect will happen
 							borderWidth="1px"
 							borderRadius="lg"
 							p={4}
