@@ -68,12 +68,26 @@ const resources = {
       "Post deleted": "Post deleted",  // Toast message for successful deletion
       "Error deleting post": "Error deleting post",  // Error message
       "ago": "ago",  // Used for time formatting
+
       // UserPost Component Translations
       "replies": "replies",
       "likes": "likes",
       "1d": "1d", // Keep the time format consistent
       "markzuckerberg": "Mark Zuckerberg",
-      "Post Title Placeholder": "This is a post title placeholder"
+      "Post Title Placeholder": "This is a post title placeholder",
+
+       // Actions Component Translations
+       "Like": "Like",
+       "Comment": "Comment",
+       "Repost": "Repost",
+       "Share": "Share",
+       "Error": "Error",
+       "Success": "Success",
+       "You must be logged in to like a post": "You must be logged in to like a post",
+       "You must be logged in to reply to a post": "You must be logged in to reply to a post",
+       "Reply": "Reply",
+       "Reply posted successfully": "Reply posted successfully",
+       "Reply goes here...": "Reply goes here..."
     }
   },
   zh: {
@@ -103,7 +117,20 @@ const resources = {
      "likes": "点赞",
      "1d": "1天前",
      "markzuckerberg": "马克·扎克伯格",
-     "Post Title Placeholder": "这是一个帖子标题占位符"
+     "Post Title Placeholder": "这是一个帖子标题占位符",
+
+     // Actions Component Translations
+     "Like": "点赞",
+     "Comment": "评论",
+     "Repost": "转发",
+     "Share": "分享",
+     "Error": "错误",
+     "Success": "成功",
+     "You must be logged in to like a post": "您必须登录才能点赞",
+     "You must be logged in to reply to a post": "您必须登录才能回复帖子",
+     "Reply": "回复",
+     "Reply posted successfully": "回复发布成功",
+     "Reply goes here...": "请输入回复内容..."
     }
   }
 };
