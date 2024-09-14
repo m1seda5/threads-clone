@@ -87,7 +87,15 @@ const resources = {
        "You must be logged in to reply to a post": "You must be logged in to reply to a post",
        "Reply": "Reply",
        "Reply posted successfully": "Reply posted successfully",
-       "Reply goes here...": "Reply goes here..."
+       "Reply goes here...": "Reply goes here...",
+
+      //  create post translations
+      "Create Post": "Create Post",
+      "Post content goes here..": "Post content goes here..",
+      "Post": "Post",
+      "Post created successfully": "Post created successfully",
+      "Error": "Error",
+      "Error creating post": "Error creating post"
     }
   },
   zh: {
@@ -130,7 +138,15 @@ const resources = {
      "You must be logged in to reply to a post": "您必须登录才能回复帖子",
      "Reply": "回复",
      "Reply posted successfully": "回复发布成功",
-     "Reply goes here...": "请输入回复内容..."
+     "Reply goes here...": "请输入回复内容...",
+
+    //  create post component 
+    "Create Post": "创建帖子",
+    "Post content goes here..": "帖子内容在这里...",
+    "Post": "发布",
+    "Post created successfully": "帖子成功发布",
+    "Error": "错误",
+    "Error creating post": "创建帖子时出错"
     }
   }
 };
