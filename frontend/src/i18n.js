@@ -95,7 +95,49 @@ const resources = {
       "Post": "Post",
       "Post created successfully": "Post created successfully",
       "Error": "Error",
-      "Error creating post": "Error creating post"
+      "Error creating post": "Error creating post",
+
+      // message translations
+      "Error": "Error",
+      "Are you sure you want to delete this post?": "Are you sure you want to delete this post?",
+      "Error deleting post": "Error deleting post",
+      "Success": "Success",
+      "Post deleted": "Post deleted",
+      "ago": "ago",
+      "Message contains inappropriate content and was not sent.": "Message contains inappropriate content and was not sent.",
+      "Delete message": "Delete message",
+      "Message image": "Message image",
+
+      // chat page translations
+      "Your Conversations": "Your Conversations",
+      "Search for a user": "Search for a user",
+      "Error": "Error",
+      "You cannot message yourself": "You cannot message yourself",
+      "Select a conversation to start messaging": "Select a conversation to start messaging",
+      "ago": "ago",
+      "Error deleting post": "Error deleting post",
+      "Are you sure you want to delete this post?": "Are you sure you want to delete this post?",
+      "Success": "Success",
+      "Post deleted": "Post deleted",
+
+      // post page component 
+      "Error": "Error",
+  "Success": "Success",
+  "Post deleted": "Post deleted",
+  "Are you sure you want to delete this post?": "Are you sure you want to delete this post?",
+  "Error deleting post": "Error deleting post",
+  "ago": "ago",
+  "The application is coming to your phone soon.": "The application is coming to your phone soon.",
+  "Loading": "Loading...",
+  "Delete post confirmation": "Are you sure you want to delete this post?",
+  "No post found": "No post found.",
+  "Unable to load post": "Unable to load post.",
+  "Replies": "Replies",
+  "Post": "Post",
+  "Like": "Like",
+  "Unlike": "Unlike",
+  "Comment": "Comment",
+  "Share": "Share"
     }
   },
   zh: {
@@ -146,7 +188,49 @@ const resources = {
     "Post": "发布",
     "Post created successfully": "帖子成功发布",
     "Error": "错误",
-    "Error creating post": "创建帖子时出错"
+    "Error creating post": "创建帖子时出错",
+
+    // message translations
+    "Error": "错误",
+    "Are you sure you want to delete this post?": "你确定要删除这篇帖子吗？",
+    "Error deleting post": "删除帖子时出错",
+    "Success": "成功",
+    "Post deleted": "帖子已删除",
+    "ago": "之前",
+    "Message contains inappropriate content and was not sent.": "消息包含不适当内容，未发送。",
+    "Delete message": "删除消息",
+    "Message image": "消息图片",
+
+    // chatpage translations
+    "Your Conversations": "您的对话",
+    "Search for a user": "搜索用户",
+    "Error": "错误",
+    "You cannot message yourself": "您不能给自己发消息",
+    "Select a conversation to start messaging": "选择一个对话开始消息",
+    "ago": "前",
+    "Error deleting post": "删除帖子时出错",
+    "Are you sure you want to delete this post?": "您确定要删除此帖子吗？",
+    "Success": "成功",
+    "Post deleted": "帖子已删除",
+
+    // post page component 
+    "Error": "错误",
+    "Success": "成功",
+    "Post deleted": "帖子已删除",
+    "Are you sure you want to delete this post?": "您确定要删除此帖子吗？",
+    "Error deleting post": "删除帖子时出错",
+    "ago": "前",
+    "The application is coming to your phone soon.": "应用程序即将登陆您的手机。",
+    "Loading": "加载中...",
+    "Delete post confirmation": "您确定要删除此帖子吗？",
+    "No post found": "未找到帖子。",
+    "Unable to load post": "无法加载帖子。",
+    "Replies": "回复",
+    "Post": "帖子",
+    "Like": "赞",
+    "Unlike": "取消赞",
+    "Comment": "评论",
+    "Share": "分享"
     }
   }
 };
