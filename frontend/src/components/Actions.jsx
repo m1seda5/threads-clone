@@ -723,7 +723,7 @@ import userAtom from "../atoms/userAtom";
 import useShowToast from "../hooks/useShowToast";
 import postsAtom from "../atoms/postsAtom";
 import { debounce } from "lodash";
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';  // Import useTranslation
 
 const Actions = ({ post }) => {
     const user = useRecoilValue(userAtom);
@@ -731,23 +731,23 @@ const Actions = ({ post }) => {
     const [posts, setPosts] = useRecoilState(postsAtom);
     const [isLiking, setIsLiking] = useState(false);
     const [isReplying, setIsReplying] = useState(false);
+    const [isReposting, setIsReposting] = useState(false);  // Added state for reposting
     const [reply, setReply] = useState("");
-    const [isReposting, setIsReposting] = useState(false); // Add state for reposting
     const showToast = useShowToast();
     const { isOpen, onOpen, onClose } = useDisclosure();
 
-    const { t, i18n } = useTranslation();
-    const [language, setLanguage] = useState(i18n.language);
+    const { t, i18n } = useTranslation();  // Initialize the translation hook
+    const [language, setLanguage] = useState(i18n.language);  // Add a state for language
 
     useEffect(() => {
         const handleLanguageChange = (lng) => {
             setLanguage(lng);
         };
 
-        i18n.on('languageChanged', handleLanguageChange);
+        i18n.on('languageChanged', handleLanguageChange);  // Listen for language change
 
         return () => {
-            i18n.off('languageChanged', handleLanguageChange);
+            i18n.off('languageChanged', handleLanguageChange);  // Cleanup on component unmount
         };
     }, [i18n]);
 
@@ -759,6 +759,7 @@ const Actions = ({ post }) => {
             const originalLiked = liked;
             const originalPosts = [...posts];
 
+            // Optimistically update the UI
             setLiked(!liked);
             setPosts(posts.map(p => p._id === post._id ? {
                 ...p,
@@ -777,6 +778,7 @@ const Actions = ({ post }) => {
                     throw new Error(data.error);
                 }
             } catch (error) {
+                // Revert the state if API call fails
                 setLiked(originalLiked);
                 setPosts(originalPosts);
                 showToast(t("Error"), error.message, "error");
@@ -826,6 +828,12 @@ const Actions = ({ post }) => {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
             });
+
+            if (!res.ok) {
+                const text = await res.text();  // Read response as text
+                throw new Error(`Unexpected response: ${text}`);
+            }
+
             const data = await res.json();
 
             if (data.error) {
@@ -881,7 +889,8 @@ const Actions = ({ post }) => {
                     ></path>
                 </svg>
 
-                <RepostSVG onClick={handleRepost} /> {/* Pass handleRepost */}
+                <RepostSVG onClick={handleRepost} /> {/* Added onClick */}
+                {/* Remove ShareSVG if not needed */}
             </Flex>
 
             <Flex gap={2} alignItems="center">
@@ -920,27 +929,58 @@ const Actions = ({ post }) => {
     );
 };
 
-const RepostSVG = ({ onClick }) => {
-    const { t } = useTranslation();
+export default Actions;
 
+const RepostSVG = ({ onClick }) => {
     return (
         <svg
-            aria-label={t("Repost")}
+            aria-label="Repost"
             color="currentColor"
             fill="currentColor"
             height="20"
             role="img"
             viewBox="0 0 24 24"
             width="20"
-            onClick={onClick}  // Add onClick handler
-            style={{ cursor: 'pointer' }}  // Optional: Adds pointer cursor
+            onClick={onClick}  // Added onClick prop
         >
-            <title>{t("Repost")}</title>
+            <title>Repost</title>
             <path
+                fill=""
                 d="M19.998 9.497a1 1 0 0 0-1 1v4.228a3.274 3.274 0 0 1-3.27 3.27h-5.313l1.791-1.787a1 1 0 0 0-1.412-1.416L7.29 18.287a1.004 1.004 0 0 0-.294.707v.001c0 .023.012.042.013.065a.923.923 0 0 0 .281.643l3.502 3.504a1 1 0 0 0 1.414-1.414l-1.797-1.798h5.318a5.276 5.276 0 0 0 5.27-5.27v-4.228a1 1 0 0 0-1-1Zm-6.41-3.496-1.795 1.795a1 1 0 1 0 1.414 1.414l3.5-3.5a1.003 1.003 0 0 0 0-1.417l-3.5-3.5a1 1 0 0 0-1.414 1.414l1.794 1.794H8.27A5.277 5.277 0 0 0 3 9.271V13.5a1 1 0 0 0 2 0V9.271a3.275 3.275 0 0 1 3.271-3.27Z"
             ></path>
         </svg>
     );
 };
 
-export default Actions;
+// const ShareSVG = () => {
+//     return (
+//         <svg
+//             aria-label="Share"
+//             color=""
+//             fill="rgb(243, 245, 247)"
+//             height="20"
+//             role="img"
+//             viewBox="0 0 24 24"
+//             width="20"
+//         >
+//             <title>Share</title>
+//             <line
+//                 fill="none"
+//                 stroke="currentColor"
+//                 strokeLinejoin="round"
+//                 strokeWidth="2"
+//                 x1="22"
+//                 x2="9.218"
+//                 y1="3"
+//                 y2="10.083"
+//             ></line>
+//             <polygon
+//                 fill="none"
+//                 points="11.698 20.334 22 3.001 2 3.001 9.218 10.084 11.698 20.334"
+//                 stroke="currentColor"
+//                 strokeLinejoin="round"
+//                 strokeWidth="2"
+//             ></polygon>
+//         </svg>
+//     );
+// };
