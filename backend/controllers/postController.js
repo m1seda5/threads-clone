@@ -585,7 +585,6 @@ export {
   deletePost,
   likeUnlikePost,
   replyToPost,
-  repostPost, // Export the new repostPost method
   getFeedPosts,
   getUserPosts,
 };

@@ -817,37 +817,39 @@ const Actions = ({ post }) => {
             setIsReplying(false);
         }
     };
+ 
 
-    const handleRepost = async () => {
-        if (!user) return showToast(t("Error"), t("You must be logged in to repost"), "error");
-        if (isReposting) return;
+    // repost disabled for now 
+    // const handleRepost = async () => {
+    //     if (!user) return showToast(t("Error"), t("You must be logged in to repost"), "error");
+    //     if (isReposting) return;
 
-        setIsReposting(true);
-        try {
-            const res = await fetch(`/api/posts/repost/${post._id}`, {
-                method: "PUT",
-                headers: { "Content-Type": "application/json" },
-            });
+    //     setIsReposting(true);
+    //     try {
+    //         const res = await fetch(`/api/posts/repost/${post._id}`, {
+    //             method: "PUT",
+    //             headers: { "Content-Type": "application/json" },
+    //         });
 
-            if (!res.ok) {
-                const text = await res.text();  // Read response as text
-                throw new Error(`Unexpected response: ${text}`);
-            }
+    //         if (!res.ok) {
+    //             const text = await res.text();  // Read response as text
+    //             throw new Error(`Unexpected response: ${text}`);
+    //         }
 
-            const data = await res.json();
+    //         const data = await res.json();
 
-            if (data.error) {
-                throw new Error(data.error);
-            }
+    //         if (data.error) {
+    //             throw new Error(data.error);
+    //         }
 
-            setPosts(posts.map(p => p._id === post._id ? { ...p, reposts: [...p.reposts, user._id] } : p));
-            showToast(t("Success"), t("Post reposted successfully"), "success");
-        } catch (error) {
-            showToast(t("Error"), error.message, "error");
-        } finally {
-            setIsReposting(false);
-        }
-    };
+    //         setPosts(posts.map(p => p._id === post._id ? { ...p, reposts: [...p.reposts, user._id] } : p));
+    //         showToast(t("Success"), t("Post reposted successfully"), "success");
+    //     } catch (error) {
+    //         showToast(t("Error"), error.message, "error");
+    //     } finally {
+    //         setIsReposting(false);
+    //     }
+    // };
 
     return (
         <Flex flexDirection="column">
@@ -930,27 +932,27 @@ const Actions = ({ post }) => {
 };
 
 export default Actions;
-
-const RepostSVG = ({ onClick }) => {
-    return (
-        <svg
-            aria-label="Repost"
-            color="currentColor"
-            fill="currentColor"
-            height="20"
-            role="img"
-            viewBox="0 0 24 24"
-            width="20"
-            onClick={onClick}  // Added onClick prop
-        >
-            <title>Repost</title>
-            <path
-                fill=""
-                d="M19.998 9.497a1 1 0 0 0-1 1v4.228a3.274 3.274 0 0 1-3.27 3.27h-5.313l1.791-1.787a1 1 0 0 0-1.412-1.416L7.29 18.287a1.004 1.004 0 0 0-.294.707v.001c0 .023.012.042.013.065a.923.923 0 0 0 .281.643l3.502 3.504a1 1 0 0 0 1.414-1.414l-1.797-1.798h5.318a5.276 5.276 0 0 0 5.27-5.27v-4.228a1 1 0 0 0-1-1Zm-6.41-3.496-1.795 1.795a1 1 0 1 0 1.414 1.414l3.5-3.5a1.003 1.003 0 0 0 0-1.417l-3.5-3.5a1 1 0 0 0-1.414 1.414l1.794 1.794H8.27A5.277 5.277 0 0 0 3 9.271V13.5a1 1 0 0 0 2 0V9.271a3.275 3.275 0 0 1 3.271-3.27Z"
-            ></path>
-        </svg>
-    );
-};
+// disabling repost functionality for now
+// const RepostSVG = ({ onClick }) => {
+//     return (
+//         <svg
+//             aria-label="Repost"
+//             color="currentColor"
+//             fill="currentColor"
+//             height="20"
+//             role="img"
+//             viewBox="0 0 24 24"
+//             width="20"
+//             onClick={onClick}  // Added onClick prop
+//         >
+//             <title>Repost</title>
+//             <path
+//                 fill=""
+//                 d="M19.998 9.497a1 1 0 0 0-1 1v4.228a3.274 3.274 0 0 1-3.27 3.27h-5.313l1.791-1.787a1 1 0 0 0-1.412-1.416L7.29 18.287a1.004 1.004 0 0 0-.294.707v.001c0 .023.012.042.013.065a.923.923 0 0 0 .281.643l3.502 3.504a1 1 0 0 0 1.414-1.414l-1.797-1.798h5.318a5.276 5.276 0 0 0 5.27-5.27v-4.228a1 1 0 0 0-1-1Zm-6.41-3.496-1.795 1.795a1 1 0 1 0 1.414 1.414l3.5-3.5a1.003 1.003 0 0 0 0-1.417l-3.5-3.5a1 1 0 0 0-1.414 1.414l1.794 1.794H8.27A5.277 5.277 0 0 0 3 9.271V13.5a1 1 0 0 0 2 0V9.271a3.275 3.275 0 0 1 3.271-3.27Z"
+//             ></path>
+//         </svg>
+//     );
+// };
 
 // const ShareSVG = () => {
 //     return (
