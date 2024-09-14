@@ -24,3 +24,50 @@
 ::-webkit-scrollbar-thumb {
 	background-color: #555;
 }
+
+@keyframes popout {
+	0% {
+	  transform: scale(1);
+	  opacity: 1;
+	}
+	50% {
+	  transform: scale(1.05);
+	  opacity: 1;
+	}
+	100% {
+	  transform: scale(1);
+	  opacity: 1;
+	}
+  }
+  
+  @keyframes rainbowGlow {
+	0% {
+	  box-shadow: 0 0 5px red, 0 0 10px red, 0 0 15px red;
+	}
+	14% {
+	  box-shadow: 0 0 5px orange, 0 0 10px orange, 0 0 15px orange;
+	}
+	28% {
+	  box-shadow: 0 0 5px yellow, 0 0 10px yellow, 0 0 15px yellow;
+	}
+	42% {
+	  box-shadow: 0 0 5px green, 0 0 10px green, 0 0 15px green;
+	}
+	57% {
+	  box-shadow: 0 0 5px blue, 0 0 10px blue, 0 0 15px blue;
+	}
+	71% {
+	  box-shadow: 0 0 5px indigo, 0 0 10px indigo, 0 0 15px indigo;
+	}
+	85% {
+	  box-shadow: 0 0 5px violet, 0 0 10px violet, 0 0 15px violet;
+	}
+	100% {
+	  box-shadow: 0 0 5px red, 0 0 10px red, 0 0 15px red;
+	}
+  }
+  
+  .popoutAnimation {
+	animation: popout 1s ease-out, rainbowGlow 1.5s infinite;
+  }
+  

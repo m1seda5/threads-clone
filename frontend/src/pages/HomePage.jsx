@@ -150,18 +150,111 @@
 // export default HomePage;
 
 // this is is home page with sugggested users disable version 3 working
-import { Box, Flex, Spinner } from "@chakra-ui/react";
+// import { Box, Flex, Spinner } from "@chakra-ui/react";
+// import { useEffect, useState } from "react";
+// import useShowToast from "../hooks/useShowToast";
+// import Post from "../components/Post";
+// import { useRecoilState } from "recoil";
+// import postsAtom from "../atoms/postsAtom";
+// // import SuggestedUsers from "../components/SuggestedUsers"; // Commented out the import
+
+// const HomePage = () => {
+// 	const [posts, setPosts] = useRecoilState(postsAtom);
+// 	const [loading, setLoading] = useState(true);
+// 	const showToast = useShowToast();
+
+// 	useEffect(() => {
+// 		const getFeedPosts = async () => {
+// 			setLoading(true);
+// 			setPosts([]);
+// 			try {
+// 				const res = await fetch("/api/posts/feed");
+// 				const data = await res.json();
+// 				if (data.error) {
+// 					showToast("Error", data.error, "error");
+// 					return;
+// 				}
+// 				console.log(data);
+// 				setPosts(data);
+// 			} catch (error) {
+// 				showToast("Error", error.message, "error");
+// 			} finally {
+// 				setLoading(false);
+// 			}
+// 		};
+// 		getFeedPosts();
+// 	}, [showToast, setPosts]);
+
+// 	return (
+// 		<Flex gap="10" alignItems={"flex-start"}>
+// 			<Box flex={70}>
+// 				{!loading && posts.length === 0 && (
+// 					<h1>welcome  to pear you have succesfully created an account login in to see the latest brookhouse news.</h1>
+// 				)}
+
+// 				{loading && (
+// 					<Flex justifyContent="center">
+// 						<Spinner size="xl" />
+// 					</Flex>
+// 				)}
+
+// 				{posts.map((post) => (
+// 					<Box
+// 						key={post._id}
+// 						borderWidth="1px"
+// 						borderRadius="lg"
+// 						p={4}
+// 						mb={6}
+// 						boxShadow="sm"
+// 						transition="all 0.3s ease-in-out"
+// 						_hover={{
+// 							transform: "scale(1.05) rotate(1deg)",
+// 							boxShadow: "lg",
+// 							backgroundColor: "teal.50",
+// 						}}
+// 					>
+// 						{/* Assuming Post component takes care of image and content */}
+// 						<Post post={post} postedBy={post.postedBy} />
+// 					</Box>
+// 				))}
+// 			</Box>
+
+// 			{/* 
+// 			<Box
+// 				flex={30}
+// 				display={{
+// 					base: "none",
+// 					md: "block",
+// 				}}
+// 			>
+// 				<SuggestedUsers />
+// 			</Box>
+// 			*/}
+// 		</Flex>
+// 	);
+// };
+
+// export default HomePage;
+
+
+
+
+// adding the new posts 
+import { Box, Flex, Spinner, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import useShowToast from "../hooks/useShowToast";
 import Post from "../components/Post";
 import { useRecoilState } from "recoil";
 import postsAtom from "../atoms/postsAtom";
-// import SuggestedUsers from "../components/SuggestedUsers"; // Commented out the import
+import './styles.css'; // Ensure to import your CSS file for animations
 
 const HomePage = () => {
 	const [posts, setPosts] = useRecoilState(postsAtom);
 	const [loading, setLoading] = useState(true);
+	const [highlightedPosts, setHighlightedPosts] = useState([]);
 	const showToast = useShowToast();
+	const [fetchTime, setFetchTime] = useState(Date.now());
+	const [newPostsAnimation, setNewPostsAnimation] = useState([]);
 
 	useEffect(() => {
 		const getFeedPosts = async () => {
@@ -176,6 +269,17 @@ const HomePage = () => {
 				}
 				console.log(data);
 				setPosts(data);
+				const now = Date.now();
+				setFetchTime(now);
+				const newPosts = data.filter(post => now - new Date(post.createdAt).getTime() <= 3 * 60 * 60 * 1000);
+				setHighlightedPosts(newPosts);
+				setNewPostsAnimation(newPosts.map(post => post._id));
+				
+				// Remove animation class after 2 seconds
+				setTimeout(() => {
+					setNewPostsAnimation([]);
+				}, 2000);
+
 			} catch (error) {
 				showToast("Error", error.message, "error");
 			} finally {
@@ -189,7 +293,7 @@ const HomePage = () => {
 		<Flex gap="10" alignItems={"flex-start"}>
 			<Box flex={70}>
 				{!loading && posts.length === 0 && (
-					<h1>welcome  to pear you have succesfully created an account login in to see the latest brookhouse news.</h1>
+					<h1>Welcome to Pear! You have successfully created an account. Log in to see the latest Brookhouse news.</h1>
 				)}
 
 				{loading && (
@@ -207,6 +311,7 @@ const HomePage = () => {
 						mb={6}
 						boxShadow="sm"
 						transition="all 0.3s ease-in-out"
+						className={newPostsAnimation.includes(post._id) ? "popoutAnimation" : ""}
 						_hover={{
 							transform: "scale(1.05) rotate(1deg)",
 							boxShadow: "lg",
@@ -215,25 +320,14 @@ const HomePage = () => {
 					>
 						{/* Assuming Post component takes care of image and content */}
 						<Post post={post} postedBy={post.postedBy} />
+						{highlightedPosts.includes(post) && (
+							<Text color="red.500" fontWeight="bold" mt={2}>New to you!</Text>
+						)}
 					</Box>
 				))}
 			</Box>
-
-			{/* 
-			<Box
-				flex={30}
-				display={{
-					base: "none",
-					md: "block",
-				}}
-			>
-				<SuggestedUsers />
-			</Box>
-			*/}
 		</Flex>
 	);
 };
 
 export default HomePage;
-
-
