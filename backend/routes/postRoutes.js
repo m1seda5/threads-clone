@@ -5,7 +5,6 @@ import {
 	getPost,
 	likeUnlikePost,
 	replyToPost,
-	repostPost, // Ensure repostPost is imported
 	getFeedPosts,
 	getUserPosts,
 } from "../controllers/postController.js";
