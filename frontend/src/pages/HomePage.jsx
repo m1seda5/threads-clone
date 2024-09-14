@@ -246,7 +246,8 @@ import useShowToast from "../hooks/useShowToast";
 import Post from "../components/Post";
 import { useRecoilState } from "recoil";
 import postsAtom from "../atoms/postsAtom";
-import './styles.css'; // Ensure to import your CSS file for animations
+import '../index.css'; // Adjust path according to your file structure
+
 
 const HomePage = () => {
 	const [posts, setPosts] = useRecoilState(postsAtom);
