@@ -29,63 +29,28 @@
 	animation: popout 1s ease-out, rainbowGlow 1.5s infinite;
   }
 
-  @keyframes popout {
+  @keyframes glowEffect {
 	0% {
-		transform: scale(1);
-		opacity: 1;
+		text-shadow: 0 0 5px rgba(255, 0, 0, 0.5), 0 0 10px rgba(255, 0, 0, 0.5);
 	}
-	50% {
-		transform: scale(1.1); /* Increase popout slightly */
-		opacity: 1;
+	20% {
+		text-shadow: 0 0 5px rgba(255, 165, 0, 0.5), 0 0 10px rgba(255, 165, 0, 0.5);
+	}
+	40% {
+		text-shadow: 0 0 5px rgba(255, 255, 0, 0.5), 0 0 10px rgba(255, 255, 0, 0.5);
+	}
+	60% {
+		text-shadow: 0 0 5px rgba(0, 128, 0, 0.5), 0 0 10px rgba(0, 128, 0, 0.5);
+	}
+	80% {
+		text-shadow: 0 0 5px rgba(0, 0, 255, 0.5), 0 0 10px rgba(0, 0, 255, 0.5);
 	}
 	100% {
-		transform: scale(1);
-		opacity: 1;
+		text-shadow: 0 0 5px rgba(75, 0, 130, 0.5), 0 0 10px rgba(75, 0, 130, 0.5);
 	}
 }
 
-@keyframes modernRainbowGlow {
-	0% {
-		box-shadow: 0 0 8px rgba(255, 0, 150, 0.5), 0 0 12px rgba(255, 0, 150, 0.5);
-	}
-	25% {
-		box-shadow: 0 0 8px rgba(0, 255, 150, 0.5), 0 0 12px rgba(0, 255, 150, 0.5);
-	}
-	50% {
-		box-shadow: 0 0 8px rgba(0, 150, 255, 0.5), 0 0 12px rgba(0, 150, 255, 0.5);
-	}
-	75% {
-		box-shadow: 0 0 8px rgba(150, 0, 255, 0.5), 0 0 12px rgba(150, 0, 255, 0.5);
-	}
-	100% {
-		box-shadow: 0 0 8px rgba(255, 0, 150, 0.5), 0 0 12px rgba(255, 0, 150, 0.5);
-	}
-}
-
-@keyframes newToYouTextGlow {
-	0% {
-		color: rgba(255, 0, 150, 0.8);
-	}
-	25% {
-		color: rgba(0, 255, 150, 0.8);
-	}
-	50% {
-		color: rgba(0, 150, 255, 0.8);
-	}
-	75% {
-		color: rgba(150, 0, 255, 0.8);
-	}
-	100% {
-		color: rgba(255, 0, 150, 0.8);
-	}
-}
-
-.popoutAnimation {
-	animation: popout 1.5s ease-out, modernRainbowGlow 1.5s ease-in-out infinite;
-}
-
-.newToYouMessage {
-	animation: newToYouTextGlow 5s infinite; /* Color change for text */
-	transition: color 0.5s ease-in-out;
+.newToYouText {
 	font-weight: bold;
+	animation: glowEffect 3s ease-in-out infinite;
 }

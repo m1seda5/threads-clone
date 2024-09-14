@@ -246,14 +246,13 @@ import useShowToast from "../hooks/useShowToast";
 import Post from "../components/Post";
 import { useRecoilState } from "recoil";
 import postsAtom from "../atoms/postsAtom";
-import '../index.css'; // Ensure you import the correct CSS
+import '../index.css'; // Ensure correct CSS is imported
 
 const HomePage = () => {
 	const [posts, setPosts] = useRecoilState(postsAtom);
 	const [loading, setLoading] = useState(true);
-	const [highlightedPosts, setHighlightedPosts] = useState([]);
+	const [newPosts, setNewPosts] = useState([]);
 	const showToast = useShowToast();
-	const [newPostsAnimation, setNewPostsAnimation] = useState([]);
 
 	useEffect(() => {
 		const getFeedPosts = async () => {
@@ -267,18 +266,18 @@ const HomePage = () => {
 					return;
 				}
 				setPosts(data);
-				const now = Date.now();
-				const newPosts = data.filter(post => {
-					const postAgeInHours = (now - new Date(post.createdAt).getTime()) / (1000 * 60 * 60);
-					return postAgeInHours <= 3; // Check if the post is within the last 1-3 hours
-				});
-				setHighlightedPosts(newPosts);
-				setNewPostsAnimation(newPosts.map(post => post._id));
 
-				// Remove animation class after 5 seconds
+				const now = Date.now();
+				const recentPosts = data.filter(post => {
+					const postAgeInHours = (now - new Date(post.createdAt).getTime()) / (1000 * 60 * 60);
+					return postAgeInHours <= 3; // Check if post is within 1-3 hours
+				});
+				setNewPosts(recentPosts);
+
+				// "New to you" message disappears after 30 seconds
 				setTimeout(() => {
-					setNewPostsAnimation([]);
-				}, 5000); // 5 seconds for the popout and glow
+					setNewPosts([]);
+				}, 30000); // 30 seconds for the text to disappear
 			} catch (error) {
 				showToast("Error", error.message, "error");
 			} finally {
@@ -288,7 +287,7 @@ const HomePage = () => {
 		getFeedPosts();
 	}, [showToast, setPosts]);
 
-	// Check if post is still within the 3-hour window
+	// Check if post is still within the 1-3 hour window
 	const isNewPost = (postTime) => {
 		const now = Date.now();
 		const postAgeInHours = (now - new Date(postTime).getTime()) / (1000 * 60 * 60);
@@ -320,7 +319,6 @@ const HomePage = () => {
 							mb={6}
 							boxShadow="sm"
 							transition="all 0.3s ease-in-out"
-							className={newPostsAnimation.includes(post._id) && isNew ? "popoutAnimation" : ""}
 							_hover={{
 								transform: "scale(1.05) rotate(1deg)",
 								boxShadow: "lg",
@@ -328,8 +326,9 @@ const HomePage = () => {
 							}}
 						>
 							<Post post={post} postedBy={post.postedBy} />
-							{isNew && newPostsAnimation.includes(post._id) && (
-								<Text className="newToYouMessage" mt={2}>New to you!</Text>
+
+							{isNew && newPosts.includes(post) && (
+								<Text className="newToYouText" mt={2}>New to you!</Text>
 							)}
 						</Box>
 					);
