@@ -28,16 +28,16 @@
 	background-color: #555;
 }
 
-/* Popout hover effect for posts */
+/* Popout and rotation hover effect for posts */
 @keyframes popoutHover {
 	0% {
-		transform: scale(1);
+		transform: scale(1) rotate(0deg);
 	}
 	50% {
-		transform: scale(1.03); /* Slight popout */
+		transform: scale(1.05) rotate(3deg); /* Slight popout and rotation */
 	}
 	100% {
-		transform: scale(1);
+		transform: scale(1) rotate(0deg);
 	}
 }
 
