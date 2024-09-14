@@ -319,11 +319,6 @@ const HomePage = () => {
 							mb={6}
 							boxShadow="sm"
 							transition="all 0.3s ease-in-out"
-							_hover={{
-								transform: "scale(1.05) rotate(1deg)",
-								boxShadow: "lg",
-								backgroundColor: "teal.50",
-							}}
 						>
 							<Post post={post} postedBy={post.postedBy} />
 
@@ -339,3 +334,4 @@ const HomePage = () => {
 };
 
 export default HomePage;
+
