@@ -246,15 +246,13 @@ import useShowToast from "../hooks/useShowToast";
 import Post from "../components/Post";
 import { useRecoilState } from "recoil";
 import postsAtom from "../atoms/postsAtom";
-import '../index.css'; // Adjust path according to your file structure
-
+import '../index.css'; // Ensure you import the correct CSS
 
 const HomePage = () => {
 	const [posts, setPosts] = useRecoilState(postsAtom);
 	const [loading, setLoading] = useState(true);
 	const [highlightedPosts, setHighlightedPosts] = useState([]);
 	const showToast = useShowToast();
-	const [fetchTime, setFetchTime] = useState(Date.now());
 	const [newPostsAnimation, setNewPostsAnimation] = useState([]);
 
 	useEffect(() => {
@@ -268,19 +266,19 @@ const HomePage = () => {
 					showToast("Error", data.error, "error");
 					return;
 				}
-				console.log(data);
 				setPosts(data);
 				const now = Date.now();
-				setFetchTime(now);
-				const newPosts = data.filter(post => now - new Date(post.createdAt).getTime() <= 3 * 60 * 60 * 1000);
+				const newPosts = data.filter(post => {
+					const postAgeInHours = (now - new Date(post.createdAt).getTime()) / (1000 * 60 * 60);
+					return postAgeInHours <= 3; // Check if the post is within the last 1-3 hours
+				});
 				setHighlightedPosts(newPosts);
 				setNewPostsAnimation(newPosts.map(post => post._id));
-				
-				// Remove animation class after 2 seconds
+
+				// Remove animation class after 5 seconds
 				setTimeout(() => {
 					setNewPostsAnimation([]);
-				}, 2000);
-
+				}, 5000); // 5 seconds for the popout and glow
 			} catch (error) {
 				showToast("Error", error.message, "error");
 			} finally {
@@ -289,6 +287,13 @@ const HomePage = () => {
 		};
 		getFeedPosts();
 	}, [showToast, setPosts]);
+
+	// Check if post is still within the 3-hour window
+	const isNewPost = (postTime) => {
+		const now = Date.now();
+		const postAgeInHours = (now - new Date(postTime).getTime()) / (1000 * 60 * 60);
+		return postAgeInHours <= 3;
+	};
 
 	return (
 		<Flex gap="10" alignItems={"flex-start"}>
@@ -303,29 +308,32 @@ const HomePage = () => {
 					</Flex>
 				)}
 
-				{posts.map((post) => (
-					<Box
-						key={post._id}
-						borderWidth="1px"
-						borderRadius="lg"
-						p={4}
-						mb={6}
-						boxShadow="sm"
-						transition="all 0.3s ease-in-out"
-						className={newPostsAnimation.includes(post._id) ? "popoutAnimation" : ""}
-						_hover={{
-							transform: "scale(1.05) rotate(1deg)",
-							boxShadow: "lg",
-							backgroundColor: "teal.50",
-						}}
-					>
-						{/* Assuming Post component takes care of image and content */}
-						<Post post={post} postedBy={post.postedBy} />
-						{highlightedPosts.includes(post) && (
-							<Text color="red.500" fontWeight="bold" mt={2}>New to you!</Text>
-						)}
-					</Box>
-				))}
+				{posts.map((post) => {
+					const isNew = isNewPost(post.createdAt);
+
+					return (
+						<Box
+							key={post._id}
+							borderWidth="1px"
+							borderRadius="lg"
+							p={4}
+							mb={6}
+							boxShadow="sm"
+							transition="all 0.3s ease-in-out"
+							className={newPostsAnimation.includes(post._id) && isNew ? "popoutAnimation" : ""}
+							_hover={{
+								transform: "scale(1.05) rotate(1deg)",
+								boxShadow: "lg",
+								backgroundColor: "teal.50",
+							}}
+						>
+							<Post post={post} postedBy={post.postedBy} />
+							{isNew && newPostsAnimation.includes(post._id) && (
+								<Text className="newToYouMessage" mt={2}>New to you!</Text>
+							)}
+						</Box>
+					);
+				})}
 			</Box>
 		</Flex>
 	);

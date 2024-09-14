@@ -31,43 +31,61 @@
 
   @keyframes popout {
 	0% {
-	  transform: scale(1);
-	  opacity: 1;
+		transform: scale(1);
+		opacity: 1;
 	}
 	50% {
-	  transform: scale(1.05);
-	  opacity: 1;
+		transform: scale(1.1); /* Increase popout slightly */
+		opacity: 1;
 	}
 	100% {
-	  transform: scale(1);
-	  opacity: 1;
+		transform: scale(1);
+		opacity: 1;
 	}
-  }
-  
-  @keyframes rainbowGlow {
+}
+
+@keyframes modernRainbowGlow {
 	0% {
-	  box-shadow: 0 0 5px red, 0 0 10px red, 0 0 15px red;
+		box-shadow: 0 0 8px rgba(255, 0, 150, 0.5), 0 0 12px rgba(255, 0, 150, 0.5);
 	}
-	14% {
-	  box-shadow: 0 0 5px orange, 0 0 10px orange, 0 0 15px orange;
+	25% {
+		box-shadow: 0 0 8px rgba(0, 255, 150, 0.5), 0 0 12px rgba(0, 255, 150, 0.5);
 	}
-	28% {
-	  box-shadow: 0 0 5px yellow, 0 0 10px yellow, 0 0 15px yellow;
+	50% {
+		box-shadow: 0 0 8px rgba(0, 150, 255, 0.5), 0 0 12px rgba(0, 150, 255, 0.5);
 	}
-	42% {
-	  box-shadow: 0 0 5px green, 0 0 10px green, 0 0 15px green;
-	}
-	57% {
-	  box-shadow: 0 0 5px blue, 0 0 10px blue, 0 0 15px blue;
-	}
-	71% {
-	  box-shadow: 0 0 5px indigo, 0 0 10px indigo, 0 0 15px indigo;
-	}
-	85% {
-	  box-shadow: 0 0 5px violet, 0 0 10px violet, 0 0 15px violet;
+	75% {
+		box-shadow: 0 0 8px rgba(150, 0, 255, 0.5), 0 0 12px rgba(150, 0, 255, 0.5);
 	}
 	100% {
-	  box-shadow: 0 0 5px red, 0 0 10px red, 0 0 15px red;
+		box-shadow: 0 0 8px rgba(255, 0, 150, 0.5), 0 0 12px rgba(255, 0, 150, 0.5);
 	}
-  }
-  
+}
+
+@keyframes newToYouTextGlow {
+	0% {
+		color: rgba(255, 0, 150, 0.8);
+	}
+	25% {
+		color: rgba(0, 255, 150, 0.8);
+	}
+	50% {
+		color: rgba(0, 150, 255, 0.8);
+	}
+	75% {
+		color: rgba(150, 0, 255, 0.8);
+	}
+	100% {
+		color: rgba(255, 0, 150, 0.8);
+	}
+}
+
+.popoutAnimation {
+	animation: popout 1.5s ease-out, modernRainbowGlow 1.5s ease-in-out infinite;
+}
+
+.newToYouMessage {
+	animation: newToYouTextGlow 5s infinite; /* Color change for text */
+	transition: color 0.5s ease-in-out;
+	font-weight: bold;
+}
