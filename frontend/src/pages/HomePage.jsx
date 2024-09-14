@@ -274,10 +274,9 @@ const HomePage = () => {
 				});
 				setNewPosts(recentPosts);
 
-				// "New to you" message disappears after 30 seconds
 				setTimeout(() => {
 					setNewPosts([]);
-				}, 30000); // 30 seconds for the text to disappear
+				}, 30000); // "New to you" message disappears after 30 seconds
 			} catch (error) {
 				showToast("Error", error.message, "error");
 			} finally {
@@ -287,7 +286,6 @@ const HomePage = () => {
 		getFeedPosts();
 	}, [showToast, setPosts]);
 
-	// Check if post is still within the 1-3 hour window
 	const isNewPost = (postTime) => {
 		const now = Date.now();
 		const postAgeInHours = (now - new Date(postTime).getTime()) / (1000 * 60 * 60);
@@ -334,4 +332,3 @@ const HomePage = () => {
 };
 
 export default HomePage;
-

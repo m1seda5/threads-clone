@@ -27,28 +27,29 @@
   
   
 
-@keyframes letterRainbowEffect {
+@keyframes pulseEffect {
 	0% {
-		color: red;
+		color: #FF6F61; /* Orangish-red for the N */
 	}
 	20% {
-		color: orange;
+		color: #FF7043; /* Slightly lighter orangish-red */
 	}
 	40% {
-		color: yellow;
+		color: #FF8A65;
 	}
 	60% {
-		color: green;
+		color: #FFAB91;
 	}
 	80% {
-		color: blue;
+		color: #FF7043;
 	}
 	100% {
-		color: violet;
+		color: #FF6F61; /* Back to the original color */
 	}
 }
 
 .newToYouText {
-	animation: letterRainbowEffect 2s ease-in-out infinite;
-	text-shadow: 0 0 5px rgba(0, 0, 0, 0.2), 0 0 10px rgba(0, 0, 0, 0.1); /* Subtle glow */
+	display: inline-block;
+	animation: pulseEffect 2s ease-in-out infinite;
+	text-shadow: 0 0 5px rgba(255, 112, 67, 0.2), 0 0 10px rgba(255, 112, 67, 0.1); /* Subtle glow */
 }
