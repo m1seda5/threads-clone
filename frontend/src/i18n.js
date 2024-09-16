@@ -141,8 +141,26 @@ const resources = {
       // trnalstions for home page
       "Error": "Error",
       "New to you!": "New to you!",
-      "Welcome to Pear! You have successfully created an account. Log in to see the latest Brookhouse news.": "Welcome to Pear! You have successfully created an account. Log in to see the latest Brookhouse news."
-    }
+      "Welcome to Pear! You have successfully created an account. Log in to see the latest Brookhouse news.": "Welcome to Pear! You have successfully created an account. Log in to see the latest Brookhouse news.",
+      // translations for the update profile page 
+      "User Profile Edit": "Edit Profile",
+      "Change Avatar": "Change Avatar",
+      "Full name": "Full name",
+      "John Doe": "John Doe",
+      "User name": "Username",
+      "johndoe": "johndoe",
+      "Email address": "Email address",
+      "your-email@example.com": "your-email@example.com",
+      "Bio": "Bio",
+      "Your bio.": "Your bio.",
+      "Password": "Password",
+      "password": "password",
+      "Cancel": "Cancel",
+      "Submit": "Submit",
+      "Profile updated successfully": "Profile updated successfully",
+      "Error updating profile": "Error updating profile"
+
+    } 
   },
   zh: {
     translation: {
@@ -238,7 +256,24 @@ const resources = {
       // transaltions for the home page 
       "Error": "错误",
       "New to you!": "新消息！",
-      "Welcome to Pear! You have successfully created an account. Log in to see the latest Brookhouse news.": "欢迎使用 Pear！您已成功创建账户。登录以查看最新的 Brookhouse 新闻。"
+      "Welcome to Pear! You have successfully created an account. Log in to see the latest Brookhouse news.": "欢迎使用 Pear！您已成功创建账户。登录以查看最新的 Brookhouse 新闻。",
+      // trnalstions for the update profile page 
+      "User Profile Edit": "编辑个人资料",
+      "Change Avatar": "更改头像",
+      "Full name": "全名",
+      "John Doe": "约翰·多伊",
+      "User name": "用户名",
+      "johndoe": "约翰多伊",
+      "Email address": "电子邮件地址",
+      "your-email@example.com": "你的邮箱@example.com",
+      "Bio": "简介",
+      "Your bio.": "您的简介。",
+      "Password": "密码",
+      "password": "密码",
+      "Cancel": "取消",
+      "Submit": "提交",
+      "Profile updated successfully": "个人资料更新成功",
+      "Error updating profile": "更新个人资料时出错"
     }
   }
 };
