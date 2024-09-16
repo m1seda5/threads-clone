@@ -419,7 +419,7 @@ export default function UpdateProfilePage() {
 				showToast(t("Error"), data.error, "error"); // Translate error message
 				return;
 			}
-			showToast(t("Success"), t("Profile updated successfully"), "success"); // Translate success message
+			showToast(t("Success"), t("Profile updated successfully"), "success"); // Translate success message             
 			setUser(data);
 			localStorage.setItem("user-threads", JSON.stringify(data));
 		} catch (error) {
