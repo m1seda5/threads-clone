@@ -362,6 +362,7 @@ import {
 	useColorModeValue,
 	Avatar,
 	Center,
+	CloseButton, // Import CloseButton
 } from "@chakra-ui/react";
 import { useRef, useState, useEffect } from "react";
 import { useRecoilState } from "recoil";
@@ -445,7 +446,15 @@ export default function UpdateProfilePage() {
 					rounded={"xl"}
 					boxShadow={"lg"}
 					p={6}
+					position="relative" // Set position relative for CloseButton positioning
 				>
+					<CloseButton
+						position="absolute"
+						top={2}
+						right={2}
+						onClick={handleDelete} // Add the delete button handler
+					/>
+
 					<Heading lineHeight={1.1} fontSize={{ base: "2xl", sm: "3xl" }}>
 						{t("User Profile Edit")} 
 					</Heading>
@@ -513,15 +522,6 @@ export default function UpdateProfilePage() {
 						/>
 					</FormControl>
 					<Stack spacing={6} direction={["column", "row"]}>
-						<Button
-							bg={"red.400"}
-							color={"white"}
-							w='full'
-							_hover={{ bg: "red.500" }}
-							onClick={handleDelete} // Add the delete button handler
-						>
-							{t("Delete Account")} 
-						</Button>
 						<Button
 							bg={"red.400"}
 							color={"white"}
