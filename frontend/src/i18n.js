@@ -158,7 +158,8 @@ const resources = {
       "Cancel": "Cancel",
       "Submit": "Submit",
       "Profile updated successfully": "Profile updated successfully",
-      "Error updating profile": "Error updating profile"
+      "Error updating profile": "Error updating profile",
+      "steep": "steep"
 
     } 
   },
