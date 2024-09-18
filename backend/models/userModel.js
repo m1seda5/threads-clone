@@ -98,19 +98,16 @@ const userSchema = mongoose.Schema(
     },
     verification: {
       type: String,
-      enum: ["none", "blue", "golden"],
-      default: "none",
-    },
-    isAdmin: {
-      type: Boolean,
-      default: false,
+      enum: ["none", "blue", "golden"], // Available verification options
+      default: "none", // Default to no verification
     },
   },
   {
-    timestamps: true,
+    timestamps: true, // This will automatically add `createdAt` and `updatedAt` fields
   }
 );
 
 const User = mongoose.model("User", userSchema);
 
 export default User;
+
