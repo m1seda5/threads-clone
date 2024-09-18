@@ -407,7 +407,7 @@ const HomePage = () => {
 		<Flex gap="10" alignItems={"flex-start"}>
 			<Box flex={70}>
 				{!loading && posts.length === 0 && (
-					<h1>{t("Welcome to Pear! You have successfully created an account. Log in to see the latest Brookhouse news.")}</h1>  
+					<h1>{t("Welcome to Pear! You have successfully created an account. Log in to see the latest Brookhouse news 🍐.")}</h1>  
 				)}
 
 				{loading && (
