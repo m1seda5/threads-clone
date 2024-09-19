@@ -26,19 +26,19 @@
 // export default router;
 
 // verification update
-import express from "express";
 import {
-	followUnFollowUser,
-	getUserProfile,
-	loginUser,
-	logoutUser,
-	signupUser,
-	updateUser,
-	getSuggestedUsers,
-	freezeAccount,
-	awardVerification // Import the award verification function
+    followUnFollowUser,
+    getUserProfile,
+    loginUser,
+    logoutUser,
+    signupUser,
+    updateUser,
+    getSuggestedUsers,
+    freezeAccount,
+    awardVerification
 } from "../controllers/userController.js";
 import protectRoute from "../middlewares/protectRoute.js";
+import adminMiddleware from "../middlewares/adminMiddleware.js"; // Import admin middleware
 
 const router = express.Router();
 
@@ -51,7 +51,7 @@ router.post("/follow/:id", protectRoute, followUnFollowUser); // Toggle state(fo
 router.put("/update/:id", protectRoute, updateUser);
 router.put("/freeze", protectRoute, freezeAccount);
 
-// New route for awarding verification
-router.post("/awardVerification", protectRoute, awardVerification);
+// New route for awarding verification with admin validation
+router.post("/verify-user", protectRoute, adminMiddleware, awardVerification);
 
 export default router;

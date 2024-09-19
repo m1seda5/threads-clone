@@ -1045,21 +1045,25 @@ const freezeAccount = async (req, res) => {
 
 // New function for awarding verification
 const awardVerification = async (req, res) => {
-    const { userId, verificationType } = req.body;
-
-    // Validate verification type
-    if (!['blue', 'gold'].includes(verificationType)) {
-        return res.status(400).json({ error: "Invalid verification type" });
-    }
+    const { userId } = req.body;
 
     try {
+        // Check if the logged-in user is an admin
+        const loggedInUser = await User.findById(req.user._id);
+        if (!loggedInUser || !loggedInUser.isAdmin) {
+            return res.status(403).json({
+                error: "Only users with admin privileges can award verification",
+            });
+        }
+
+        // Find the user to award verification
         const user = await User.findById(userId);
         if (!user) {
             return res.status(404).json({ error: "User not found" });
         }
 
-        // Set the verification type
-        user.verification = verificationType;
+        // Award verification badge (update the verification field)
+        user.verification = "blue"; // Example: Awarding blue verification
         await user.save();
 
         res.status(200).json({ message: "Verification awarded", user });
@@ -1068,6 +1072,7 @@ const awardVerification = async (req, res) => {
         console.log("Error in awardVerification: ", error.message);
     }
 };
+
 // End of integration code
 
 export {
