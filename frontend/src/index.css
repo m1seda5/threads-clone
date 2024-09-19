@@ -8,7 +8,13 @@
 }
 
 .icon-container:hover {
-	background-color: #1e1e1e;
+	background-color: #1e1e1e; /* Dark mode default */
+}
+
+@media (prefers-color-scheme: light) {
+	.icon-container:hover {
+		background: linear-gradient(90deg, #6a11cb, #2575fc); /* Blue-to-purple gradient in light mode */
+	}
 }
 
 /* Scrollbar styling */
@@ -17,15 +23,15 @@
 }
 
 ::-webkit-scrollbar-track {
-	background-color: #1e1e1e;
+	background-color: #1e1e1e; /* Dark mode default */
 }
 
 ::-webkit-scrollbar-thumb {
-	background-color: #888;
+	background-color: #888; /* Dark mode default */
 }
 
 ::-webkit-scrollbar-thumb:hover {
-	background-color: #555;
+	background-color: #555; /* Dark mode default */
 }
 
 /* Popout and rotation hover effect for posts */
@@ -34,21 +40,51 @@
 		background-color: #ffffff; /* Light mode */
 	}
 	100% {
-		background-color: #E6F7EB; /* Subtle green shade */
+		background-color: #E6F7EB; /* Light mode */
+	}
+}
+
+@media (prefers-color-scheme: light) {
+	@keyframes subtleColorChange {
+		0% {
+			background-color: #ffffff; /* Light mode */
+		}
+		100% {
+			background-color: #bfe6ff; /* Light blue for light mode */
+		}
 	}
 }
 
 /* Hover effect for the post container */
 .postContainer {
 	transition: all 0.3s ease-in-out;
-	box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); /* Initial shadow */
+	box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); /* Default shadow */
 	transform: rotate(0deg); /* Ensure initial rotation is 0 */
 }
 
 .postContainer:hover {
 	transform: scale(1.05) rotate(3deg); /* Slight popout and rotation on hover */
-	box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15); /* Figma-inspired shadow on hover */
+	box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15); /* Default shadow */
 	animation: subtleColorChange 0.5s ease-in-out forwards;
+}
+
+@media (prefers-color-scheme: light) {
+	.postContainer:hover {
+		box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.3); /* More shadow for light mode */
+		background-image: linear-gradient(90deg, #6a11cb, #2575fc); /* Blue-to-purple gradient on hover for light mode */
+	}
+}
+
+/* Hover effect for images */
+.postContainer img {
+	transition: all 0.3s ease-in-out;
+}
+
+@media (prefers-color-scheme: light) {
+	.postContainer img:hover {
+		filter: brightness(110%);
+		background-image: linear-gradient(90deg, #6a11cb, #2575fc); /* Gradient hover effect for images in light mode */
+	}
 }
 
 /* New to You text color change effect */
