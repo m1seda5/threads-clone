@@ -56,47 +56,24 @@
 }
 
 /* Hover effect for the post container */
-/* Post container hover effect with soft blue-purple gradient */
 .postContainer {
-	transition: all 0.4s ease-in-out;
-	box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); /* Initial shadow */
+	transition: all 0.3s ease-in-out;
+	box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); /* Default shadow */
 	transform: rotate(0deg); /* Ensure initial rotation is 0 */
-	position: relative;
 }
 
 .postContainer:hover {
-	transform: scale(1.05); /* Slight pop-out effect */
-	box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.1); /* Increased shadow on hover */
-
-	/* Create a gradient glow under the card */
+	transform: scale(1.05) rotate(3deg); /* Slight popout and rotation on hover */
+	box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15); /* Default shadow */
+	animation: subtleColorChange 0.5s ease-in-out forwards;
 }
 
-.postContainer::before {
-	content: '';
-	position: absolute;
-	left: -10px;
-	right: -10px;
-	bottom: -10px;
-	top: 100%;
-	height: 10px;
-	z-index: -1;
-	background: linear-gradient(90deg, rgba(106, 17, 203, 0.3), rgba(37, 117, 252, 0.3));
-	filter: blur(15px); /* Add blur for a smooth glow */
-	transition: opacity 0.4s ease-in-out;
-	opacity: 0;
-}
-
-.postContainer:hover::before {
-	opacity: 1; /* Show gradient glow on hover */
-}
-
-/* Lighter gradient for light mode */
 @media (prefers-color-scheme: light) {
-	.postContainer:hover::before {
-		background: linear-gradient(90deg, rgba(106, 17, 203, 0.15), rgba(37, 117, 252, 0.15)); /* Softer gradient for light mode */
+	.postContainer:hover {
+		box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.3); /* More shadow for light mode */
+		background-image: linear-gradient(90deg, #6a11cb, #2575fc); /* Blue-to-purple gradient on hover for light mode */
 	}
 }
-
 
 /* Hover effect for images */
 .postContainer img {
