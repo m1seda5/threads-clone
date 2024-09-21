@@ -8,13 +8,13 @@ const checkTeacherAccess = async (req, res, next) => {
     if (!user) {
       return res.status(404).json({ error: "User not found" });
     }
-
+  // disabling this feature his feature 
     // Allow access for teachers (i.e., those whose email does not contain 'students')
-    if (user.email.includes("students")) {
-      return res.status(403).json({ error: "Access denied" });
-    }
+    // if (user.email.includes("students")) {
+    //   return res.status(403).json({ error: "Access denied" });
+    // }
 
-    // If the user is a teacher, proceed to the next middleware or route handler
+    // // If the user is a teacher, proceed to the next middleware or route handler
     next();
   } catch (error) {
     res.status(500).json({ error: error.message });
