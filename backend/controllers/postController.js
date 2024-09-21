@@ -644,6 +644,22 @@ const createPost = async (req, res) => {
   }
 };
 
+const getPost = async (req, res) => {
+  try {
+    const postId = req.params.id;
+    const post = await Post.findById(postId).populate("postedBy", "username profilePic"); // Populate with user details if needed
+
+    if (!post) {
+      return res.status(404).json({ error: "Post not found" });
+    }
+
+    res.status(200).json(post);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+
 
 const deletePost = async (req, res) => {
   try {
