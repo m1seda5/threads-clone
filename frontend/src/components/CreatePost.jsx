@@ -372,6 +372,16 @@ const CreatePost = () => {
 	const [posts, setPosts] = useRecoilState(postsAtom);
 	const { username } = useParams();
 	const { t, i18n } = useTranslation();
+// debugging
+	const CreatePost = () => {
+		const user = useRecoilValue(userAtom);
+		
+		useEffect(() => {
+		  console.log("User data:", user); // Add this line
+		}, [user]);
+	  
+		// rest of your component code...
+	  };
 
 	const handleTextChange = (e) => {
 		const inputText = e.target.value;

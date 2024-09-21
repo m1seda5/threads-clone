@@ -601,6 +601,9 @@ import { v2 as cloudinary } from "cloudinary";
 
 const createPost = async (req, res) => {
   try {
+// debugging
+    console.log("Request body:", req.body); // Add this line
+
     const { postedBy, text, targetAudience } = req.body; // Add targetAudience
     let { img } = req.body;
 
