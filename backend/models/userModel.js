@@ -162,13 +162,22 @@ const userSchema = mongoose.Schema(
       enum: ["none", "blue", "golden"], // Available verification options
       default: "none", // Default to no verification
     },
+    isStudent: {
+      type: Boolean,
+      default: false, // This field determines if the user is a student or not
+    },
     yearGroup: {
       type: String, // Store the selected year group
-      required: true,
+      required: function () {
+        return this.isStudent; // yearGroup is only required if the user is a student
+      },
     },
     role: {
       type: String, // Store the user role
-      required: true,
+      required: function () {
+        return this.isStudent; // role is only required if the user is a student
+      },
+      default: "user", // Default to a non-student role if not provided
     },
   },
   {
