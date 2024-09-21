@@ -634,7 +634,7 @@ const createPost = async (req, res) => {
       img,
       targetAudience: user.email.includes("students") ? null : targetAudience, // Only set for teachers
     });
-    
+
     await newPost.save();
 
     res.status(201).json(newPost);
@@ -644,20 +644,41 @@ const createPost = async (req, res) => {
   }
 };
 
+
 const getPost = async (req, res) => {
   try {
     const postId = req.params.id;
-    const post = await Post.findById(postId).populate("postedBy", "username profilePic"); // Populate with user details if needed
+    const user = req.user; // Assume the user is extracted from the request
+
+    // Fetch the post with the targetAudience
+    const post = await Post.findById(postId).populate("postedBy", "username profilePic");
 
     if (!post) {
       return res.status(404).json({ error: "Post not found" });
     }
 
+    const userEmail = user.email;
+
+    // Check if the user is a teacher (email does not contain 'students')
+    const isTeacher = !userEmail.includes("students");
+
+    // If user is a teacher, they can only see posts with targetAudience 'all'
+    if (isTeacher && post.targetAudience !== "all") {
+      return res.status(200).json(null); // Hide the post for teachers if targetAudience is not 'all'
+    }
+
+    // If user is a student, check if their year group matches the targetAudience
+    if (!isTeacher && post.targetAudience !== "all" && post.targetAudience !== user.yearGroup) {
+      return res.status(200).json(null); // Hide post if student's year group doesn't match
+    }
+
+    // If all checks pass, return the post
     res.status(200).json(post);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 };
+
 
 
 
