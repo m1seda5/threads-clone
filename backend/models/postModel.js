@@ -92,10 +92,12 @@ const postSchema = mongoose.Schema(
 		  },
 		},
 	  ],
-	  targetAudience: {
-		type: String, // Add this line to define the target audience
-		enum: ["all", "Year 12", "Year 13"], // Adjust as needed based on your roles
-	  },
+		// other fields...
+		targetAudience: {
+		  type: String,
+		  enum: ['all', 'Year 12', 'Year 13', null], // Add null if you want to allow it
+		  default: null, // Optionally set a default value
+		},
 	},
 	{
 	  timestamps: true,
