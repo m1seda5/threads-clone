@@ -173,12 +173,13 @@ const userSchema = mongoose.Schema(
       },
     },
     role: {
-      type: String, // Store the user role
+      type: String,
+      enum: ["user", "teacher"], // Include 'teacher' in the allowed roles
       required: function () {
-        return this.isStudent; // role is only required if the user is a student
+        return this.isStudent || this.role === "teacher"; // Role is required for students and teachers
       },
-      default: "user", // Default to a non-student role if not provided
-    },
+      default: "user", // Default to 'user' if not provided
+    },    
   },
   {
     timestamps: true, // This will automatically add `createdAt` and `updatedAt` fields

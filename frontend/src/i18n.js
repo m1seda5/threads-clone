@@ -159,8 +159,10 @@ const resources = {
       "Submit": "Submit",
       "Profile updated successfully": "Profile updated successfully",
       "Error updating profile": "Error updating profile",
-      "steep": "steep"
-
+      "steep": "steep",
+      // translations for create post
+      "Add Reply": "Add Reply", 
+      "Add Image": "Add Image",
     } 
   },
   zh: {
@@ -274,7 +276,10 @@ const resources = {
       "Cancel": "取消",
       "Submit": "提交",
       "Profile updated successfully": "个人资料更新成功",
-      "Error updating profile": "更新个人资料时出错"
+      "Error updating profile": "更新个人资料时出错",
+      // this is adding create post tranalsitons 
+      "Add Reply": "添加回复", 
+      "Add Image": "添加图片",
     }
   }
 };

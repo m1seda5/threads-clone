@@ -599,55 +599,57 @@ const getUserProfile = async (req, res) => {
 };
 
 const signupUser = async (req, res) => {
-	try {
-	  const { name, email, username, password, yearGroup, isStudent } = req.body; // Extract isStudent
-	  
-	  // Check if user already exists by email or username
-	  const existingUser = await User.findOne({ $or: [{ email }, { username }] });
-	  if (existingUser) {
-		return res.status(400).json({ error: "User already exists" });
-	  }
-  
-	  const salt = await bcrypt.genSalt(10);
-	  const hashedPassword = await bcrypt.hash(password, salt);
-  
-	  // Create new user object
-	  const newUser = new User({
-		name,
-		email,
-		username,
-		password: hashedPassword,
-		// Only set yearGroup and role if the user is a student
-		yearGroup: isStudent ? yearGroup : undefined,
-		role: isStudent ? yearGroup : "user", // Default role for non-students can be "user" or any other role
-	  });
-  
-	  await newUser.save();
-  
-	  // Check if user is created successfully
-	  if (newUser) {
-		generateTokenAndSetCookie(newUser._id, res);
-  
-		// Send user data back in response
-		res.status(201).json({
-		  _id: newUser._id,
-		  name: newUser.name,
-		  email: newUser.email,
-		  username: newUser.username,
-		  bio: newUser.bio,
-		  profilePic: newUser.profilePic,
-		  yearGroup: newUser.yearGroup, // Only returns if student
-		  role: newUser.role, // Returns "user" or the assigned role based on yearGroup
-		});
-	  } else {
-		res.status(400).json({ error: "Invalid user data" });
-	  }
-	} catch (err) {
-	  res.status(500).json({ error: err.message });
-	  console.log("Error in signupUser: ", err.message);
-	}
-  };
-  
+    try {
+        const { name, email, username, password, yearGroup, isStudent } = req.body; // Extract isStudent
+
+        // Check if user already exists by email or username
+        const existingUser = await User.findOne({ $or: [{ email }, { username }] });
+        if (existingUser) {
+            return res.status(400).json({ error: "User already exists" });
+        }
+
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(password, salt);
+
+        // Determine role based on email
+        const role = email.includes("students") ? "student" : "teacher"; // Adjust role logic
+
+        // Create new user object
+        const newUser = new User({
+            name,
+            email,
+            username,
+            password: hashedPassword,
+            yearGroup: role === "student" ? yearGroup : undefined, // Only set yearGroup if the user is a student
+            role, // Set role based on email
+        });
+
+        await newUser.save();
+
+        // Check if user is created successfully
+        if (newUser) {
+            generateTokenAndSetCookie(newUser._id, res);
+
+            // Send user data back in response
+            res.status(201).json({
+                _id: newUser._id,
+                name: newUser.name,
+                email: newUser.email,
+                username: newUser.username,
+                bio: newUser.bio,
+                profilePic: newUser.profilePic,
+                yearGroup: newUser.yearGroup, // Only returns if student
+                role: newUser.role, // Returns "student" or "teacher"
+            });
+        } else {
+            res.status(400).json({ error: "Invalid user data" });
+        }
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+        console.log("Error in signupUser: ", err.message);
+    }
+};
+
 
 const loginUser = async (req, res) => {
 	try {
