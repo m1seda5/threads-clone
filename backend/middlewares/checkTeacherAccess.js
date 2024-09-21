@@ -1,7 +1,5 @@
 import User from "../models/userModel.js";
 
-import User from "../models/userModel.js";
-
 const checkTeacherAccess = async (req, res, next) => {
   try {
     const userId = req.user._id;
