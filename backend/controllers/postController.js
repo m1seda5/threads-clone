@@ -601,13 +601,11 @@ import { v2 as cloudinary } from "cloudinary";
 
 const createPost = async (req, res) => {
   try {
-    const { postedBy, text } = req.body;
+    const { postedBy, text, targetAudience } = req.body; // Add targetAudience
     let { img } = req.body;
 
     if (!postedBy || !text) {
-      return res
-        .status(400)
-        .json({ error: "Postedby and text fields are required" });
+      return res.status(400).json({ error: "PostedBy and text fields are required" });
     }
 
     const user = await User.findById(postedBy);
@@ -621,9 +619,7 @@ const createPost = async (req, res) => {
 
     const maxLength = 500;
     if (text.length > maxLength) {
-      return res
-        .status(400)
-        .json({ error: `Text must be less than ${maxLength} characters` });
+      return res.status(400).json({ error: `Text must be less than ${maxLength} characters` });
     }
 
     if (img) {
@@ -631,7 +627,14 @@ const createPost = async (req, res) => {
       img = uploadedResponse.secure_url;
     }
 
-    const newPost = new Post({ postedBy, text, img });
+    // Set targetAudience only if the user is a teacher
+    const newPost = new Post({
+      postedBy,
+      text,
+      img,
+      targetAudience: user.email.includes("students") ? null : targetAudience, // Only set for teachers
+    });
+    
     await newPost.save();
 
     res.status(201).json(newPost);
@@ -641,19 +644,6 @@ const createPost = async (req, res) => {
   }
 };
 
-const getPost = async (req, res) => {
-  try {
-    const post = await Post.findById(req.params.id);
-
-    if (!post) {
-      return res.status(404).json({ error: "Post not found" });
-    }
-
-    res.status(200).json(post);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-};
 
 const deletePost = async (req, res) => {
   try {
@@ -778,7 +768,7 @@ const getFeedPosts = async (req, res) => {
     // Fetch posts based on target audience and user roles
     const feedPosts = await Post.find({
       $or: [
-        { targetAudience: "all" }, // Posts visible to all students
+        { targetAudience: null }, // Posts without specific targeting (public)
         { targetAudience: user.role }, // Posts targeted to the user's role
         { postedBy: { $in: allUserIds } }, // Posts by users the current user is following
       ],
@@ -789,6 +779,7 @@ const getFeedPosts = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
 
 
 const getUserPosts = async (req, res) => {
