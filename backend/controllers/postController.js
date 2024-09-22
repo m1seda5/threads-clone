@@ -601,8 +601,7 @@ import { v2 as cloudinary } from "cloudinary";
 
 const createPost = async (req, res) => {
   try {
-// debugging
-    console.log("Request body:", req.body); // Add this line
+    console.log("Request body:", req.body); // Debugging
 
     const { postedBy, text, targetAudience } = req.body; // Add targetAudience
     let { img } = req.body;
@@ -630,12 +629,12 @@ const createPost = async (req, res) => {
       img = uploadedResponse.secure_url;
     }
 
-    // Set targetAudience only if the user is a teacher
+    // Set targetAudience only for teachers; students should not set this
     const newPost = new Post({
       postedBy,
       text,
       img,
-      targetAudience: user.email.includes("students") ? null : targetAudience, // Only set for teachers
+      targetAudience: user.isStudent ? undefined : targetAudience, // Only set for teachers
     });
 
     await newPost.save();
@@ -646,6 +645,7 @@ const createPost = async (req, res) => {
     console.log(err);
   }
 };
+
 
 
 const getPost = async (req, res) => {
@@ -661,13 +661,11 @@ const getPost = async (req, res) => {
     }
 
     const userEmail = user.email;
-
-    // Check if the user is a teacher (email does not contain 'students')
     const isTeacher = !userEmail.includes("students");
 
-    // If user is a teacher, they can only see posts with targetAudience 'all'
+    // If the user is a teacher, they can see posts targeted to 'all'
     if (isTeacher && post.targetAudience !== "all") {
-      return res.status(200).json(null); // Hide the post for teachers if targetAudience is not 'all'
+      return res.status(200).json(null); // Hide post for teachers if targetAudience is not 'all'
     }
 
     // If user is a student, check if their year group matches the targetAudience
@@ -681,6 +679,7 @@ const getPost = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
 
 
 
@@ -790,11 +789,10 @@ const repostPost = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
-
 const getFeedPosts = async (req, res) => {
   try {
     const userId = req.user._id;
-    const user = await User.findById(userId).select("role following");
+    const user = await User.findById(userId).select("role following yearGroup isStudent");
     if (!user) {
       return res.status(404).json({ error: "User not found" });
     }
@@ -809,7 +807,8 @@ const getFeedPosts = async (req, res) => {
     const feedPosts = await Post.find({
       $or: [
         { targetAudience: null }, // Posts without specific targeting (public)
-        { targetAudience: user.role }, // Posts targeted to the user's role
+        { targetAudience: "all" }, // Posts targeted to all users
+        { targetAudience: user.isStudent ? user.yearGroup : user.role }, // Posts targeted to user's year group or role
         { postedBy: { $in: allUserIds } }, // Posts by users the current user is following
       ],
     }).sort({ createdAt: -1 });
@@ -819,7 +818,6 @@ const getFeedPosts = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
-
 
 
 const getUserPosts = async (req, res) => {

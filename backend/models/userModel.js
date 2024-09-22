@@ -114,8 +114,6 @@
 
 
 // this is trying to add more roles  
-import mongoose from "mongoose";
-
 const userSchema = mongoose.Schema(
   {
     name: {
@@ -174,7 +172,7 @@ const userSchema = mongoose.Schema(
     },
     role: {
       type: String,
-      enum: ["user", "teacher"], // Include 'teacher' in the allowed roles
+      enum: ["user", "teacher", "student"], // Include 'student' in the allowed roles
       required: function () {
         return this.isStudent || this.role === "teacher"; // Role is required for students and teachers
       },
@@ -185,7 +183,3 @@ const userSchema = mongoose.Schema(
     timestamps: true, // This will automatically add `createdAt` and `updatedAt` fields
   }
 );
-
-const User = mongoose.model("User", userSchema);
-
-export default User;
