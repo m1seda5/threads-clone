@@ -402,9 +402,15 @@ const CreatePost = () => {
                 return;
             }
             showToast(t("Success"), t("Post created successfully"), "success");
-            if (username === user.username) {
-                setPosts([data, ...posts]);
+
+            // Start: Ensure only relevant posts are shown based on user year group
+            if (data.targetAudience === "all" || data.targetAudience === user.yearGroup) {
+                if (username === user.username) {
+                    setPosts([data, ...posts]);
+                }
             }
+            // End: Post visibility logic based on target audience and user's year group
+
             onClose();
             setPostText("");
             setImgUrl("");

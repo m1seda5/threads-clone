@@ -47,14 +47,24 @@ export default function LoginCard() {
 				showToast("Error", data.error, "error");
 				return;
 			}
+			
+			// Store the user's role in localStorage
+			localStorage.setItem("user-role", data.role); // Store the role for future use
+			
+			// Store the entire user data
 			localStorage.setItem("user-threads", JSON.stringify(data));
-			setUser(data);
+			setUser(data); // Update the Recoil state or wherever the user state is managed
+	
+			// Show success toast
+			showToast("Success", "Login successful", "success");
+			
 		} catch (error) {
-			showToast("Error", error, "error");
+			showToast("Error", error.message || "Login failed", "error");
 		} finally {
 			setLoading(false);
 		}
 	};
+	
 	return (
 		<Flex align={"center"} justify={"center"}>
 			<Stack spacing={8} mx={"auto"} maxW={"lg"} py={12} px={6}>

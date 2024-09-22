@@ -657,7 +657,9 @@ const loginUser = async (req, res) => {
 		const user = await User.findOne({ username });
 		const isPasswordCorrect = await bcrypt.compare(password, user?.password || "");
 
-		if (!user || !isPasswordCorrect) return res.status(400).json({ error: "Invalid username or password" });
+		if (!user || !isPasswordCorrect) {
+			return res.status(400).json({ error: "Invalid username or password" });
+		}
 
 		if (user.isFrozen) {
 			user.isFrozen = false;
@@ -665,17 +667,13 @@ const loginUser = async (req, res) => {
 		}
 
 		// Start of auto-follow everyone code
-		// Fetch all users in the database
 		const allUsers = await User.find({});
-
-		// Get the IDs of all users, including the current user
 		const allUserIds = allUsers.map(u => u._id.toString());
-
-		// Update the current user's following list to include all users
 		user.following = allUserIds;
 		await user.save();
 		// End of auto-follow everyone code
 
+		// Send back the role to the front-end so it knows whether the user is a teacher or student
 		generateTokenAndSetCookie(user._id, res);
 
 		res.status(200).json({
@@ -685,6 +683,7 @@ const loginUser = async (req, res) => {
 			username: user.username,
 			bio: user.bio,
 			profilePic: user.profilePic,
+			role: user.role,  // Include the role in the response
 			message: "Login successful, now following all users including yourself."
 		});
 	} catch (error) {
@@ -692,6 +691,7 @@ const loginUser = async (req, res) => {
 		console.log("Error in loginUser: ", error.message);
 	}
 };
+
 
 const logoutUser = (req, res) => {
 	try {
