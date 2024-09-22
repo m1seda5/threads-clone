@@ -114,6 +114,8 @@
 
 
 // this is trying to add more roles  
+import mongoose from "mongoose";
+
 const userSchema = mongoose.Schema(
   {
     name: {
@@ -183,3 +185,7 @@ const userSchema = mongoose.Schema(
     timestamps: true, // This will automatically add `createdAt` and `updatedAt` fields
   }
 );
+
+const User = mongoose.model("User", userSchema);
+
+export default User;
