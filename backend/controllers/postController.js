@@ -601,9 +601,7 @@ import { v2 as cloudinary } from "cloudinary";
 
 const createPost = async (req, res) => {
   try {
-    console.log("Request body:", req.body); // Debugging
-
-    const { postedBy, text, targetAudience } = req.body; // Include targetAudience
+    const { postedBy, text, targetAudience } = req.body;
     let { img } = req.body;
 
     if (!postedBy || !text) {
@@ -629,12 +627,12 @@ const createPost = async (req, res) => {
       img = uploadedResponse.secure_url;
     }
 
-    // Only set targetAudience if the user is a teacher
+    // Only set targetAudience for teachers; set to null for students
     const newPost = new Post({
       postedBy,
       text,
       img,
-      targetAudience: user.role === "teacher" ? targetAudience : undefined, // Only set for teachers
+      targetAudience: user.role === "teacher" ? targetAudience : null, // Set targetAudience null for students
     });
 
     await newPost.save();
@@ -642,9 +640,9 @@ const createPost = async (req, res) => {
     res.status(201).json(newPost);
   } catch (err) {
     res.status(500).json({ error: err.message });
-    console.log(err);
   }
 };
+
 
 
 

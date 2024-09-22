@@ -388,40 +388,60 @@ const CreatePost = () => {
     const handleCreatePost = async () => {
         setLoading(true);
         try {
+            // Create the payload for the post
+            const payload = {
+                postedBy: user._id,
+                text: postText,
+                img: imgUrl,
+            };
+    
+            // Only include targetAudience for teachers, set it to null for students
+            if (user.role === "teacher") {
+                payload.targetAudience = targetAudience;
+            } else {
+                payload.targetAudience = null; // Set to null for students
+            }
+    
+            // Send the post request to the server
             const res = await fetch("/api/posts/create", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ postedBy: user._id, text: postText, img: imgUrl, targetAudience }),
+                body: JSON.stringify(payload),
             });
-
+    
             const data = await res.json();
             if (data.error) {
                 showToast(t("Error"), data.error, "error");
                 return;
             }
             showToast(t("Success"), t("Post created successfully"), "success");
-
-            // Add the new post to state if it should be visible to the user
-            if (data.targetAudience === "all" || data.targetAudience === user.yearGroup) {
+    
+            // Add the new post to the state if it should be visible to the user
+            if (
+                data.targetAudience === "all" || 
+                data.targetAudience === user.yearGroup || 
+                user.role === "student"
+            ) {
                 if (username === user.username) {
                     setPosts([data, ...posts]);
                 }
             }
-
-            // Reset form states
+    
+            // Reset form states after posting
             onClose();
             setPostText("");
             setImgUrl("");
             setTargetAudience(user.role === "teacher" ? "all" : ""); // Reset based on role
-
+    
         } catch (error) {
             showToast(t("Error"), error.message, "error");
         } finally {
             setLoading(false);
         }
     };
+    
 
     return (
         <>
