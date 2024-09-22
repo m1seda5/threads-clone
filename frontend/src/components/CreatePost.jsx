@@ -362,7 +362,7 @@ const MAX_CHAR = 500;
 const CreatePost = () => {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [postText, setPostText] = useState("");
-    const [targetAudience, setTargetAudience] = useState("all"); // State for target audience
+    const [targetAudience, setTargetAudience] = useState("all"); // Default to 'all'
     const { handleImageChange, imgUrl, setImgUrl } = usePreviewImg();
     const imageRef = useRef(null);
     const [remainingChar, setRemainingChar] = useState(MAX_CHAR);
@@ -393,7 +393,7 @@ const CreatePost = () => {
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ postedBy: user._id, text: postText, img: imgUrl, targetAudience }), // Include targetAudience
+                body: JSON.stringify({ postedBy: user._id, text: postText, img: imgUrl, targetAudience }),
             });
 
             const data = await res.json();
@@ -403,18 +403,19 @@ const CreatePost = () => {
             }
             showToast(t("Success"), t("Post created successfully"), "success");
 
-            // Start: Ensure only relevant posts are shown based on user year group
+            // Add the new post to state if it should be visible to the user
             if (data.targetAudience === "all" || data.targetAudience === user.yearGroup) {
                 if (username === user.username) {
                     setPosts([data, ...posts]);
                 }
             }
-            // End: Post visibility logic based on target audience and user's year group
 
+            // Reset form states
             onClose();
             setPostText("");
             setImgUrl("");
-            setTargetAudience("all"); // Reset target audience
+            setTargetAudience(user.role === "teacher" ? "all" : ""); // Reset based on role
+
         } catch (error) {
             showToast(t("Error"), error.message, "error");
         } finally {
@@ -461,7 +462,7 @@ const CreatePost = () => {
                             />
 
                             {/* Dropdown for Target Audience */}
-                            {user.role === "teacher" && ( // Check if user is a teacher
+                            {user.role === "teacher" && (
                                 <Select
                                     mt={4}
                                     value={targetAudience}
@@ -478,9 +479,7 @@ const CreatePost = () => {
                             <Flex mt={5} w={"full"} position={"relative"}>
                                 <Image src={imgUrl} alt={t('Selected img')} />
                                 <CloseButton
-                                    onClick={() => {
-                                        setImgUrl("");
-                                    }}
+                                    onClick={() => setImgUrl("")}
                                     bg={"gray.800"}
                                     position={"absolute"}
                                     top={2}

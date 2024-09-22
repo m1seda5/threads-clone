@@ -603,7 +603,7 @@ const createPost = async (req, res) => {
   try {
     console.log("Request body:", req.body); // Debugging
 
-    const { postedBy, text, targetAudience } = req.body; // Add targetAudience
+    const { postedBy, text, targetAudience } = req.body; // Include targetAudience
     let { img } = req.body;
 
     if (!postedBy || !text) {
@@ -629,12 +629,12 @@ const createPost = async (req, res) => {
       img = uploadedResponse.secure_url;
     }
 
-    // Set targetAudience only for teachers; students should not set this
+    // Only set targetAudience if the user is a teacher
     const newPost = new Post({
       postedBy,
       text,
       img,
-      targetAudience: user.isStudent ? undefined : targetAudience, // Only set for teachers
+      targetAudience: user.role === "teacher" ? targetAudience : undefined, // Only set for teachers
     });
 
     await newPost.save();
@@ -645,6 +645,7 @@ const createPost = async (req, res) => {
     console.log(err);
   }
 };
+
 
 
 
