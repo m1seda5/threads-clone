@@ -162,21 +162,20 @@ const PostPage = () => {
             try {
                 const res = await fetch(`/api/posts/${pid}`);
                 const data = await res.json();
-
+    
                 console.log("API Response:", data); // Log the API response
-
+    
                 if (!res.ok) {
                     // Handle error response from API
                     const errorMessage = data.error || t("Something went wrong");
-                    showToast(t("Error"), errorMessage, "error");
+                    if (res.status === 403) {
+                        showToast(t("Error"), t("Unauthorized access to this post."), "error");
+                    } else {
+                        showToast(t("Error"), errorMessage, "error");
+                    }
                     return;
                 }
-
-                if (!data) {
-                    showToast(t("Error"), t("No post found."), "error");
-                    return;
-                }
-
+    
                 setPosts([data]);
             } catch (error) {
                 console.error("Fetch error:", error); // Log the fetch error
@@ -187,6 +186,7 @@ const PostPage = () => {
         };
         getPost();
     }, [showToast, pid, setPosts, t]);
+    
 
     if (!user && loading) {
         return (
