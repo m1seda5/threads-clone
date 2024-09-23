@@ -147,7 +147,7 @@ import postsAtom from "../atoms/postsAtom";
 import { useTranslation } from 'react-i18next';  // Import useTranslation
 
 const PostPage = () => {
-    const { t, i18n } = useTranslation();  // Initialize the translation hook
+    const { t, i18n } = useTranslation();
     const { user, loading } = useGetUserProfile();
     const [posts, setPosts] = useRecoilState(postsAtom);
     const showToast = useShowToast();
@@ -155,59 +155,44 @@ const PostPage = () => {
     const currentUser = useRecoilValue(userAtom);
     const navigate = useNavigate();
 
-    const [language, setLanguage] = useState(i18n.language);  // Add language state
+    const [language, setLanguage] = useState(i18n.language);
+    const [loadingPost, setLoadingPost] = useState(true);
 
-    // Handle language changes
     useEffect(() => {
         const handleLanguageChange = (lng) => {
             setLanguage(lng);
         };
 
-        i18n.on('languageChanged', handleLanguageChange);  // Listen for language changes
+        i18n.on('languageChanged', handleLanguageChange);
 
         return () => {
-            i18n.off('languageChanged', handleLanguageChange);  // Cleanup on unmount
+            i18n.off('languageChanged', handleLanguageChange);
         };
     }, [i18n]);
 
-    const currentPost = posts[0];
-
     useEffect(() => {
         const getPost = async () => {
-            setPosts([]);
+            setLoadingPost(true);
             try {
                 const res = await fetch(`/api/posts/${pid}`);
                 const data = await res.json();
-                if (data.error) {
-                    showToast(t("Error"), data.error, "error");  // Translation for error message
+                console.log("API Response:", data); // Log the API response
+
+                if (!data || data.error) {
+                    showToast(t("Error"), data?.error || t("Something went wrong"), "error");
                     return;
                 }
+
                 setPosts([data]);
             } catch (error) {
-                showToast(t("Error"), error.message, "error");  // Translation for error message
+                console.error("Fetch error:", error); // Log the fetch error
+                showToast(t("Error"), error.message || t("Something went wrong"), "error");
+            } finally {
+                setLoadingPost(false);
             }
         };
         getPost();
     }, [showToast, pid, setPosts, t]);
-
-    const handleDeletePost = async () => {
-        try {
-            if (!window.confirm(t("Are you sure you want to delete this post?"))) return;  // Translation for confirmation message
-
-            const res = await fetch(`/api/posts/${currentPost._id}`, {
-                method: "DELETE",
-            });
-            const data = await res.json();
-            if (data.error) {
-                showToast(t("Error deleting post"), data.error, "error");  // Translation for error message
-                return;
-            }
-            showToast(t("Success"), t("Post deleted"), "success");  // Translation for success message
-            navigate(`/${user.username}`);
-        } catch (error) {
-            showToast(t("Error"), error.message, "error");  // Translation for error message
-        }
-    };
 
     if (!user && loading) {
         return (
@@ -217,7 +202,17 @@ const PostPage = () => {
         );
     }
 
-    if (!currentPost) return null;
+    if (loadingPost) {
+        return (
+            <Flex justifyContent={"center"}>
+                <Spinner size={"xl"} />
+            </Flex>
+        );
+    }
+
+    const currentPost = posts[0];  // Ensure currentPost is correctly fetched
+
+    if (!currentPost) return <Text>No post found.</Text>; // Handle case when post is not found
 
     return (
         <>
@@ -233,7 +228,7 @@ const PostPage = () => {
                 </Flex>
                 <Flex gap={4} alignItems={"center"}>
                     <Text fontSize={"xs"} width={36} textAlign={"right"} color={"gray.light"}>
-                        {formatDistanceToNow(new Date(currentPost.createdAt))} {t("ago")}  {/* Translation for "ago" */}
+                        {formatDistanceToNow(new Date(currentPost.createdAt))} {t("ago")}
                     </Text>
 
                     {currentUser?._id === user._id && (
@@ -258,7 +253,7 @@ const PostPage = () => {
             <Flex justifyContent={"space-between"}>
                 <Flex gap={2} alignItems={"center"}>
                     <Text fontSize={"2xl"}>🍐</Text>
-                    <Text color={"gray.light"}>{t("The application is coming to your phone soon.")}  {/* Translation for message */}</Text>
+                    <Text color={"gray.light"}>{t("The application is coming to your phone soon.")}</Text>
                 </Flex>
             </Flex>
 
@@ -273,5 +268,6 @@ const PostPage = () => {
         </>
     );
 };
+
 
 export default PostPage;
