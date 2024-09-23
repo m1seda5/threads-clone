@@ -664,21 +664,21 @@ const getPost = async (req, res) => {
 
     // If the user is a teacher, they can see posts targeted to 'all'
     if (isTeacher && post.targetAudience !== "all") {
-      return res.status(200).json(null); // Hide post for teachers if targetAudience is not 'all'
+      return res.status(403).json({ error: "Access denied" }); // Return an error for teachers if targetAudience is not 'all'
     }
 
     // If user is a student, check if their year group matches the targetAudience
     if (!isTeacher && post.targetAudience !== "all" && post.targetAudience !== user.yearGroup) {
-      return res.status(200).json(null); // Hide post if student's year group doesn't match
+      return res.status(403).json({ error: "Access denied" }); // Return an error for students if year group doesn't match
     }
 
     // If all checks pass, return the post
     res.status(200).json(post);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    console.error("Error fetching post:", err); // Log the error
+    res.status(500).json({ error: "Something went wrong. Please try again later." }); // Return a user-friendly error message
   }
 };
-
 
 
 
