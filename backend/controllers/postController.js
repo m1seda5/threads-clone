@@ -627,12 +627,21 @@ const createPost = async (req, res) => {
       img = uploadedResponse.secure_url;
     }
 
-    // Only set targetAudience for teachers; set to null for students
+    // Set targetAudience based on user role and year group
+    let finalTargetAudience;
+    if (user.role === "teacher") {
+      finalTargetAudience = targetAudience; // Teachers can specify targetAudience
+    } else if (user.yearGroup === 'Year 12' || user.yearGroup === 'Year 13') {
+      finalTargetAudience = 'all'; // Set to 'all' for Year 12 and 13 students
+    } else {
+      finalTargetAudience = null; // Default to null for other students
+    }
+
     const newPost = new Post({
       postedBy,
       text,
       img,
-      targetAudience: user.role === "teacher" ? targetAudience : null, // Set targetAudience null for students
+      targetAudience: finalTargetAudience,
     });
 
     await newPost.save();
@@ -642,6 +651,7 @@ const createPost = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
 
 
 
