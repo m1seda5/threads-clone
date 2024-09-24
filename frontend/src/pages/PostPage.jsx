@@ -132,7 +132,7 @@
 
 
 // verison two with transaltions 
-import { Avatar, Box, Button, Divider, Flex, Image, Spinner, Text } from "@chakra-ui/react";
+import { Avatar, Box, Divider, Flex, Image, Spinner, Text } from "@chakra-ui/react";
 import Actions from "../components/Actions";
 import { useEffect, useState } from "react";
 import Comment from "../components/Comment";
@@ -144,31 +144,17 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import userAtom from "../atoms/userAtom";
 import { DeleteIcon } from "@chakra-ui/icons";
 import postsAtom from "../atoms/postsAtom";
-import { useTranslation } from 'react-i18next';  // Import useTranslation
+import { useTranslation } from 'react-i18next';
 
 const PostPage = () => {
-    const { t, i18n } = useTranslation();
+    const { t } = useTranslation();
     const { user, loading } = useGetUserProfile();
     const [posts, setPosts] = useRecoilState(postsAtom);
     const showToast = useShowToast();
     const { pid } = useParams();
     const currentUser = useRecoilValue(userAtom);
     const navigate = useNavigate();
-
-    const [language, setLanguage] = useState(i18n.language);
     const [loadingPost, setLoadingPost] = useState(true);
-
-    useEffect(() => {
-        const handleLanguageChange = (lng) => {
-            setLanguage(lng);
-        };
-
-        i18n.on('languageChanged', handleLanguageChange);
-
-        return () => {
-            i18n.off('languageChanged', handleLanguageChange);
-        };
-    }, [i18n]);
 
     useEffect(() => {
         const getPost = async () => {
@@ -176,10 +162,18 @@ const PostPage = () => {
             try {
                 const res = await fetch(`/api/posts/${pid}`);
                 const data = await res.json();
+
                 console.log("API Response:", data); // Log the API response
 
-                if (!data || data.error) {
-                    showToast(t("Error"), data?.error || t("Something went wrong"), "error");
+                if (!res.ok) {
+                    // Handle error response from API
+                    const errorMessage = data.error || t("Something went wrong");
+                    showToast(t("Error"), errorMessage, "error");
+                    return;
+                }
+
+                if (!data) {
+                    showToast(t("Error"), t("No post found."), "error");
                     return;
                 }
 
@@ -210,9 +204,13 @@ const PostPage = () => {
         );
     }
 
-    const currentPost = posts[0];  // Ensure currentPost is correctly fetched
+    const currentPost = posts[0];
 
-    if (!currentPost) return <Text>No post found.</Text>; // Handle case when post is not found
+    if (!currentPost) return <Text>{t("No post found.")}</Text>; // Handle case when post is not found
+
+    const handleDeletePost = async () => {
+        // Add deletion logic here
+    };
 
     return (
         <>
@@ -230,7 +228,6 @@ const PostPage = () => {
                     <Text fontSize={"xs"} width={36} textAlign={"right"} color={"gray.light"}>
                         {formatDistanceToNow(new Date(currentPost.createdAt))} {t("ago")}
                     </Text>
-
                     {currentUser?._id === user._id && (
                         <DeleteIcon size={20} cursor={"pointer"} onClick={handleDeletePost} />
                     )}
@@ -250,15 +247,7 @@ const PostPage = () => {
             </Flex>
 
             <Divider my={4} />
-            <Flex justifyContent={"space-between"}>
-                <Flex gap={2} alignItems={"center"}>
-                    <Text fontSize={"2xl"}>🍐</Text>
-                    <Text color={"gray.light"}>{t("The application is coming to your phone soon.")}</Text>
-                </Flex>
-            </Flex>
-
-            <Divider my={4} />
-            {currentPost.replies.map((reply) => (
+            {currentPost.replies?.map((reply) => (
                 <Comment
                     key={reply._id}
                     reply={reply}
@@ -268,6 +257,5 @@ const PostPage = () => {
         </>
     );
 };
-
 
 export default PostPage;
