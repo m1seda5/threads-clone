@@ -656,7 +656,6 @@ const createPost = async (req, res) => {
 
 
 
-
 const getPost = async (req, res) => {
   try {
     const postId = req.params.id;
@@ -672,14 +671,16 @@ const getPost = async (req, res) => {
     const userEmail = user.email;
     const isTeacher = !userEmail.includes("students");
 
-    // If the user is a teacher, they can see posts targeted to 'all'
-    if (isTeacher && post.targetAudience !== "all") {
-      return res.status(403).json({ error: "Unauthorized access to this post" });
-    }
-
-    // If user is a student, check if their year group matches the targetAudience
-    if (!isTeacher && post.targetAudience !== "all" && post.targetAudience !== user.yearGroup) {
-      return res.status(403).json({ error: "Unauthorized access to this post" });
+    // Teachers can view any post, or any post meant for "all"
+    if (isTeacher) {
+      if (post.targetAudience && post.targetAudience !== "all") {
+        return res.status(403).json({ error: "Unauthorized access to this post" });
+      }
+    } else {
+      // Students can only view posts meant for their year group or "all"
+      if (post.targetAudience !== "all" && post.targetAudience !== user.yearGroup) {
+        return res.status(403).json({ error: "Unauthorized access to this post" });
+      }
     }
 
     // If all checks pass, return the post
@@ -688,9 +689,6 @@ const getPost = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
-
-
-
 
 
 const deletePost = async (req, res) => {
