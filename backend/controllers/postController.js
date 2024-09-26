@@ -608,49 +608,108 @@ const createPost = async (req, res) => {
       return res.status(400).json({ error: "PostedBy and text fields are required" });
     }
 
+    // Find the user who is posting
     const user = await User.findById(postedBy);
     if (!user) {
       return res.status(404).json({ error: "User not found" });
     }
 
+    // Ensure user is authorized to post
     if (user._id.toString() !== req.user._id.toString()) {
       return res.status(401).json({ error: "Unauthorized to create post" });
     }
 
-    const maxLength = 500;
-    if (text.length > maxLength) {
-      return res.status(400).json({ error: `Text must be less than ${maxLength} characters` });
+    // Ensure text length is within limit (500 characters max)
+    if (text.length > 500) {
+      return res.status(400).json({ error: `Text must be less than 500 characters` });
     }
 
+    // Handle image upload if provided
     if (img) {
       const uploadedResponse = await cloudinary.uploader.upload(img);
       img = uploadedResponse.secure_url;
     }
 
-    // Set targetAudience based on user role and year group
-    let finalTargetAudience;
+    // **Teachers** can set targetAudience, others (students) will have it as null
+    let finalTargetAudience = null;
     if (user.role === "teacher") {
-      finalTargetAudience = targetAudience; // Teachers can specify targetAudience
-    } else if (user.yearGroup === 'Year 12' || user.yearGroup === 'Year 13') {
-      finalTargetAudience = 'all'; // Set to 'all' for Year 12 and 13 students
-    } else {
-      finalTargetAudience = null; // Default to null for other students
+      finalTargetAudience = targetAudience || 'all';  // Teachers can target posts
     }
 
+    // Create the post
     const newPost = new Post({
       postedBy,
       text,
       img,
-      targetAudience: finalTargetAudience,
+      targetAudience: finalTargetAudience,  // Only teachers will have a targetAudience
     });
 
+    // Save the new post
     await newPost.save();
 
+    // Respond with the created post
     res.status(201).json(newPost);
+
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 };
+
+
+
+// og version somehwhat works 
+// const createPost = async (req, res) => {
+//   try {
+//     const { postedBy, text, targetAudience } = req.body;
+//     let { img } = req.body;
+
+//     if (!postedBy || !text) {
+//       return res.status(400).json({ error: "PostedBy and text fields are required" });
+//     }
+
+//     const user = await User.findById(postedBy);
+//     if (!user) {
+//       return res.status(404).json({ error: "User not found" });
+//     }
+
+//     if (user._id.toString() !== req.user._id.toString()) {
+//       return res.status(401).json({ error: "Unauthorized to create post" });
+//     }
+
+//     const maxLength = 500;
+//     if (text.length > maxLength) {
+//       return res.status(400).json({ error: `Text must be less than ${maxLength} characters` });
+//     }
+
+//     if (img) {
+//       const uploadedResponse = await cloudinary.uploader.upload(img);
+//       img = uploadedResponse.secure_url;
+//     }
+
+//     // Set targetAudience based on user role and year group
+//     let finalTargetAudience;
+//     if (user.role === "teacher") {
+//       finalTargetAudience = targetAudience; // Teachers can specify targetAudience
+//     } else if (user.yearGroup === 'Year 12' || user.yearGroup === 'Year 13') {
+//       finalTargetAudience = 'all'; // Set to 'all' for Year 12 and 13 students
+//     } else {
+//       finalTargetAudience = null; // Default to null for other students
+//     }
+
+//     const newPost = new Post({
+//       postedBy,
+//       text,
+//       img,
+//       targetAudience: finalTargetAudience,
+//     });
+
+//     await newPost.save();
+
+//     res.status(201).json(newPost);
+//   } catch (err) {
+//     res.status(500).json({ error: err.message });
+//   }
+// };
 
 
 
