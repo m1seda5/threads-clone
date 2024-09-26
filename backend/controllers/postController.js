@@ -855,6 +855,8 @@ const repostPost = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
+
 const getFeedPosts = async (req, res) => {
   try {
     const userId = req.user._id;
@@ -869,21 +871,66 @@ const getFeedPosts = async (req, res) => {
     // Include the current user’s own ID in the list to fetch their posts as well
     const allUserIds = [...following, userId];
 
-    // Fetch posts based on target audience and user roles
-    const feedPosts = await Post.find({
-      $or: [
-        { targetAudience: null }, // Posts without specific targeting (public)
-        { targetAudience: "all" }, // Posts targeted to all users
-        { targetAudience: user.isStudent ? user.yearGroup : user.role }, // Posts targeted to user's year group or role
-        { postedBy: { $in: allUserIds } }, // Posts by users the current user is following
-      ],
-    }).sort({ createdAt: -1 });
+    // Fetch posts based on user role and target audience
+    let feedPosts;
+
+    if (user.role === "teacher") {
+      // Teachers can see their own posts and posts targeted to 'all'
+      feedPosts = await Post.find({
+        $or: [
+          { postedBy: userId },                  // Teachers can see their own posts
+          { targetAudience: "all" }              // Posts targeted to "all"
+        ]
+      }).sort({ createdAt: -1 });
+      
+    } else {
+      // Students can see posts targeted to 'all', their year group, or users they follow
+      feedPosts = await Post.find({
+        $or: [
+          { targetAudience: null },              // Public posts
+          { targetAudience: "all" },             // Posts targeted to all
+          { targetAudience: user.yearGroup },    // Posts targeted to student's year group
+          { postedBy: { $in: allUserIds } },     // Posts by users they follow
+        ]
+      }).sort({ createdAt: -1 });
+    }
 
     res.status(200).json(feedPosts);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 };
+
+// this is a functioning version of get feed its just teachers can see targeted posts 
+// const getFeedPosts = async (req, res) => {
+//   try {
+//     const userId = req.user._id;
+//     const user = await User.findById(userId).select("role following yearGroup isStudent");
+//     if (!user) {
+//       return res.status(404).json({ error: "User not found" });
+//     }
+
+//     // Retrieve the list of users the current user is following
+//     const following = user.following;
+
+//     // Include the current user’s own ID in the list to fetch their posts as well
+//     const allUserIds = [...following, userId];
+
+//     // Fetch posts based on target audience and user roles
+//     const feedPosts = await Post.find({
+//       $or: [
+//         { targetAudience: null }, // Posts without specific targeting (public)
+//         { targetAudience: "all" }, // Posts targeted to all users
+//         { targetAudience: user.isStudent ? user.yearGroup : user.role }, // Posts targeted to user's year group or role
+//         { postedBy: { $in: allUserIds } }, // Posts by users the current user is following
+//       ],
+//     }).sort({ createdAt: -1 });
+
+//     res.status(200).json(feedPosts);
+//   } catch (err) {
+//     res.status(500).json({ error: err.message });
+//   }
+// };
 
 
 const getUserPosts = async (req, res) => {
