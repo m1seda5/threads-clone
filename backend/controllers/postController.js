@@ -856,7 +856,7 @@ const repostPost = async (req, res) => {
   }
 };
 
-
+// trying this version to see if it has no bugs
 const getFeedPosts = async (req, res) => {
   try {
     const userId = req.user._id;
@@ -875,11 +875,12 @@ const getFeedPosts = async (req, res) => {
     let feedPosts;
 
     if (user.role === "teacher") {
-      // Teachers can see their own posts and posts targeted to 'all'
+      // Teachers can see their own posts, posts targeted to "all", and role-specific posts (targeted to "teacher")
       feedPosts = await Post.find({
         $or: [
-          { postedBy: userId },                  // Teachers can see their own posts
-          { targetAudience: "all" }              // Posts targeted to "all"
+          { postedBy: userId },                   // Teachers can see their own posts
+          { targetAudience: "all" },              // Posts targeted to "all"
+          { targetAudience: "teacher" },          // Posts targeted specifically to teachers
         ]
       }).sort({ createdAt: -1 });
       
@@ -900,6 +901,7 @@ const getFeedPosts = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
 
 // this is a functioning version of get feed its just teachers can see targeted posts 
 // const getFeedPosts = async (req, res) => {
