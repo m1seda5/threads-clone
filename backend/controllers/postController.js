@@ -614,7 +614,7 @@ const createPost = async (req, res) => {
       return res.status(404).json({ error: "User not found" });
     }
 
-    // Ensure user is authorized to post
+    // Check if the user is authorized to post
     if (user._id.toString() !== req.user._id.toString()) {
       return res.status(401).json({ error: "Unauthorized to create post" });
     }
@@ -630,30 +630,31 @@ const createPost = async (req, res) => {
       img = uploadedResponse.secure_url;
     }
 
-    // **Teachers** can set targetAudience, others (students) will have it as null
+    // Only teachers can set the `targetAudience`
     let finalTargetAudience = null;
     if (user.role === "teacher") {
-      finalTargetAudience = targetAudience || 'all';  // Teachers can target posts
+      finalTargetAudience = targetAudience || 'all';  // Default to 'all' if not specified
     }
 
-    // Create the post
+    // Create the new post
     const newPost = new Post({
       postedBy,
       text,
       img,
-      targetAudience: finalTargetAudience,  // Only teachers will have a targetAudience
+      targetAudience: finalTargetAudience,  // Target audience only for teachers
     });
 
-    // Save the new post
+    // Save the post
     await newPost.save();
 
-    // Respond with the created post
+    // Respond with the newly created post
     res.status(201).json(newPost);
-
+    
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 };
+
 
 
 
