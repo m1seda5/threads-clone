@@ -656,94 +656,54 @@ const createPost = async (req, res) => {
 };
 
 
+// previous verion  with a few buggs
 
-
-// og version somehwhat works 
-// const createPost = async (req, res) => {
+// const getPost = async (req, res) => {
 //   try {
-//     const { postedBy, text, targetAudience } = req.body;
-//     let { img } = req.body;
+//     const postId = req.params.id;
+//     const user = req.user; // Assume the user is extracted from the request
 
-//     if (!postedBy || !text) {
-//       return res.status(400).json({ error: "PostedBy and text fields are required" });
+//     // Fetch the post with the targetAudience
+//     const post = await Post.findById(postId).populate("postedBy", "username profilePic");
+
+//     if (!post) {
+//       return res.status(404).json({ error: "Post not found" });
 //     }
 
-//     const user = await User.findById(postedBy);
-//     if (!user) {
-//       return res.status(404).json({ error: "User not found" });
-//     }
+//     const userEmail = user.email;
+//     const isTeacher = !userEmail.includes("students");
 
-//     if (user._id.toString() !== req.user._id.toString()) {
-//       return res.status(401).json({ error: "Unauthorized to create post" });
-//     }
-
-//     const maxLength = 500;
-//     if (text.length > maxLength) {
-//       return res.status(400).json({ error: `Text must be less than ${maxLength} characters` });
-//     }
-
-//     if (img) {
-//       const uploadedResponse = await cloudinary.uploader.upload(img);
-//       img = uploadedResponse.secure_url;
-//     }
-
-//     // Set targetAudience based on user role and year group
-//     let finalTargetAudience;
-//     if (user.role === "teacher") {
-//       finalTargetAudience = targetAudience; // Teachers can specify targetAudience
-//     } else if (user.yearGroup === 'Year 12' || user.yearGroup === 'Year 13') {
-//       finalTargetAudience = 'all'; // Set to 'all' for Year 12 and 13 students
+//     // Teachers can view any post, or any post meant for "all"
+//     if (isTeacher) {
+//       if (post.targetAudience && post.targetAudience !== "all") {
+//         return res.status(403).json({ error: "Unauthorized access to this post" });
+//       }
 //     } else {
-//       finalTargetAudience = null; // Default to null for other students
+//       // Students can only view posts meant for their year group or "all"
+//       if (post.targetAudience !== "all" && post.targetAudience !== user.yearGroup) {
+//         return res.status(403).json({ error: "Unauthorized access to this post" });
+//       }
 //     }
 
-//     const newPost = new Post({
-//       postedBy,
-//       text,
-//       img,
-//       targetAudience: finalTargetAudience,
-//     });
-
-//     await newPost.save();
-
-//     res.status(201).json(newPost);
+//     // If all checks pass, return the post
+//     res.status(200).json(post);
 //   } catch (err) {
 //     res.status(500).json({ error: err.message });
 //   }
 // };
 
-
-
-
-
 const getPost = async (req, res) => {
   try {
     const postId = req.params.id;
-    const user = req.user; // Assume the user is extracted from the request
 
-    // Fetch the post with the targetAudience
+    // Fetch the post with the postedBy details
     const post = await Post.findById(postId).populate("postedBy", "username profilePic");
 
     if (!post) {
       return res.status(404).json({ error: "Post not found" });
     }
 
-    const userEmail = user.email;
-    const isTeacher = !userEmail.includes("students");
-
-    // Teachers can view any post, or any post meant for "all"
-    if (isTeacher) {
-      if (post.targetAudience && post.targetAudience !== "all") {
-        return res.status(403).json({ error: "Unauthorized access to this post" });
-      }
-    } else {
-      // Students can only view posts meant for their year group or "all"
-      if (post.targetAudience !== "all" && post.targetAudience !== user.yearGroup) {
-        return res.status(403).json({ error: "Unauthorized access to this post" });
-      }
-    }
-
-    // If all checks pass, return the post
+    // Return the post since the middleware has already filtered access
     res.status(200).json(post);
   } catch (err) {
     res.status(500).json({ error: err.message });
