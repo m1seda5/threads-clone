@@ -816,13 +816,51 @@ const repostPost = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+// working get feed function
+// const getFeedPosts = async (req, res) => {
+//   try {
+//     const userId = req.user._id;
+//     const user = await User.findById(userId).select("role following yearGroup isStudent");
+//     if (!user) {
+//       return res.status(404).json({ error: "User not found" });
+//     }
+
+//     // Retrieve the list of users the current user is following
+//     const following = user.following;
+
+//     // Include the current user’s own ID in the list to fetch their posts as well
+//     const allUserIds = [...following, userId];
+
+//     // Fetch posts based on target audience and user roles
+//     const feedPosts = await Post.find({
+//       $or: [
+//         { targetAudience: null }, // Posts without specific targeting (public)
+//         { targetAudience: "all" }, // Posts targeted to all users
+//         { targetAudience: user.isStudent ? user.yearGroup : user.role }, // Posts targeted to user's year group or role
+//         { postedBy: { $in: allUserIds } }, // Posts by users the current user is following
+//       ],
+//     }).sort({ createdAt: -1 });
+
+//     res.status(200).json(feedPosts);
+//   } catch (err) {
+//     res.status(500).json({ error: err.message });
+//   }
+// };
+
+
+// looking for bugs using the console
 const getFeedPosts = async (req, res) => {
   try {
     const userId = req.user._id;
+    console.log("UserId from request:", userId);
+
     const user = await User.findById(userId).select("role following yearGroup isStudent");
     if (!user) {
+      console.log("User not found in getFeedPosts");
       return res.status(404).json({ error: "User not found" });
     }
+
+    console.log("User found:", user);
 
     // Retrieve the list of users the current user is following
     const following = user.following;
@@ -842,6 +880,7 @@ const getFeedPosts = async (req, res) => {
 
     res.status(200).json(feedPosts);
   } catch (err) {
+    console.error("Error in getFeedPosts function:", err);
     res.status(500).json({ error: err.message });
   }
 };
