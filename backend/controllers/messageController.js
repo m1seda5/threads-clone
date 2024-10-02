@@ -3,7 +3,7 @@ import Message from "../models/messageModel.js";
 import { getRecipientSocketId, io } from "../socket/socket.js";
 import { v2 as cloudinary } from "cloudinary";
 
-
+// this is is just a comment to see if anything is actually being affected and if im pushing changes as a head master thats all 
 // Start of sendMessage function
 async function sendMessage(req, res) {
    try {
