@@ -819,7 +819,13 @@ const repostPost = async (req, res) => {
 const getFeedPosts = async (req, res) => {
   try {
     const userId = req.user._id;
+    
+    if (!userId) {
+      return res.status(401).json({ error: "Unauthorized, user not authenticated" });
+    }
+
     const user = await User.findById(userId).select("role following yearGroup isStudent");
+
     if (!user) {
       return res.status(404).json({ error: "User not found" });
     }
@@ -842,9 +848,11 @@ const getFeedPosts = async (req, res) => {
 
     res.status(200).json(feedPosts);
   } catch (err) {
+    console.error("Error fetching feed posts:", err.message);
     res.status(500).json({ error: err.message });
   }
 };
+
 
 
 const getUserPosts = async (req, res) => {
