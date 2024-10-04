@@ -163,10 +163,9 @@ const PostPage = () => {
                 const res = await fetch(`/api/posts/${pid}`);
                 const data = await res.json();
     
-                console.log("API Response:", data); // Log the API response
+                console.log("API Response:", data); 
     
                 if (!res.ok) {
-                    // Handle error response from API
                     const errorMessage = data.error || t("Something went wrong");
                     if (res.status === 403) {
                         showToast(t("Error"), t("Unauthorized access to this post."), "error");
@@ -178,7 +177,7 @@ const PostPage = () => {
     
                 setPosts([data]);
             } catch (error) {
-                console.error("Fetch error:", error); // Log the fetch error
+                console.error("Fetch error:", error); 
                 showToast(t("Error"), error.message || t("Something went wrong"), "error");
             } finally {
                 setLoadingPost(false);
@@ -204,57 +203,17 @@ const PostPage = () => {
         );
     }
 
-    const currentPost = posts[0];
+    const post = posts.find(p => p._id === pid);
 
-    if (!currentPost) return <Text>{t("No post found.")}</Text>; // Handle case when post is not found
-
-    const handleDeletePost = async () => {
-        // Add deletion logic here
-    };
-
-    return (
-        <>
-            <Flex>
-                <Flex w={"full"} alignItems={"center"} gap={3}>
-                    <Avatar src={user.profilePic} size={"md"} name={user.username} />
-                    <Flex>
-                        <Text fontSize={"sm"} fontWeight={"bold"}>
-                            {user.username}
-                        </Text>
-                        <Image src='/verified.png' w='4' h={4} ml={4} />
-                    </Flex>
-                </Flex>
-                <Flex gap={4} alignItems={"center"}>
-                    <Text fontSize={"xs"} width={36} textAlign={"right"} color={"gray.light"}>
-                        {formatDistanceToNow(new Date(currentPost.createdAt))} {t("ago")}
-                    </Text>
-                    {currentUser?._id === user._id && (
-                        <DeleteIcon size={20} cursor={"pointer"} onClick={handleDeletePost} />
-                    )}
-                </Flex>
-            </Flex>
-
-            <Text my={3}>{currentPost.text}</Text>
-
-            {currentPost.img && (
-                <Box borderRadius={6} overflow={"hidden"} border={"1px solid"} borderColor={"gray.light"}>
-                    <Image src={currentPost.img} w={"full"} />
-                </Box>
-            )}
-
-            <Flex gap={3} my={3}>
-                <Actions post={currentPost} />
-            </Flex>
-
+    return post ? (
+        <Box>
+            <Text fontSize="lg" fontWeight="bold">{post.content}</Text>
             <Divider my={4} />
-            {currentPost.replies?.map((reply) => (
-                <Comment
-                    key={reply._id}
-                    reply={reply}
-                    lastReply={reply._id === currentPost.replies[currentPost.replies.length - 1]._id}
-                />
-            ))}
-        </>
+            <Actions post={post} />
+            <Comment postId={post._id} />
+        </Box>
+    ) : (
+        <Text>{t("Post not found.")}</Text>
     );
 };
 

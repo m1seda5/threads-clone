@@ -25,7 +25,7 @@
 
 // adding debugging additional requser
 import jwt from "jsonwebtoken";
-import User from "../models/userModel.js"; // Ensure the User model is imported
+import User from "../models/userModel.js";
 
 const protectRoute = async (req, res, next) => {
   try {
