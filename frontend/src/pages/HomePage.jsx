@@ -341,26 +341,27 @@ import useShowToast from "../hooks/useShowToast";
 import Post from "../components/Post";
 import { useRecoilState } from "recoil";
 import postsAtom from "../atoms/postsAtom";
-import { useTranslation } from 'react-i18next';
-import '../index.css';
+import { useTranslation } from 'react-i18next';  // Import useTranslation
+import '../index.css'; // Ensure correct CSS is imported
 
 const HomePage = () => {
 	const [posts, setPosts] = useRecoilState(postsAtom);
 	const [loading, setLoading] = useState(true);
 	const [newPosts, setNewPosts] = useState([]);
 	const showToast = useShowToast();
-	const { t, i18n } = useTranslation();
-	const [language, setLanguage] = useState(i18n.language);
+	const { t, i18n } = useTranslation();  // Initialize the translation hook
+	const [language, setLanguage] = useState(i18n.language);  // Add language state
 
+	// Handle language changes
 	useEffect(() => {
 		const handleLanguageChange = (lng) => {
 			setLanguage(lng);
 		};
 
-		i18n.on('languageChanged', handleLanguageChange);
+		i18n.on('languageChanged', handleLanguageChange);  // Listen for language changes
 
 		return () => {
-			i18n.off('languageChanged', handleLanguageChange);
+			i18n.off('languageChanged', handleLanguageChange);  // Cleanup on unmount
 		};
 	}, [i18n]);
 
@@ -372,7 +373,7 @@ const HomePage = () => {
 				const res = await fetch("/api/posts/feed");
 				const data = await res.json();
 				if (data.error) {
-					showToast(t("Error"), data.error, "error");
+					showToast(t("Error"), data.error, "error");  // Translation for error message
 					return;
 				}
 				setPosts(data);
@@ -380,15 +381,15 @@ const HomePage = () => {
 				const now = Date.now();
 				const recentPosts = data.filter(post => {
 					const postAgeInHours = (now - new Date(post.createdAt).getTime()) / (1000 * 60 * 60);
-					return postAgeInHours <= 3;
+					return postAgeInHours <= 3; // Check if post is within 1-3 hours
 				});
 				setNewPosts(recentPosts);
 
 				setTimeout(() => {
 					setNewPosts([]);
-				}, 30000);
+				}, 30000); // "New to you" message disappears after 30 seconds
 			} catch (error) {
-				showToast(t("Error"), error.message, "error");
+				showToast(t("Error"), error.message, "error");  // Translation for error message
 			} finally {
 				setLoading(false);
 			}
@@ -406,7 +407,7 @@ const HomePage = () => {
 		<Flex gap="10" alignItems={"flex-start"}>
 			<Box flex={70}>
 				{!loading && posts.length === 0 && (
-					<h1>{t("Welcome to Pear! You have successfully created an account. Log in to see the latest Brookhouse news 🍐.")}</h1>
+					<h1>{t("Welcome to Pear! You have successfully created an account. Log in to see the latest Brookhouse news 🍐.")}</h1>  
 				)}
 
 				{loading && (
@@ -421,7 +422,7 @@ const HomePage = () => {
 					return (
 						<Box
 							key={post._id}
-							className="postContainer"
+							className="postContainer" // This is where the popout hover effect will happen
 							borderWidth="1px"
 							borderRadius="lg"
 							p={4}
@@ -429,8 +430,9 @@ const HomePage = () => {
 							boxShadow="sm"
 						>
 							<Post post={post} postedBy={post.postedBy} />
+
 							{isNew && newPosts.includes(post) && (
-								<Text className="newToYouText" mt={2}>{t("New to you!")}</Text>
+								<Text className="newToYouText" mt={2}>{t("New to you!")}</Text> 
 							)}
 						</Box>
 					);

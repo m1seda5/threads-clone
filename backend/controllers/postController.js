@@ -830,15 +830,19 @@ const getFeedPosts = async (req, res) => {
       return res.status(404).json({ error: "User not found" });
     }
 
+    // Retrieve the list of users the current user is following
     const following = user.following;
+
+    // Include the current user’s own ID in the list to fetch their posts as well
     const allUserIds = [...following, userId];
 
+    // Fetch posts based on target audience and user roles
     const feedPosts = await Post.find({
       $or: [
-        { targetAudience: null },
-        { targetAudience: "all" },
-        { targetAudience: user.isStudent ? user.yearGroup : user.role },
-        { postedBy: { $in: allUserIds } },
+        { targetAudience: null }, // Posts without specific targeting (public)
+        { targetAudience: "all" }, // Posts targeted to all users
+        { targetAudience: user.isStudent ? user.yearGroup : user.role }, // Posts targeted to user's year group or role
+        { postedBy: { $in: allUserIds } }, // Posts by users the current user is following
       ],
     }).sort({ createdAt: -1 });
 
@@ -848,7 +852,6 @@ const getFeedPosts = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
-
 
 
 
