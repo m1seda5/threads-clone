@@ -41,6 +41,12 @@ const protectRoute = async (req, res, next) => {
       return res.status(401).json({ message: "Unauthorized, token verification failed" });
     }
 
+    // If user is already present, skip the database lookup
+    if (req.user) {
+      next();
+      return;
+    }
+
     const user = await User.findById(decoded.userId).select("-password");
 
     if (!user) {
@@ -54,5 +60,6 @@ const protectRoute = async (req, res, next) => {
     res.status(500).json({ message: err.message });
   }
 };
+
 
 export default protectRoute;

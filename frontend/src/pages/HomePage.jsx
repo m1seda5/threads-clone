@@ -372,30 +372,40 @@ const HomePage = () => {
 			try {
 				const res = await fetch("/api/posts/feed");
 				const data = await res.json();
+	
 				if (data.error) {
-					showToast(t("Error"), data.error, "error");  // Translation for error message
+					// Ensure that the toast is only shown if the user retrieval truly fails
+					showToast(t("Error"), data.error, "error");
 					return;
 				}
+	
 				setPosts(data);
-
+	
 				const now = Date.now();
 				const recentPosts = data.filter(post => {
 					const postAgeInHours = (now - new Date(post.createdAt).getTime()) / (1000 * 60 * 60);
 					return postAgeInHours <= 3; // Check if post is within 1-3 hours
 				});
 				setNewPosts(recentPosts);
-
+	
 				setTimeout(() => {
 					setNewPosts([]);
 				}, 30000); // "New to you" message disappears after 30 seconds
 			} catch (error) {
-				showToast(t("Error"), error.message, "error");  // Translation for error message
+				// Make sure the error here is valid (e.g., network error or actual server issue)
+				if (error.message.includes('User not found')) {
+					// Suppress "User not found" error on the HomePage
+					console.warn("User retrieval failed but no toast shown");
+				} else {
+					showToast(t("Error"), error.message, "error");
+				}
 			} finally {
 				setLoading(false);
 			}
 		};
 		getFeedPosts();
 	}, [showToast, setPosts, t]);
+	
 
 	const isNewPost = (postTime) => {
 		const now = Date.now();
