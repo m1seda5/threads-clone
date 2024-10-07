@@ -655,6 +655,43 @@ const createPost = async (req, res) => {
   }
 };
 
+
+// previous verion  with a few buggs
+
+// const getPost = async (req, res) => {
+//   try {
+//     const postId = req.params.id;
+//     const user = req.user; // Assume the user is extracted from the request
+
+//     // Fetch the post with the targetAudience
+//     const post = await Post.findById(postId).populate("postedBy", "username profilePic");
+
+//     if (!post) {
+//       return res.status(404).json({ error: "Post not found" });
+//     }
+
+//     const userEmail = user.email;
+//     const isTeacher = !userEmail.includes("students");
+
+//     // Teachers can view any post, or any post meant for "all"
+//     if (isTeacher) {
+//       if (post.targetAudience && post.targetAudience !== "all") {
+//         return res.status(403).json({ error: "Unauthorized access to this post" });
+//       }
+//     } else {
+//       // Students can only view posts meant for their year group or "all"
+//       if (post.targetAudience !== "all" && post.targetAudience !== user.yearGroup) {
+//         return res.status(403).json({ error: "Unauthorized access to this post" });
+//       }
+//     }
+
+//     // If all checks pass, return the post
+//     res.status(200).json(post);
+//   } catch (err) {
+//     res.status(500).json({ error: err.message });
+//   }
+// };
+
 const getPost = async (req, res) => {
   try {
     const postId = req.params.id;
@@ -672,6 +709,7 @@ const getPost = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
 
 const deletePost = async (req, res) => {
   try {
@@ -778,6 +816,7 @@ const repostPost = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+// postController.js
 
 export const getFeedPosts = async (req, res) => {
   try {
@@ -819,6 +858,8 @@ export const getFeedPosts = async (req, res) => {
   }
 };
 
+
+
 const getUserPosts = async (req, res) => {
   const { username } = req.params;
   try {
@@ -843,7 +884,6 @@ export {
   deletePost,
   likeUnlikePost,
   replyToPost,
-  repostPost,      // Include repostPost in the export
   getFeedPosts,
   getUserPosts,
 };
