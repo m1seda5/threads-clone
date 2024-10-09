@@ -365,16 +365,16 @@ const Post = ({ post, postedBy }) => {
       i18n.off('languageChanged', handleLanguageChange);  // Cleanup on component unmount
     };
   }, [i18n]);
-// added changes so that the postedf by user not found issue is resolved 
+
   useEffect(() => {
+    // Debugging `postedBy` to check its value
+    console.log("postedBy value:", postedBy);
+
     const getUser = async () => {
       try {
-        console.log("Fetching user for:", postedBy);  // Debugging log
-        
-        // Use postedBy._id or postedBy.username for the fetch request
-        const res = await fetch(`/api/users/profile/${postedBy._id}`);  // Assuming _id is used
+        const res = await fetch("/api/users/profile/" + postedBy);
+        console.log("Fetching user for:", postedBy);  // Log before fetch
         const data = await res.json();
-  
         if (data.error) {
           showToast(t("Error"), data.error, "error");
           return;
@@ -385,10 +385,9 @@ const Post = ({ post, postedBy }) => {
         setUser(null);
       }
     };
-  
+
     getUser();
   }, [postedBy, showToast, t]);
-  
 
   const handleDeletePost = async (e) => {
     try {
